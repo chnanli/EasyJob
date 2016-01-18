@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--assembly:程序集，namespace:命名空间-->
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2" assembly="EasyJob.Pojo"  namespace="EasyJob.Pojo.Pojo">
+   <class name="EasyJob.Pojo.Pojo.Customer,EasyJob.Pojo" table="ctCustomer">
+     <cache usage="read-write" />
+     <!--主键-->
+     <id name="Id">
+      <generator class="guid" />
+     </id>
+     <property name="ModDate"/>
+     <property name="UploadDate"/>
+     <property name="Del" column="DeleteFlag"/>
+     <property name="TrashFlag"/>
+     <property name="ExHost" length="500"/>
+
+     <property name="OpenId" length="50" not-null="false" unique="true"  />
+     <property name="Name" length="50" not-null="false" />
+     <property name="Nickname" length="50" not-null="false" />
+     <property name="Pwd" length="50" not-null="false" />
+     <property name="Sex" />
+     <property name="Zcode" length="8" not-null="false" />
+     <property name="PhoneNum" length="12" not-null="false" />
+     <property name="Tel" length="15" not-null="false" />
+     <property name="QQ" length="15" not-null="false" />
+     
+     <property name="WeiXin" length="40" not-null="false" />
+     <property name="Email" length="40" not-null="false" />
+     <property name="Level" />
+     <property name="Remark" type="String">
+       <column name="Remark" sql-type="Text" length="16" />
+     </property>
+   </class>
+</hibernate-mapping>

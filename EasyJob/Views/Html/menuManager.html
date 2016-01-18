@@ -1,0 +1,26 @@
+菜单管理
+<span id="showMenus"></span>
+<script>
+    function GetUser(method, pageSize, pageNum) {
+        $("#showUsers").html("loading...");
+        $.ajax({
+            type: method,
+            url: 'ServiceEmployee?pageSize=' + pageSize + '&pageNum=' + pageNum,
+            contentType: "application/json",
+            dataType: "json",
+            data: {},
+            success: function (d) {
+                var users = "";
+                for (i = 0; i < d.length; i++) {
+                    users += d[i].Name;
+                }
+                $("#showMenus").html(users);
+            }
+        });
+    }
+    function GetUserByText() {
+        GetUser('GET', 1, 1);
+    }
+
+    GetUserByText();
+</script>

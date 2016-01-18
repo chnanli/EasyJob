@@ -1,0 +1,404 @@
+﻿@{
+    ViewBag.Title = "维修单";
+
+    string Timestamp = "0";
+    string Nonce = "";
+    string Signature = "";
+    if (ViewBag.JsApiValidInfo != null)
+    {
+        Timestamp = ViewBag.JsApiValidInfo.Timestamp;
+        Nonce = ViewBag.JsApiValidInfo.Nonce;
+        Signature = ViewBag.JsApiValidInfo.Signature;
+    }
+}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+@Styles.Render("~/bootstrap/css")
+@Scripts.Render("~/jquery/js", "~/bootstrap/js", "~/angular/js", "~/errorCode/js")
+
+<style>
+    .btn-my {
+        width: 3em;
+        height: 3em;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+    }
+</style>
+
+<script>
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: 'wx902209cd6a17ebf6', // 必填，公众号的唯一标识
+        timestamp: @Timestamp, // 必填，生成签名的时间戳
+        nonceStr: '@Nonce', // 必填，生成签名的随机串
+        signature: '@Signature',// 必填，签名，见附录1
+        jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onVoiceRecordEnd',
+        'playVoice',
+        'onVoicePlayEnd',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+</script>
+
+<script>
+    var app = angular.module('repairOrderApp', []);
+
+    app.controller('repairOrderCtrl', function ($scope, $http) {
+        //客户信息初始化
+        $scope.cstmr={};
+        $scope.cstmr.OpenId='@ViewBag.OpenId';
+
+        //工单类型数组
+        $scope.WorkCodeTypeRows=new Array();
+        //$scope.WorkCodeTypeRows[0]={};
+
+        //添加工单类型
+        $scope.AddWorkCodeType=function(){
+            var len=$scope.WorkCodeTypeRows.length;
+            $scope.WorkCodeTypeRows[len]={};
+
+            //根据类型1加载类型2
+            $scope.WorkCodeTypeRows[len].GetWorkCodeType2=function(row,workCodeType1){
+                $http.post("/WorkCodeType/GetWorkCodeType2",workCodeType1).success(function (workCodeType2s) {
+                    row.WorkCodeType2s=workCodeType2s;
+                });
+            }
+
+            if($scope.WorkCodeType1s==null){
+                //加载类型1
+                $http.get("/WorkCodeType/GetWorkCodeType1").success(function (workCodeType1s) {
+                    $scope.WorkCodeType1s=workCodeType1s;
+                    $scope.WorkCodeTypeRows[len].WorkCodeType1s=workCodeType1s;
+                });
+            }else{
+                //复制之前的类型
+                $scope.WorkCodeTypeRows[len].WorkCodeType1s=$scope.WorkCodeType1s;
+            }
+
+            //初始化选择项
+            $scope.WorkCodeTypeRows[len].SelectType1 = {
+            }
+            $scope.WorkCodeTypeRows[len].SelectType2 = {
+            }
+
+            //工单类型1选择事件
+            $scope.WorkCodeTypeRows[len].WorkCodeType1Change=function(row){
+                if(row.SelectType1!=null){
+                    row.GetWorkCodeType2(row,row.SelectType1);
+                }
+            }
+        }
+
+        //移除工单类型
+        $scope.DelWorkCodeType=function(index){
+            if($scope.WorkCodeTypeRows.length>1){
+                $scope.WorkCodeTypeRows.splice(index,1);
+            }
+        }
+
+        //加载客户的所有地址
+        $scope.GetCustomerAddr=function(cstmr){
+            $http.post("/CustomerAddr/Get",cstmr).success(function (customerAddrs) {
+                $scope.customerAddrs=customerAddrs;
+            });
+        }
+
+        //3级地址码下拦框
+        $scope.AddrCodeLevel1={};
+        $scope.AddrCodeLevel2={};
+        $scope.AddrCodeLevel3={};
+        $scope.AddrCodeLevel4={};
+        $scope.SelectAddrCodeLevel1={};
+        $scope.SelectAddrCodeLevel2={};
+        $scope.SelectAddrCodeLevel3={};
+        $scope.SelectAddrCodeLevel4={};
+        $scope.InputLocationAddr="";//详细的地址
+
+        //1级地址码选择事件
+        $scope.AddrCodeLevel1Change=function(){
+            $scope.AddrCodeLevel2={};
+            $scope.AddrCodeLevel3={};
+            $scope.AddrCodeLevel4={};
+            $scope.SelectAddrCodeLevel2={};
+            $scope.SelectAddrCodeLevel3={};
+            $scope.SelectAddrCodeLevel4={};
+            //加载2级地址码
+            $scope.GetAddrCode($scope.AddrCodeLevel2,$scope.SelectAddrCodeLevel1.Code);
+        }
+        //2级地址码选择事件
+        $scope.AddrCodeLevel2Change=function(){
+            $scope.AddrCodeLevel3={};
+            $scope.AddrCodeLevel4={};
+            $scope.SelectAddrCodeLevel3={};
+            $scope.SelectAddrCodeLevel4={};
+            //加载3级地址码
+            $scope.GetAddrCode($scope.AddrCodeLevel3,$scope.SelectAddrCodeLevel2.Code);
+        }
+        //3级地址码选择事件
+        $scope.AddrCodeLevel3Change=function(){
+            $scope.AddrCodeLevel4={};
+            $scope.SelectAddrCodeLevel4={};
+            //加载4级地址码
+            $scope.GetAddrCode($scope.AddrCodeLevel4,$scope.SelectAddrCodeLevel3.Code);
+        }
+
+        $scope.GetAddrCode=function(obj,code){
+            $http.get("/AddrCode/Search?code="+code).success(function (addrCodes) {
+                obj.AddrCodes=addrCodes;
+            });
+        }
+
+        //加载1级地址码
+        $scope.GetAddrCode($scope.AddrCodeLevel1,"");
+
+        //加载客户所有地址
+        $scope.GetCustomerAddr($scope.cstmr);
+
+        //添加客户地址
+        $scope.AddCustomerAddr=function(){
+            if($scope.SelectAddrCodeLevel4!=null && $scope.SelectAddrCodeLevel4.Code!=null){
+                var data={};
+                data.Cstmr=$scope.cstmr;
+                data.AddrCode=$scope.SelectAddrCodeLevel4.Code;
+                data.Location=$scope.InputLocationAddr;
+
+                $http.post("/CustomerAddr/Add",data).success(function (customerAddr) {
+                    $scope.GetCustomerAddr(customerAddr.Cstmr);
+                    //$scope.ShowInfo="添加成功";
+                });
+            }else{
+                $scope.ShowInfo="请选择地址!";
+            }
+        };
+
+        //下单按钮事件
+        $("#Order").click(function(){
+            var work={};
+            var workTypeDetails=new Array();
+
+            work.Cstmr={};
+            work.Cstmr.OpenId=$scope.cstmr.OpenId;
+            work.AddrCode=440923;
+            work.Depict="厕所塞了";
+
+            var index=0;
+            for(i=0;i<$scope.WorkCodeTypeRows.length;i++){
+                var row=$scope.WorkCodeTypeRows[i];
+
+                if(row.SelectType1!=null && row.SelectType2!=null && row.SelectType1.Id!=null && row.SelectType2.Id!=null){
+                    workTypeDetails[index]={};
+                    workTypeDetails[index].Type1=row.SelectType1;
+                    workTypeDetails[index].Type2=row.SelectType2;
+
+                    index++;
+                }
+
+            }
+            var wawtd={};
+            wawtd.Work=work;
+            wawtd.workTypeDetails=workTypeDetails;
+
+            var data = $.toJSON(wawtd);
+
+            $.ajax({
+                type: "POST",
+                url: "/Work/Add",
+                contentType: "application/json",
+                dataType: "json",
+                data: data,
+                success: function (ret) {
+                    if (ret == true) {
+                        $scope.ShowInfo="成功";
+                    } else {
+                        $scope.ShowInfo="失败";
+                    }
+                },
+                error: function (xhr) {
+                    var errMsg = xhr.responseJSON;
+                    $scope.ShowInfo=GetErrorMsg(errMsg.Error);
+                }
+            });
+        });
+
+        //默认添加一行类型选择
+        $scope.AddWorkCodeType();
+    });
+</script>
+
+<div ng-app="repairOrderApp" ng-controller="repairOrderCtrl" class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="btn btn-success btn-block" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseOne">
+                    维修类型
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body" id="WorkCodeTypeBody">
+                <div class="row" ng-repeat="Row in WorkCodeTypeRows">
+                    <div class="col-xs-12">
+                        <div class="btn input-group btn-info">
+                            <span class="input-group-btn">
+                                <select name="WorkCodeType1" class="form-control" ng-change="Row.WorkCodeType1Change(Row)" ng-model="Row.SelectType1.Id">
+                                    <option ng-repeat="Type1 in Row.WorkCodeType1s" ng-value="Type1.Id" ng-selected="Row.SelectType1.Id == Type1">{{Type1.Name}}</option>
+                                </select>
+                            </span>
+                            <span class="input-group-btn">
+                                <select name="WorkCodeType2" class="form-control" ng-model="Row.SelectType2.Id">
+                                    <option ng-repeat="Type2 in Row.WorkCodeType2s" ng-value="Type2.Id" ng-selected="Row.SelectType2.Id == Type2">{{Type2.Name}}</option>
+                                </select>
+                            </span>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-warning" type="button" ng-click="DelWorkCodeType($index)">-</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span>
+                            <button class="btn btn-default btn-warning btn-block" type="button" ng-click="AddWorkCodeType()">+</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="btn btn-success btn-block" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseTwo">
+                    备注
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+                <textarea class="form-control" placeholder="说明..."></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="btn btn-success btn-block" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseThree">
+                    拍照
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <input class="form-control" type="file" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="btn btn-success btn-block" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseFour">
+                    选择地址
+                </a>
+            </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row" ng-repeat="addr in customerAddrs">
+                    <div class="col-xs-12">
+                        <div class="btn input-group btn-info">
+                            <span class="input-group-btn">
+                                <input class="form-control" type="checkbox" />
+                            </span>
+                            <span class="form-control" ng-bind="addr.Addr+addr.Location">
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <select class="form-control" ng-change="AddrCodeLevel1Change()" ng-model="SelectAddrCodeLevel1.Code">
+                                    <option ng-repeat="addrCode in AddrCodeLevel1.AddrCodes" ng-value="addrCode.Code">{{addrCode.Name}}</option>
+                                </select>
+                            </span>
+                            <span class="input-group-btn">
+                                <select class="form-control" ng-change="AddrCodeLevel2Change()" ng-model="SelectAddrCodeLevel2.Code">
+                                    <option ng-repeat="addrCode in AddrCodeLevel2.AddrCodes" ng-value="addrCode.Code">{{addrCode.Name}}</option>
+                                </select>
+                            </span>
+                        </div><!-- /input-group -->
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <select class="form-control" ng-change="AddrCodeLevel3Change()" ng-model="SelectAddrCodeLevel3.Code">
+                                    <option ng-repeat="addrCode in AddrCodeLevel3.AddrCodes" ng-value="addrCode.Code">{{addrCode.Name}}</option>
+                                </select>
+                            </span>
+                            <span class="input-group-btn">
+                                <select class="form-control" ng-model="SelectAddrCodeLevel4.Code">
+                                    <option ng-repeat="addrCode in AddrCodeLevel4.AddrCodes" ng-value="addrCode.Code">{{addrCode.Name}}</option>
+                                </select>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span>
+                            <input class="form-control" type="text" ng-model="InputLocationAddr" placeholder="请输入详细地址" />
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span>
+                            <button class="btn btn-default btn-warning btn-block" type="button" ng-click="AddCustomerAddr()">+</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-danger btn-lg btn-block" id="Order">下单</a>

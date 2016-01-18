@@ -1,0 +1,236 @@
+﻿@{
+    ViewBag.Title = "WorkManager";
+}
+@Styles.Render("~/bootstrap/css")
+@Scripts.Render("~/jquery/js", "~/bootstrap/js", "~/angular/js", "~/errorCode/js", "~/angularFuncs/js")
+
+<script>
+    var app = angular.module('workApp', []);
+
+    app.controller('workCtrl', function ($scope, $http) {
+        //所有数据
+        $scope.Datas = new Array();
+
+        //需要增加的数据
+        $scope.DataAdd = {};
+        //需要修改的数据
+        $scope.DataUpdate = {};
+        //查询条件
+        $scope.DataSearch = {};
+        //显示的子工单数据
+        $scope.SubWorks = new Array();
+        //显示的子工单的维修明细
+        $scope.WorkDetails = new Array();
+        //客户评价明细
+        $scope.CustomerScores = new Array();
+
+        //读取数据
+        $scope.Get = function () {
+            var param = "";
+            if ($scope.DataSearch.CstmrName != null && $scope.DataSearch.CstmrName != "") {
+                param += "&cstmrName=" + $scope.DataSearch.CstmrName;
+            }
+            if ($scope.DataSearch.Contact != null && $scope.DataSearch.Contact != "") {
+                param += "&contact=" + $scope.DataSearch.Contact;
+            }
+            if ($scope.DataSearch.PhoneNum != null && $scope.DataSearch.PhoneNum != "") {
+                param += "&phoneNum=" + $scope.DataSearch.PhoneNum;
+            }
+
+            HttpGetWork($http, "pageSize=0&pageNum=0" + param,
+                function (data, header, config, status) {
+                    $scope.Datas = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+
+        //添加小区函数
+        $scope.Add = function (data) {
+            HttpAddWork($http, data,
+                function (data, header, config, status) {
+                    $scope.Get();
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        $scope.Del = function (data) {
+            var delData = {};
+            delData.Id = data.Id;
+            HttpDelWork($http, delData,
+                function (data, header, config, status) {
+                    $scope.Get();
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        $scope.SetUpdateData = function (data) {
+            $scope.DataUpdate = data;
+        }
+
+        $scope.Update = function (data) {
+            HttpUpdateWork($http, data,
+                function (data, header, config, status) {
+                    $scope.Get();
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //根据工单信息获取子工单
+        $scope.GetWorkSubs = function (work) {
+            HttpGetWorkSub($http, work,
+                function (data, header, config, status) {
+                    $scope.SubWorks = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //根据子工单信息获取子工单维修详细查询函数
+        $scope.GetWorkDetails = function (work) {
+            HttpGetWorkDetail($http, work,
+                function (data, header, config, status) {
+                    $scope.WorkDetails = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //根据工单信息获取客户评价查询函数
+        $scope.GetCustomerScores = function (work) {
+            HttpGetCustomerScore($http, work,
+                function (data, header, config, status) {
+                    $scope.CustomerScores = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        
+
+        //读取数据
+        $scope.Get();
+    });
+</script>
+
+<div ng-app="workApp" ng-controller="workCtrl">
+    客户名<input type="text" ng-model="DataSearch.CstmrName">
+    联系人<input type="text" ng-model="DataSearch.Contact">
+    电话<input type="text" ng-model="DataSearch.PhoneNum">
+    <button ng-click="Get()">查询</button>
+    <table>
+        <tr>
+            <td>客户名</td>
+            <td>工单号</td>
+            <td>联系人</td>
+            <td>手机号</td>
+            <td>状态</td>
+            <td>备注</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr ng-repeat="data in Datas">
+            <td><span ng-bind="data.Cstmr.Name"></span></td>
+            <td><span ng-bind="data.Code"></span></td>
+            <td><span ng-bind="data.Contact"></span></td>
+            <td><span ng-bind="data.PhoneNum"></span></td>
+            <td><span ng-bind="data.Status"></span></td>
+            <td><span ng-bind="data.Remark"></span></td>
+            <td><a ng-click="GetWorkSubs(data)">查看子工单</a></td>
+            <td><a ng-click="GetCustomerScores(data)">查看客户评价</a></td>
+            <td><a ng-click="SetUpdateData(data)">修改</a></td>
+            <td><a ng-click="Del(data)">删除</a></td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td>下单类型</td>
+            <td>下单员工</td>
+            <td>描述</td>
+            <td>分店</td>
+            <td>师傅</td>
+            <td>分配方式</td>
+            <td>分配操作人</td>
+            <td>状态</td>
+            <td></td>
+        </tr>
+        <tr ng-repeat="subWork in SubWorks">
+            <td><span ng-bind="subWork.OrderType"></span></td>
+            <td><span ng-bind="subWork.OrderEmp.Name"></span></td>
+            <td><span ng-bind="subWork.Depict"></span></td>
+            <td><span ng-bind="subWork.Dept.Name"></span></td>
+            <td><span ng-bind="subWork.Emp.Name"></span></td>
+            <td><span ng-bind="subWork.DistMode"></span></td>
+            <td><span ng-bind="subWork.DistEmp.Name"></span></td>
+            <td><span ng-bind="subWork.Status"></span></td>
+            <td><a ng-click="GetWorkDetails(subWork)">查看维修明细</a></td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td>描述</td>
+            <td>评分</td>
+        </tr>
+        <tr ng-repeat="customerScore in CustomerScores">
+            <td><span ng-bind="customerScore.Depict"></span></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>维修类型</td>
+            <td>维修类型金额</td>
+            <td>维修商品描述</td>
+            <td>维修商品价钱</td>
+            <td>师傅</td>
+            <td>金额</td>
+            <td>优惠</td>
+        </tr>
+        <tr ng-repeat="workDetail in WorkDetails">
+            <td><span ng-bind="workDetail.RepairType.Name"></span></td>
+            <td><span ng-bind="workDetail.RepairType.Amount"></span></td>
+            <td><span ng-bind="workDetail.Material.Depict"></span></td>
+            <td><span ng-bind="workDetail.Material.Price"></span></td>
+            <td><span ng-bind="workDetail.Emp.Name"></span></td>
+            <td><span ng-bind="workDetail.Amount"></span></td>
+            <td><span ng-bind="workDetail.Discount"></span></td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    
+
+    客户ID<input type="text" ng-model="DataAdd.Cstmr.Id" /><br />
+    联系人<input type="text" ng-model="DataAdd.Contact" /><br />
+    手机号码<input type="text" ng-model="DataAdd.PhoneNum" /><br />
+    备注<input type="text" ng-model="DataAdd.Remark" /><br />
+    <button ng-click="Add(DataAdd)">添加</button><br />
+    <br />
+    <br />
+
+    客户ID<input type="text" ng-model="DataUpdate.Cstmr.Id" ng-bind="DataUpdate.Cstmr.Id" /><br />
+    联系人<input type="text" ng-model="DataUpdate.Contact" ng-bind="DataUpdate.Contact" /><br />
+    手机号码<input type="text" ng-model="DataUpdate.PhoneNum" ng-bind="DataUpdate.PhoneNum" /><br />
+    备注<input type="text" ng-model="DataUpdate.Remark" ng-bind="DataUpdate.Remark" /><br />
+    <button ng-click="Update(DataUpdate)">修改</button>
+</div>

@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "WorkCodeType";
+}
+@Styles.Render("~/bootstrap/css")
+@Scripts.Render("~/jquery/js", "~/bootstrap/js", "~/angular/js", "~/errorCode/js", "~/angularFuncs/js")
+
+<script>
+    var app = angular.module('workCodeTypeApp', []);
+
+    app.controller('workCodeTypeCtrl', function ($scope, $http) {
+        //所有数据
+        $scope.Datas = new Array();
+
+        //需要增加的数据
+        $scope.DataAdd = {};
+        //需要修改的数据
+        $scope.DataUpdate = {};
+        //查询条件
+        $scope.DataSearch = {};
+
+        //所有数据
+        $scope.DataWorkCodeType1s = new Array();
+
+        //需要增加的数据
+        $scope.DataAddWorkCodeType1 = {};
+        //需要修改的数据
+        $scope.DataUpdateWorkCodeType1 = {};
+        //查询条件
+        $scope.DataSearchWorkCodeType1 = {};
+
+        //所有数据
+        $scope.DataWorkCodeType2s = new Array();
+
+        //需要增加的数据
+        $scope.DataAddWorkCodeType2 = {};
+        //需要修改的数据
+        $scope.DataUpdateWorkCodeType2 = {};
+        //查询条件
+        $scope.DataSearchWorkCodeType2 = {};
+
+        //读取数据
+        $scope.Get = function () {
+            var param = "";
+
+            HttpGetWorkCodeType($http, "pageSize=0&pageNum=0" + param,
+                function (data, header, config, status) {
+                    $scope.Datas = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //读取数据
+        $scope.GetWorkCodeType1 = function () {
+            var param = "";
+
+            HttpGetWorkCodeType1($http, "pageSize=0&pageNum=0" + param,
+                function (data, header, config, status) {
+                    $scope.DataWorkCodeType1s = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //读取数据
+        $scope.GetWorkCodeType2 = function () {
+            var param = "";
+
+            HttpGetWorkCodeType2($http, "pageSize=0&pageNum=0" + param,
+                function (data, header, config, status) {
+                    $scope.DataWorkCodeType2s = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+
+        //添加维修类型函数
+        $scope.Add = function (data) {
+            HttpAddWorkCodeType($http, data,
+            function (data, header, config, status) {
+                $scope.Get();
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.ErrorMsg);
+            }
+        );
+        }
+
+        //删除维修类型函数
+        $scope.Del = function (data) {
+            var delData = {};
+            delData.Id = data.Id;
+            HttpDelWorkCodeType($http, delData,
+            function (data, header, config, status) {
+                $scope.Get();
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.ErrorMsg);
+            }
+        );
+        }
+
+        $scope.SetUpdateData = function (data) {
+            $scope.DataUpdate = data;
+        }
+
+        //修改维修类型函数
+        $scope.Update = function (data) {
+            HttpUpdateWorkCodeType($http, data,
+            function (data, header, config, status) {
+                $scope.Get();
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.ErrorMsg);
+            }
+        );
+        }
+
+        //读取数据
+        $scope.Get();
+        //读取数据
+        $scope.GetWorkCodeType1();
+        //读取数据
+        $scope.GetWorkCodeType2();
+    });
+</script>
+
+<div ng-app="workCodeTypeApp" ng-controller="workCodeTypeCtrl">
+    <table>
+        <tr>
+            <td>类型1</td>
+            <td>类型2</td>
+        </tr>
+        <tr ng-repeat="data in Datas">
+            <td><span ng-bind="data.Type1.Name"></span></td>
+            <td><span ng-bind="data.Type2.Name"></span></td>
+            <td><a ng-click="SetUpdateData(data)">修改</a></td>
+            <td><a ng-click="Del(data)">删除</a></td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td>代码</td>
+            <td>名字</td>
+        </tr>
+        <tr ng-repeat="data in DataWorkCodeType1s">
+            <td><span ng-bind="data.Code"></span></td>
+            <td><span ng-bind="data.Name"></span></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>代码</td>
+            <td>名字</td>
+        </tr>
+        <tr ng-repeat="data in DataWorkCodeType2s">
+            <td><span ng-bind="data.Code"></span></td>
+            <td><span ng-bind="data.Name"></span></td>
+        </tr>
+    </table>
+
+    类型1ID<input type="text" ng-model="DataAdd.Type1.Id" /><br />
+    类型2ID<input type="text" ng-model="DataAdd.Type2.Id" /><br />
+    <button ng-click="Add(DataAdd)">添加</button><br />
+
+    类型1ID<input type="text" ng-model="DataUpdate.Type1.Id" ng-bind="DataUpdate.Type1.Id" /><br />
+    类型1ID<input type="text" ng-model="DataUpdate.Type2.Id" ng-bind="DataUpdate.Type2.Id" /><br />
+    <button ng-click="Update(DataUpdate)">修改</button>
+</div>

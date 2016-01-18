@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "后台管理系统";
+}
+@Styles.Render("~/bui/assets/css")
+@Scripts.Render("~/angular/js","~/bui/assets/js")
+
+<script>
+    var app = angular.module('indexApp', []);
+
+    app.controller('indexCtrl', function ($scope, $http) {
+        $http.get("/Mod/GetMyMods").success(function (modFunc) {
+            var menuBar = new Array();;
+
+            for (i = 0; i < modFunc.length; i++) {
+                menuBar[i] = {};
+                menuBar[i].id = modFunc[i].Id;
+                menuBar[i].icon = modFunc[i].Icon;
+
+                menuBar[i].menu = new Array();
+                menuBar[i].menu[0] = {};
+                menuBar[i].menu[0].text = modFunc[i].Text;
+                menuBar[i].menu[0].items = new Array();
+                for (j = 0; j < modFunc[i].Mods.length; j++) {
+                    menuBar[i].menu[0].items[j] = {};
+                    menuBar[i].menu[0].items[j].id = modFunc[i].Mods[j].Id;
+                    menuBar[i].menu[0].items[j].text = modFunc[i].Mods[j].Text;
+                    menuBar[i].menu[0].items[j].href = modFunc[i].Mods[j].Href;
+                }
+            }
+
+            $scope.menuBar = menuBar;
+
+            BUI.use('common/main', function () {
+                new PageUtil.MainPage({
+                    modulesConfig: menuBar
+                });
+            });
+        });
+    });
+
+</script>
+
+<div ng-app="indexApp" ng-controller="indexCtrl">
+    <div class="header">
+
+        <div class="dl-title">
+            <!--<img src="/chinapost/Public/assets/img/top.png">-->
+        </div>
+
+        <div class="dl-log">
+            欢迎您，<span class="dl-log-user">root</span><a href="/chinapost/index.php?m=Public&a=logout" title="退出系统" class="dl-log-quit">[退出]</a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="dl-main-nav">
+            <div class="dl-inform"><div class="dl-inform-title"><s class="dl-inform-icon dl-up"></s></div></div>
+            <ul id="J_Nav" class="nav-list ks-clear">
+                <li ng-repeat="menuGroup in menuBar" class="nav-item dl-selected"><div class="nav-item-inner {{menuGroup.icon}}"><span ng-bind="menuGroup.menu[0].text"></span></div></li>
+            </ul>
+        </div>
+        <ul id="J_NavContent" class="dl-tab-conten"></ul>
+    </div>
+</div>

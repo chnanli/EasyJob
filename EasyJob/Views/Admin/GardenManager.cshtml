@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "GardenManager";
+}
+@Styles.Render("~/bootstrap/css")
+@Scripts.Render("~/jquery/js", "~/bootstrap/js", "~/angular/js", "~/errorCode/js", "~/angularFuncs/js")
+
+<script>
+    var app = angular.module('gardenApp', []);
+
+    app.controller('gardenCtrl', function ($scope, $http) {
+        //所有数据
+        $scope.Datas = new Array();
+
+        //需要增加的数据
+        $scope.DataAdd = {};
+        //需要修改的数据
+        $scope.DataUpdate = {};
+        //查询条件
+        $scope.DataSearch = {};
+
+        //读取数据
+        $scope.Get=function() {
+            var param = "";
+            if ($scope.DataSearch.Name != null && $scope.DataSearch.Name!="") {
+                param += "&name=" + $scope.DataSearch.Name;
+            }
+            if ($scope.DataSearch.Addr != null && $scope.DataSearch.Addr!="") {
+                param += "&addr=" + $scope.DataSearch.Addr;
+            }
+
+            HttpGetGarden($http, "pageSize=0&pageNum=0" + param,
+                function (data, header, config, status) {
+                    $scope.Datas = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+        
+
+        //添加小区函数
+        $scope.Add = function (data) {
+            HttpAddGarden($http, data,
+            function (data, header, config, status) {
+                $scope.Get();
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.ErrorMsg);
+            }
+        );
+        }
+
+        $scope.Del = function (data) {
+            var delData = {};
+            delData.Id = data.Id;
+            HttpDelGarden($http, delData,
+            function (data, header, config, status) {
+                $scope.Get();
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.ErrorMsg);
+            }
+        );
+        }
+
+        $scope.SetUpdateData = function (data) {
+            $scope.DataUpdate = data;
+        }
+
+        $scope.Update = function (data) {
+            HttpUpdateGarden($http, data,
+            function (data, header, config, status) {
+                $scope.Get();
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.ErrorMsg);
+            }
+        );
+        }
+        
+        //读取数据
+        $scope.Get();
+    });
+</script>
+
+<div ng-app="gardenApp" ng-controller="gardenCtrl">
+    小区名<input type="text" ng-model="DataSearch.Name">
+    小区地址<input type="text" ng-model="DataSearch.Addr">
+    <button ng-click="Get()">查询</button>
+    <table>
+        <tr>
+            <td>小区名</td>
+            <td>小区管理员</td>
+            <td>级别</td>
+            <td>提成</td>
+            <td>地址</td>
+            <td>修改</td>
+            <td>删除</td>
+        </tr>
+        <tr ng-repeat="data in Datas">
+            <td><span ng-bind="data.Name"></span></td>
+            <td><span ng-bind="data.Emp.Name"></span></td>
+            <td><span ng-bind="data.Level"></span></td>
+            <td><span ng-bind="data.Commission"></span></td>
+            <td><span ng-bind="data.Addr"></span></td>
+            <td><a ng-click="SetUpdateData(data)">修改</a></td>
+            <td><a ng-click="Del(data)">删除</a></td>
+        </tr>
+    </table>
+
+    小区名<input type="text" ng-model="DataAdd.Name" /><br />
+    管理员ID<input type="text" ng-model="DataAdd.Emp.Id" /><br />
+    级别<input type="text" ng-model="DataAdd.Level" /><br />
+    提成<input type="text" ng-model="DataAdd.Commission" /><br />
+    地址码<input type="text" ng-model="DataAdd.AddrCode" /><br />
+    <button ng-click="Add(DataAdd)">添加</button><br/>
+
+    小区名<input type="text" ng-model="DataUpdate.Name" ng-bind="DataUpdate.Name" /><br />
+    管理员ID<input type="text" ng-model="DataUpdate.Emp.Id" ng-bind="DataUpdate.Emp.Id" /><br />
+    级别<input type="text" ng-model="DataUpdate.Level" ng-bind="DataUpdate.Level" /><br />
+    提成<input type="text" ng-model="DataUpdate.Commission" ng-bind="DataUpdate.Commission" /><br />
+    地址码<input type="text" ng-model="DataUpdate.AddrCode" ng-bind="DataUpdate.AddrCode" /><br />
+    <button ng-click="Update(DataUpdate)">修改</button>
+</div>

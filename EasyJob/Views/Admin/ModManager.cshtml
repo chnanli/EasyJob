@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "ModManager";
+}
+@Styles.Render("~/bootstrap/css")
+@Scripts.Render("~/jquery/js", "~/bootstrap/js", "~/angular/js", "~/errorCode/js")
+
+@Styles.Render("~/easyui/css")
+@Scripts.Render("~/easyui/js")
+
+<script>
+    var app = angular.module('modManagerApp', []);
+
+    app.controller('modManagerCtrl', function ($scope, $http) {
+
+        $scope.get = function () {
+            $http.get("/Mod/Get?pageSize=0&pageNum=0").success(function (mods) {
+                $scope.mods = mods;
+            });
+        }
+
+        $scope.del = function (id) {
+            var mod={};
+            mod.Id=id;
+            $http.post("/Mod/Del",mod).success(function (mods) {
+                $scope.get();
+            });
+        }
+
+        //读取数据
+        $scope.get();
+    });
+</script>
+<script type="text/javascript">
+    function appendnodes() {
+        var node = $('#tt').tree('getSelected');
+        if (node) {
+            var nodes = [{
+                "id": 13,
+                "text": "Raspberry"
+            }, {
+                "id": 14,
+                "text": "Cantaloupe"
+            }];
+            $('#tt').tree('append', {
+                parent: node.target,
+                data: nodes
+            });
+        }
+    }
+
+    function LoadTreeData(d) {
+        var treeData = new Array();
+        for (i = 0; i < d.length; i++) {
+            treeData[i] = {};
+            treeData[i].id = d[i].Id;
+            treeData[i].text = d[i].Text;
+            treeData[i].checked = d[i].Checked;
+            treeData[i].state = d[i].State;
+            if (d[i].Children != null) {
+                treeData[i].children = LoadTreeData(d[i].Children);
+            }
+        }
+        return treeData;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: '/Mod/GetJson',
+        contentType: "application/json",
+        dataType: "json",
+        success: function (d) {
+            var treeData = LoadTreeData(d);
+
+            $('#tt').tree({
+                data: treeData
+            });
+        }
+    });
+
+
+</script>
+
+<div ng-app="modManagerApp" ng-controller="modManagerCtrl">
+    <table class='table table-bordered'>
+        <thead>
+            <tr class='panel-title-bg'>
+                <td>#</td>
+                <td>名称</td>
+                <td>显示</td>
+                <td>链接</td>
+                <td>图标样式</td>
+                <td>排序</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="mod in mods">
+                <td><span ng-bind="$index+1"></span></td>
+                <td><span ng-bind="mod.Name"></span></td>
+                <td><span ng-bind="mod.Text"></span></td>
+                <td></a><span ng-bind="mod.Href"></span></a></td>
+                <td><span ng-bind="mod.Icon"></span></td>
+                <td><span ng-bind="mod.Index"></span></td>
+                <td>修改|<a ng-click="del(mod.Id)">删除</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin-bottom:10px;">
+        <a href="#" onclick="appendnodes()">append nodes</a>
+    </div>
+    <div style="width:200px;height:auto;border:1px solid #ccc;">
+        <!--
+        <ul id="tt" class="easyui-tree" data-options="url:'/Mod/GetJson',method:'get',animate:true,checkbox:true"></ul>
+        -->
+        <ul id="tt" class="easyui-tree" data-options="animate:true,checkbox:true"></ul>
+    </div>
+</div>

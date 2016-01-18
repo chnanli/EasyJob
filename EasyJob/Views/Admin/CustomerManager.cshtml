@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "CustomerManager";
+}
+@Styles.Render("~/bootstrap/css")
+@Scripts.Render("~/jquery/js", "~/bootstrap/js", "~/angular/js", "~/errorCode/js", "~/angularFuncs/js")
+
+<script>
+    var app = angular.module('customerApp', []);
+
+    app.controller('customerCtrl', function ($scope, $http) {
+        //所有数据
+        $scope.Datas = new Array();
+
+        //需要增加的数据
+        $scope.DataAdd = {};
+        //需要修改的数据
+        $scope.DataUpdate = {};
+        //查询条件
+        $scope.DataSearch = {};
+        //显示的地址数据
+        $scope.Addrs = new Array();
+
+        //读取数据
+        $scope.Get = function () {
+            var param = "";
+            if ($scope.DataSearch.Name != null && $scope.DataSearch.Name != "") {
+                param += "&name=" + $scope.DataSearch.Name;
+            }
+            if ($scope.DataSearch.Nickname != null && $scope.DataSearch.Nickname != "") {
+                param += "&nickname=" + $scope.DataSearch.Nickname;
+            }
+
+            HttpGetCustomer($http, "pageSize=0&pageNum=0" + param,
+                function (data, header, config, status) {
+                    $scope.Datas = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+
+        //添加小区函数
+        $scope.Add = function (data) {
+            HttpAddCustomer($http, data,
+                function (data, header, config, status) {
+                    $scope.Get();
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        $scope.Del = function (data) {
+            var delData = {};
+            delData.Id = data.Id;
+            HttpDelCustomer($http, delData,
+                function (data, header, config, status) {
+                    $scope.Get();
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        $scope.SetUpdateData = function (data) {
+            $scope.DataUpdate = data;
+        }
+
+        $scope.Update = function (data) {
+            HttpUpdateCustomer($http, data,
+                function (data, header, config, status) {
+                    $scope.Get();
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //根据客户信息获取客户地址
+        $scope.GetAddr = function (cstmr) {
+            HttpGetCustomerAddr($http, cstmr,
+                function (data, header, config, status) {
+                    $scope.Addrs = data;
+                },
+                function (data, header, config, status, errorStr) {
+                    alert(data.ErrorMsg);
+                }
+            );
+        }
+
+        //读取数据
+        $scope.Get();
+    });
+</script>
+
+<div ng-app="customerApp" ng-controller="customerCtrl">
+    客户名<input type="text" ng-model="DataSearch.Name">
+    客户昵称<input type="text" ng-model="DataSearch.Nickname">
+    <button ng-click="Get()">查询</button>
+    <table>
+        <tr>
+            <td>OpenId</td>
+            <td>客户名</td>
+            <td>客户昵称</td>
+            <td>手机号</td>
+            <td>电话号码</td>
+            <td>QQ</td>
+            <td>微信</td>
+            <td>Email</td>
+        </tr>
+        <tr ng-repeat="data in Datas">
+            <td><span ng-bind="data.OpenId"></span></td>
+            <td><span ng-bind="data.Name"></span></td>
+            <td><span ng-bind="data.Nickname"></span></td>
+            <td><span ng-bind="data.PhoneNum"></span></td>
+            <td><span ng-bind="data.Tel"></span></td>
+            <td><span ng-bind="data.QQ"></span></td>
+            <td><span ng-bind="data.WeiXin"></span></td>
+            <td><span ng-bind="data.Email"></span></td>
+            <td><a ng-click="GetAddr(data)">查看地址</a></td>
+            <td><a ng-click="SetUpdateData(data)">修改</a></td>
+            <td><a ng-click="Del(data)">删除</a></td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td>地址</td>
+            <td>详细地址</td>
+            <td>联系人</td>
+            <td>手机号</td>
+        </tr>
+        <tr ng-repeat="addr in Addrs">
+            <td><span ng-bind="addr.Addr"></span></td>
+            <td><span ng-bind="addr.Location"></span></td>
+            <td><span ng-bind="addr.Contact"></span></td>
+            <td><span ng-bind="addr.PhoneNum"></span></td>
+        </tr>
+    </table>
+    <br />
+    <br />
+
+    开放ID<input type="text" ng-model="DataAdd.OpenId" /><br />
+    客户名<input type="text" ng-model="DataAdd.Name" /><br />
+    昵称<input type="text" ng-model="DataAdd.Nickname" /><br />
+    手机号<input type="text" ng-model="DataAdd.PhoneNum" /><br />
+    电话号码<input type="text" ng-model="DataAdd.Tel" /><br />
+    QQ<input type="text" ng-model="DataAdd.QQ" /><br />
+    微信<input type="text" ng-model="DataAdd.WeiXin" /><br />
+    Email<input type="text" ng-model="DataAdd.Email" /><br />
+    <button ng-click="Add(DataAdd)">添加</button><br />
+    <br />
+    <br />
+
+    开放ID<input type="text" ng-model="DataUpdate.OpenId" ng-bind="DataUpdate.OpenId" /><br />
+    客户名<input type="text" ng-model="DataUpdate.Name" ng-bind="DataUpdate.Name" /><br />
+    昵称<input type="text" ng-model="DataUpdate.Nickname" ng-bind="DataUpdate.Nickname" /><br />
+    手机号<input type="text" ng-model="DataUpdate.PhoneNum" ng-bind="DataUpdate.PhoneNum" /><br />
+    电话号码<input type="text" ng-model="DataUpdate.Tel" ng-bind="DataUpdate.Tel" /><br />
+    QQ<input type="text" ng-model="DataUpdate.QQ" ng-bind="DataUpdate.QQ" /><br />
+    微信<input type="text" ng-model="DataUpdate.WeiXin" ng-bind="DataUpdate.WeiXin" /><br />
+    Email<input type="text" ng-model="DataUpdate.Email" ng-bind="DataUpdate.Email" /><br />
+    <button ng-click="Update(DataUpdate)">修改</button>
+</div>

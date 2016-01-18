@@ -1,0 +1,306 @@
+<script>
+    var employeePageSize = 5;
+    var employeeCurrentPageNum = 1;
+    var employeePageCount = 0;
+    var employees;
+
+    //权限变量
+    var isHavePowerGet = IsHavePower("LNTRest.Services.ServiceEmployee", "Get");
+    var isHavePowerAdd = IsHavePower("LNTRest.Services.ServiceEmployee", "Add");
+    var isHavePowerDel = IsHavePower("LNTRest.Services.ServiceEmployee", "Del");
+    var isHavePowerUpdate = IsHavePower("LNTRest.Services.ServiceEmployee", "Update");
+
+    function AddEmployee(employee,func,errFunc) {
+        var jsonEmp = $.toJSON(employee);
+
+        $.ajax({
+            type: "POST",
+            url: 'ServiceEmployee',
+            contentType: "application/json",
+            dataType: "json",
+            data: jsonEmp,
+            success: func,
+            error: errFunc
+        });
+    }
+
+    function UpdateEmployee(employee, func,errFunc) {
+        var jsonEmp = $.toJSON(employee);
+
+        $.ajax({
+            type: "PUT",
+            url: 'ServiceEmployee',
+            contentType: "application/json",
+            dataType: "json",
+            data: jsonEmp,
+            success: func,
+            error: errFunc
+        });
+    }
+
+    function DelEmployee(employee, func, errFunc) {
+        var jsonEmp = $.toJSON(employee);
+
+        $.ajax({
+            type: "DELETE",
+            url: 'ServiceEmployee',
+            contentType: "application/json",
+            dataType: "json",
+            data: jsonEmp,
+            success: func,
+            error: errFunc
+        });
+    }
+
+    function GetEmployee(id, pageSize, pageNum) {
+        var retVal = [];
+        $("#" + id).html("loading...");
+        $.ajax({
+            type: "GET",
+            url: 'ServiceEmployee?pageSize=' + pageSize + '&pageNum=' + pageNum,
+            contentType: "application/json",
+            dataType: "json",
+            data: {},
+            success: function (d) {
+                employees = d;
+
+                var table = "<table class='table table-bordered'>";
+                try {
+                    table += "<thead><tr class='panel-title-bg'><td>#</td><td>工号</td><td>员工姓名</td>"
+                    if (isHavePowerUpdate) {
+                        table += "<td>修改</td>";
+                    }
+                    if (isHavePowerDel) {
+                        table += "<td>删除</td>";
+                    }
+                    table += "</tr></thead>";
+
+                    for (i = 0; i < d.length; i++) {
+                        var updateEmployee = "";
+                        var delEmployee = "";
+
+                        //如果有修改权限
+                        if (isHavePowerUpdate) {
+                            updateEmployee = "<button onclick=\"$('#modalTitle').html('修改员工');ShowEmployeeById('" + i + "')\"  data-toggle=\"modal\" data-target=\"#myModal\"><span class=\"glyphicon glyphicon-edit\"></span></button>";
+                        }
+                        //如果有删除权限
+                        if (isHavePowerDel) {
+                            delEmployee = "<button onclick=\"DelEmployeeById('" + i + "')\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
+                        }
+                        
+                        table += "<tbody><tr>";
+                        table += "<td>" + (i + 1) + "</td>";
+                        table += "<td>" + d[i].Code + "</td>";
+                        table += "<td>" + d[i].Name + "</td>";
+                        if (isHavePowerUpdate) {
+                            table += "<td>" + updateEmployee + "</td>";
+                        }
+                        if (isHavePowerDel) {
+                            table += "<td>" + delEmployee + "</td>";
+                        }
+                        table += "</tr></tbody>";
+                    }
+                } finally {
+                    table += "</table>";
+                }
+                $("#" + id).html(table);
+            },
+            error: function (xhr) {
+                var errMsg = JSON.parse(xhr.responseJSON);
+                alert(errMsg.Error);
+            }
+        });
+    }
+
+    function GetEmployeePageCount(id, showId, pageSize, currentPageNum) {
+        return GetPageCount("ServiceEmployee/PageCount", id, showId, "LoadEmployeeAndPageControl", "GET", pageSize, currentPageNum);
+    }
+
+    function LoadEmployeeAndPageControl(pageSize, pageNum) {
+        GetEmployee("showEmployees", pageSize, pageNum);
+        employeePageCount = GetEmployeePageCount("showEmployeePageCount", "showEmployees", pageSize, pageNum);
+        //        $("#showEmployeePageCount").html(GetPageControl("showEmployees", "LoadEmployeeAndPageControl", pageSize, employeePageCount, pageNum, 5));
+    }
+
+    function UpdateEmployeeByText() {
+        var emp = {};
+        var id = $("#empId").val();
+        emp.Code = $("#empCode").val();
+        emp.Name = $("#empName").val();
+
+        ModalShowInfo("保存中...");
+
+        if (id == "") {
+            AddEmployee(emp, 
+                function (d) {
+                    if (d != "") {
+                        alert("添加成功");
+                        $('#myModal').modal('hide');
+                        $('#btnGoPageNum').click();
+                    }
+                },
+                function (xhr) {
+                    var errMsg = JSON.parse(xhr.responseJSON);
+                    ModalShowInfo(errMsg.Error);
+                }
+            );
+        } else {
+            emp.Id = id;
+            UpdateEmployee(emp, 
+                function (d) {
+                    if (d != "") {
+                        alert("修改成功");
+                        $('#myModal').modal('hide');
+                        $('#btnGoPageNum').click();
+                    }
+                },
+                function (xhr) {
+                    var errMsg = JSON.parse(xhr.responseJSON);
+                    ModalShowInfo(errMsg.Error);
+                }
+            );
+        }
+    }
+
+    function DelEmployeeById(id) {
+        var emp = GetEmployeeById(id);
+        var tmp = {};
+        tmp.Id = emp.Id;
+
+        DelEmployee(tmp,
+            function(d) {
+                if (d) {
+                    alert("删除成功");
+                    $('#btnGoPageNum').click();
+                }
+            },
+            function (xhr) {
+                var errMsg = JSON.parse(xhr.responseJSON);
+                alert(errMsg.Error);
+            }
+        );
+    }
+
+    function GetEmployeeById(id) {
+        return employees[id];
+    }
+
+    function ShowEmployeeById(id) {
+        var emp = GetEmployeeById(id);
+        $("#empId").val(emp.Id);
+        $("#empCode").val(emp.Code);
+        $("#empName").val(emp.Name);
+    }
+
+    function ModalShowInfo(msg) {
+        $("#modalInfo").html(msg);
+    }
+
+    $(function () {
+        $('#myModal').modal('hide');
+    });
+
+    $(function () {
+//        $('#myModal').on('hide.bs.modal', function() {
+//            alert('嘿，我听说您喜欢模态框...');
+//        });
+
+//        $('#myModal').on('show.bs.modal', function () {
+//            $.ajax({
+//                type: "GET",
+//                url: 'pages/employeeAdd.html',
+//                contentType: "application/html",
+//                dataType: "html",
+//                data: {},
+//                success: function (d) {
+//                    $("#modalBody").html(d);
+//                }
+//            });
+//        });
+    });
+
+
+    //    employeePageCount = GetEmployeePageCount("showEmployeePageCount", "showEmployees", employeePageSize, employeeCurrentPageNum);
+    LoadEmployeeAndPageControl(employeePageSize, employeeCurrentPageNum);
+
+    if (!isHavePowerAdd) {
+        $("#addEmployee").hide(true);
+    }
+    if (!isHavePowerGet) {
+        $("#getEmployee").hide(true);
+    }
+</script>
+<div>
+    <!--按钮-->
+    <div class="row">
+        <div class="col-sm-12">
+            <button id="addEmployee" onclick="$('#modalTitle').html('添加员工');" class="btn" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-save"></span>添加员工
+            </button>
+            <button id="getEmployee" class="btn" onclick="$('#btnGoPageNum').click();">
+                <span class="glyphicon glyphicon-search"></span>查询用户
+            </button>
+        </div>
+    </div>
+    
+    <!--显示内容-->
+    <div class="row">
+        <div class="col-sm-12">
+            <span id="showEmployees"></span>
+        </div>
+    </div>
+    
+    <!--分页-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class=" text-center">
+                <span id="showEmployeePageCount"></span>
+            </div>
+        </div>
+    </div>
+    
+    <!--添加员工对话框-->
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+		        <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" 
+		            aria-hidden="true">×
+		        </button>
+		        <h4 id="modalTitle" class="modal-title" id="myModalLabel">
+		            标题
+		        </h4>
+		        </div>
+		        <div id="modalBody" class="modal-body">
+		            <input id="empId" type="hidden"/>
+		            <table>
+		                <tr>
+		                    <td>工号:</td>
+		                    <td><input id="empCode" type="text"/></td>
+		                </tr>
+		                <tr>
+		                    <td>员工名:</td>
+		                    <td><input id="empName" type="text"/></td>
+		                </tr>
+		            </table>
+                    
+                    <div>
+		                <span>状态:</span><span id="modalInfo" class="text-warning"></span>
+		            </div>
+		        </div>
+		        
+		        <div class="modal-footer">
+		        <button type="button" class="btn btn-default" 
+		            data-dismiss="modal">
+		            关闭
+		        </button>
+		        <button type="button" class="btn btn-primary" onclick="UpdateEmployeeByText()">
+		            保存
+		        </button>
+		        </div>
+		    </div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>

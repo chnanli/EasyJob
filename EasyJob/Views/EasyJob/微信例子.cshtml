@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "RepairOrder";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+
+    <!-- 引入 Bootstrap -->
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="~/Content/bootstrap/js/jquery-2.1.4.min.js"></script>
+    <!-- 包括所有已编译的插件 -->
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="/Content/bootstrap/js/html5shiv.js"></script>
+    <script src="/Content/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<script>
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: 'wx902209cd6a17ebf6', // 必填，公众号的唯一标识
+        timestamp: @ViewBag.JsApiValidInfo.Timestamp, // 必填，生成签名的时间戳
+        nonceStr: '@ViewBag.JsApiValidInfo.Nonce', // 必填，生成签名的随机串
+        signature: '@ViewBag.JsApiValidInfo.Signature',// 必填，签名，见附录1
+        jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onVoiceRecordEnd',
+        'playVoice',
+        'onVoicePlayEnd',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+    var VoiceRecordId="";
+
+    wx.ready(function() {
+        wx.checkJsApi({
+            jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function(res) {
+                if (res.checkResult.chooseImage) {
+                    alert("支持JS接口");
+                } else {
+                    alert("不支持JS接口");
+                }
+                // 以键值对的形式返回，可用的api值true，不可用为false
+                // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+            }
+        });
+
+        wx.onMenuShareTimeline({
+            title: '测试分享', // 分享标题
+            link: 'http://baidu.com', // 分享链接
+            imgUrl: '', // 分享图标
+            success: function () {
+                alert("分享成功");
+            },
+            cancel: function () {
+                alert("取消分享");
+            }
+        });
+
+        wx.onVoiceRecordEnd({
+            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+            complete: function (res) {
+                var lId = res.localId;
+                VoiceRecordId=lId;
+            }
+        });
+
+        wx.onVoicePlayEnd({
+            success: function (res) {
+                var localId = res.localId; // 返回音频的本地ID
+                alert("播放完成:"+localId);
+            }
+        });
+    });
+
+    wx.error(function(res){
+        alert("失败");
+    });
+
+    function chooseImage() {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                alert(localIds);
+            }
+        });
+    }
+
+    function playRecord(){
+        wx.playVoice({
+            localId: VoiceRecordId // 需要播放的音频的本地ID，由stopRecord接口获得
+        });
+    }
+
+    function stopRecord(){
+        wx.stopRecord({
+            success: function (res) {
+                var localId = res.localId;
+                VoiceRecordId=localId;
+                alert("停止录音："+localId);
+            }
+        });
+    }
+
+    function translateVoice(){
+        wx.translateVoice({
+            localId: VoiceRecordId, // 需要识别的音频的本地Id，由录音相关接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                alert(res.translateResult); // 语音识别的结果
+            }
+        });
+    }
+
+</script>
+
+<body>
+    <button type="button" class="tn btn-primary btn-lg btn-block" onclick="chooseImage()">拍照</button>
+    <button type="button" class="tn btn-primary btn-lg btn-block" onclick="wx.startRecord();">录音</button>
+    <button type="button" class="tn btn-primary btn-lg btn-block" onclick="stopRecord();">停止录音</button>
+    <button type="button" class="tn btn-primary btn-lg btn-block" onclick="playRecord();">播放录音</button>
+    <button type="button" class="tn btn-primary btn-lg btn-block" onclick="translateVoice();">识别语音</button>
+</body>
+</html>

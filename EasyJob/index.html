@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html ng-app="indexApp" ng-controller="indexCtrl">
+	<head>
+		<meta charset="utf-8" />
+		<title>天意岭南通后台管理系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- 引入 Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+	    <link href="css/menu.css" rel="stylesheet" />
+        <link href="css/main.css" rel="stylesheet"/>
+			
+		<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+	    <script src="js/jquery-2.1.4.min.js"></script>
+        <script src="js/jquery.json.min.js"></script>
+		<!-- 包括所有已编译的插件 -->
+	    <script src="js/bootstrap.min.js"></script>
+        
+        <!--angular-->
+	    <script src="js/angular.min.js"></script>
+
+	    <script src="js/indexApp.js"></script>
+	    <script src="js/page.js"></script>
+	    <script src="js/public.js"></script>
+			
+		<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+		<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+		<!--[if lt IE 9]>
+			<script src="js/html5shiv.js"></script>
+			<script src="js/respond.min.js"></script>
+		<![endif]-->
+        
+	    <script>
+    	    //判断是否已经登录
+    	    function IsLogin() {
+    	        var employee = {};
+    	        employee.Code = $("#employee_Code").val();
+    	        employee.Pwd = $("#employee_Pwd").val();
+    	        var data = $.toJSON(employee);
+
+    	        $.ajax({
+    	            type: "GET",
+    	            url: "ServiceEmployee/MySelf",
+    	            contentType: "application/json",
+    	            dataType: "json",
+    	            data: data,
+    	            success: function (ret) {
+                        //显示用户信息
+	                    $("#UserInfo").html(ret.Name);
+	                },
+    	            error: function (xhr) {
+    	                window.location.href = "login.html"; 
+    	            }
+    	        });
+    	    }
+
+            function Logout() {
+                $.ajax({
+                    type: "GET",
+                    url: "ServiceEmployee/Logout",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: "",
+                    success: function (ret) {
+                        window.location.href = "login.html";
+                    },
+                    error: function (xhr) {
+                        window.location.href = "login.html";
+                    }
+                });
+            }
+
+            //判断是否已经登录
+    	    IsLogin();
+    	</script>
+	</head>
+    <body>
+        <!--顶部-->
+        <!--
+            <div class="navbar navbar-duomi navbar-static-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <span class="navbar-brand" id="logo">白云山岭南通管理系统</span>
+                    </div>
+                </div>
+            </div>
+        -->
+        
+        <!--占用宽度的顶部-->
+        <div class="navbar navbar-duomi navbar-static-top" role="navigation">
+        </div>
+        <!--浮动的顶部-->
+        <nav class="navbar navbar-duomi navbar-static-top navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="col-md-10 col-sm-10 col-xs-10 navbar-header">
+                    <span class="navbar-brand" id="logo">天意岭南通后台管理系统</span>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2 navbar-brand"><a  onclick="Logout()" id="UserInfo"></a></div>
+            </div>
+        </nav>
+
+        <!--中间-->
+        <div class="container-fluid">
+            <div class="row">
+                <!--
+                    作者：linyuxiangfly@126.com
+                    时间：2015-12-16
+                    描述：菜单栏
+                    -->
+                <div class="col-md-2" id="menu">
+                    <ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
+                        <li id="{{menu.Name}}" ng-repeat="menu in menus" ng-switch on="menu.Type" ng-class="menusClass[$index]">
+                            <!--没有子菜单的情况-->
+                            <a ng-switch-when="0" ng-click="clickMenu('mainTitle','mainContent',menu.Text,$index,menu.Href)"><i ng-class="menu.Icon"></i>{{menu.Text}}</a>
+                            <!--有子菜单的情况-->
+                            <a ng-switch-when="1" href="#{{menu.Name}}_href" ng-click="clickMenu('mainTitle','mainContent',menu.Text,$index,'')" class="nav-header collapsed" data-toggle="collapse">
+                                <i ng-class="menu.Icon"></i>{{menu.Text}}
+                                <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                            <ul id="{{menu.Name}}_href" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                                <li ng-repeat="m in menu.Mods"><a  ng-click="clickMenu('mainTitle','mainContent',menu.Text+'/'+m.Text,$parent.$index,m.Href)"><i ng-class="m.Icon"></i>{{m.Text}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+	            
+                <!--
+                    作者：linyuxiangfly@126.com
+                    时间：2015-12-16
+                    描述：主窗口
+                    -->
+                <div class="col-md-10">
+                    <div class="row panel-title-bg">
+                        <div class="active" id="mainTitle"></div>
+                    </div>
+                    <div class="row panel-main-bg" id="mainContent">
+                    </div>
+                </div>
+            </div>
+	   
+        </div>
+        
+        
+        <!--占用底部空间-->
+        <div class="navbar navbar-default"></div>
+        <!--底部-->
+        <div class="container-fluid">
+            <nav class="navbar navbar-default navbar-fixed-bottom">
+                <div class="text-center">
+                    <p class="text-muted" style="padding: 10px;">
+                    京 ICP 证 09002463 号|Copyright © 1999-2016, TianYi.COM, All Rights Reserved
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </body>
+</html>

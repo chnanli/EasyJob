@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--assembly:程序集，namespace:命名空间-->
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2" assembly="EasyJob.Pojo"  namespace="EasyJob.Pojo.Pojo">
+   <class name="EasyJob.Pojo.Pojo.SetPara,EasyJob.Pojo" table="sysSetPara">
+     <cache usage="read-write" />
+     <!--主键-->
+     <id name="Id">
+      <generator class="guid" />
+     </id>
+
+     <property name="ParaName" length="50" not-null="false" unique="true" />
+     <property name="ParaValue" length="200" />
+   </class>
+</hibernate-mapping>

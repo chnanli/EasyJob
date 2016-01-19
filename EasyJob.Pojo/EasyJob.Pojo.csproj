@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pojo\Bases\TbId.cs" />
     <Compile Include="Pojo\Bases\TbBase.cs" />
     <Compile Include="Pojo\Bases\TbBaseOper.cs" />
     <Compile Include="Pojo\AddrCode.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Pojo\EmpMod.cs" />
     <Compile Include="Pojo\EmpModFunc.cs" />
     <Compile Include="Pojo\MaterialType.cs" />
+    <Compile Include="Pojo\UserSetPara.cs" />
+    <Compile Include="Pojo\SetPara.cs" />
     <Compile Include="Pojo\WorkSub.cs" />
     <Compile Include="Pojo\WorkPic.cs" />
     <Compile Include="Pojo\WorkTypeDetail.cs" />
@@ -234,6 +237,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pojo\Xml\WorkSub.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\SetPara.hbm.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\UserSetPara.hbm.xml">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

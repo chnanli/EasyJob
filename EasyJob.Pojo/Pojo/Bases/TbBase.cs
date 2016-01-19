@@ -8,12 +8,10 @@ namespace EasyJob.Pojo.Pojo.Bases
     /// <summary>
     /// 数据库表基本表
     /// </summary>
-    public class TbBase
+    public class TbBase:TbId
     {
         private DateTime _modDate = DateTime.Now;
         private DateTime _uploadDate = DateTime.Now;
-
-        public virtual Guid Id { get; set; }
 
         public virtual DateTime ModDate
         {

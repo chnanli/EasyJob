@@ -38,7 +38,7 @@ namespace EasyJob.Controllers.Api
                 {
                     ICriterion criterion = Restrictions.Eq("Code", employee.Code);
                     criteria.Add(criterion);
-                    criterion = Restrictions.Eq("Pwd", employee.Pwd);
+                    criterion = Restrictions.Eq("PwdWeb", employee.PwdWeb);
                     criteria.Add(criterion);
                 }
                 );
@@ -124,27 +124,54 @@ namespace EasyJob.Controllers.Api
         }
 
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]
-        public ActionResult Get(int pageSize, int pageNum)
+        public ActionResult Get(int pageSize, int pageNum,string code,string empName,string nickName)
         {
-            return Json(employeeOper.Get(Get_OnCriteria, pageSize, pageNum));
+            return Json(employeeOper.Get(
+                delegate(object sender, ICriteria criteria)
+                {
+                    if (code != null)
+                    {
+                        ICriterion criterion = Restrictions.Eq("Code", code);
+                        criteria.Add(criterion);
+                    }
+                    if (empName != null)
+                    {
+                        ICriterion criterion = Restrictions.Like("EmpName", empName,MatchMode.Anywhere);
+                        criteria.Add(criterion);
+                    }
+                    if (nickName != null)
+                    {
+                        ICriterion criterion = Restrictions.Like("NickName", nickName, MatchMode.Anywhere);
+                        criteria.Add(criterion);
+                    }
+                    criteria.AddOrder(Order.Asc("Code"));
+                }
+                , pageSize, pageNum));
         }
 
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]
-        public ActionResult GetPageCount(int pageSize)
+        public ActionResult GetPageCount(int pageSize, string code, string empName, string nickName)
         {
-            return Json(employeeOper.GetPageCount(GetPageCount_OnCriteria, pageSize));
-        }
-
-        public void Get_OnCriteria(object sender, ICriteria criteria)
-        {
-            criteria.AddOrder(Order.Asc("Code"));
-            //            ICriterion criterion = Restrictions.Eq("Name", "测试123");
-            //            criteria.Add(criterion);
-        }
-        public void GetPageCount_OnCriteria(object sender, ICriteria criteria)
-        {
-            //            ICriterion criterion = Restrictions.Eq("Name", "测试123");
-            //            criteria.Add(criterion);
+            return Json(employeeOper.GetPageCount(
+                delegate(object sender, ICriteria criteria)
+                {
+                    if (code != null)
+                    {
+                        ICriterion criterion = Restrictions.Eq("Code", code);
+                        criteria.Add(criterion);
+                    }
+                    if (empName != null)
+                    {
+                        ICriterion criterion = Restrictions.Like("EmpName", empName, MatchMode.Anywhere);
+                        criteria.Add(criterion);
+                    }
+                    if (nickName != null)
+                    {
+                        ICriterion criterion = Restrictions.Like("NickName", nickName, MatchMode.Anywhere);
+                        criteria.Add(criterion);
+                    }
+                }
+                , pageSize));
         }
     }
 }

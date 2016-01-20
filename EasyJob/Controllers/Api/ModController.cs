@@ -93,10 +93,15 @@ namespace EasyJob.Controllers.Api
                 //给员工初始化
                 Employee e = new Employee();
                 e.Code = "999";
-                e.Name = "System";
-                e.Pwd = "123456";
+                e.EmpName = "System";
+                e.PwdWeb = "123456";
                 e.Birthday = DateTime.Now;
-                e.Entry = DateTime.Now;
+                e.ComeDate = DateTime.Now;
+                e.StaffDate = DateTime.Now;
+                e.LeaveDate = DateTime.Now;
+                e.OnDuty = DateTime.Now;
+                e.OffDuty = DateTime.Now;
+
                 TbBaseOper<Employee> employeeOper = new TbBaseOper<Employee>(HibernateFactory.GetInstance(), typeof(Employee));
                 employeeOper.Add(e);
 

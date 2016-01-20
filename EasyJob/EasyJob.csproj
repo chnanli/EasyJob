@@ -138,6 +138,15 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Consts\SessionConst.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
+    <Compile Include="Controllers\Api\CompanyController.cs" />
+    <Compile Include="Controllers\Api\DepartmentController.cs" />
+    <Compile Include="Controllers\Api\SellPriceInfoController.cs" />
+    <Compile Include="Controllers\Api\StorehouseController.cs" />
+    <Compile Include="Controllers\Api\GoodsInfoController.cs" />
+    <Compile Include="Controllers\Api\VendorInfoController.cs" />
+    <Compile Include="Controllers\Api\GoodsTypeController.cs" />
+    <Compile Include="Controllers\Api\UnitController.cs" />
+    <Compile Include="Controllers\Api\PositionController.cs" />
     <Compile Include="Controllers\Api\GardenController.cs" />
     <Compile Include="Controllers\Api\WorkCodeTypeController.cs" />
     <Compile Include="Controllers\Api\CustomerAddrController.cs" />
@@ -862,31 +871,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Scripts\bui\Menu\.svn\prop-base\" />
-    <Folder Include="Scripts\bui\Menu\.svn\props\" />
-    <Folder Include="Scripts\bui\Menu\.svn\tmp\prop-base\" />
-    <Folder Include="Scripts\bui\Menu\.svn\tmp\props\" />
-    <Folder Include="Scripts\bui\Menu\.svn\tmp\text-base\" />
-    <Folder Include="Scripts\bui\Node\.svn\prop-base\" />
-    <Folder Include="Scripts\bui\Node\.svn\props\" />
-    <Folder Include="Scripts\bui\Node\.svn\tmp\prop-base\" />
-    <Folder Include="Scripts\bui\Node\.svn\tmp\props\" />
-    <Folder Include="Scripts\bui\Node\.svn\tmp\text-base\" />
-    <Folder Include="Scripts\bui\Public\.svn\prop-base\" />
-    <Folder Include="Scripts\bui\Public\.svn\props\" />
-    <Folder Include="Scripts\bui\Public\.svn\tmp\prop-base\" />
-    <Folder Include="Scripts\bui\Public\.svn\tmp\props\" />
-    <Folder Include="Scripts\bui\Public\.svn\tmp\text-base\" />
-    <Folder Include="Scripts\bui\Role\.svn\prop-base\" />
-    <Folder Include="Scripts\bui\Role\.svn\props\" />
-    <Folder Include="Scripts\bui\Role\.svn\tmp\prop-base\" />
-    <Folder Include="Scripts\bui\Role\.svn\tmp\props\" />
-    <Folder Include="Scripts\bui\Role\.svn\tmp\text-base\" />
-    <Folder Include="Scripts\bui\User\.svn\prop-base\" />
-    <Folder Include="Scripts\bui\User\.svn\props\" />
-    <Folder Include="Scripts\bui\User\.svn\tmp\prop-base\" />
-    <Folder Include="Scripts\bui\User\.svn\tmp\props\" />
-    <Folder Include="Scripts\bui\User\.svn\tmp\text-base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -928,31 +912,6 @@
     <Content Include="Views\EasyJob\RepairOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\bui\Menu\.svn\all-wcprops" />
-    <Content Include="Scripts\bui\Menu\.svn\entries" />
-    <Content Include="Scripts\bui\Menu\.svn\text-base\add.html.svn-base" />
-    <Content Include="Scripts\bui\Menu\.svn\text-base\edit.html.svn-base" />
-    <Content Include="Scripts\bui\Menu\.svn\text-base\index.html.svn-base" />
-    <Content Include="Scripts\bui\Node\.svn\all-wcprops" />
-    <Content Include="Scripts\bui\Node\.svn\entries" />
-    <Content Include="Scripts\bui\Node\.svn\text-base\add.html.svn-base" />
-    <Content Include="Scripts\bui\Node\.svn\text-base\edit.html.svn-base" />
-    <Content Include="Scripts\bui\Node\.svn\text-base\index.html.svn-base" />
-    <Content Include="Scripts\bui\Public\.svn\all-wcprops" />
-    <Content Include="Scripts\bui\Public\.svn\entries" />
-    <Content Include="Scripts\bui\Public\.svn\text-base\login.html.svn-base" />
-    <Content Include="Scripts\bui\Role\.svn\all-wcprops" />
-    <Content Include="Scripts\bui\Role\.svn\entries" />
-    <Content Include="Scripts\bui\Role\.svn\text-base\add.html.svn-base" />
-    <Content Include="Scripts\bui\Role\.svn\text-base\edit.html.svn-base" />
-    <Content Include="Scripts\bui\Role\.svn\text-base\index.html.svn-base" />
-    <Content Include="Scripts\bui\User\.svn\all-wcprops" />
-    <Content Include="Scripts\bui\User\.svn\entries" />
-    <Content Include="Scripts\bui\User\.svn\text-base\add.html.svn-base" />
-    <Content Include="Scripts\bui\User\.svn\text-base\edit.html.svn-base" />
-    <Content Include="Scripts\bui\User\.svn\text-base\index.html.svn-base" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -978,6 +937,7 @@
     <Content Include="Views\EasyJob\微信例子.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\发布.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

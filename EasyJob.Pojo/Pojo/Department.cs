@@ -25,15 +25,12 @@ namespace EasyJob.Pojo.Pojo
         /// 名称
         /// </summary>
         public virtual string Name { get; set; }
-
-        /// <summary>
-        /// 联系人
-        /// </summary>
-        public virtual string Contact { get; set; }
-
-        /// <summary>
-        /// 电话
-        /// </summary>
-        public virtual string PhoneNum { get; set; }
+        public virtual string Phone1{get;set;}
+        public virtual string Phone2{get;set;}
+        public virtual string Phone3{get;set;}
+        public virtual string ContactName{get;set;}
+        public virtual string ContactPhone{get;set;}
+        public virtual string DeptType{get;set;}
+        public virtual int OrderID { get; set; }
     }
 }

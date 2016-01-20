@@ -25,5 +25,7 @@ namespace EasyJob.Pojo.Pojo
         /// 名称
         /// </summary>
         public virtual string Name { get; set; }
+        public virtual Department Dept { get; set; }
+        public virtual int OrderId { get; set; }
     }
 }

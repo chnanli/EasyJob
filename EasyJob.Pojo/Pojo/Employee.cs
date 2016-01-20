@@ -32,56 +32,58 @@ namespace EasyJob.Pojo.Pojo
         /// <summary>
         /// 名称
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string EmpName { get; set; }
+        public virtual string NickName{get;set;}
 
         /// <summary>
         /// 密码
         /// </summary>
-        public virtual string Pwd { get; set; }
+        public virtual string PwdWeb { get; set; }
+        /// <summary>
+        /// =0 离职，=1 入职，=2 试用，=3 转正，=4 在职
+        /// </summary>
+        public virtual string State{get;set;}
 
         /// <summary>
         /// 身份证
         /// </summary>
-        public virtual string IdCard { get; set; }
+        public virtual string IDCode { get; set; }
+        /// <summary>
+        /// 籍贯
+        /// </summary>
+        public virtual string Native{get;set;}
 
         /// <summary>
         /// 根据身份证信息自动计算,性别，false为女,true为男
         /// </summary>
-        public virtual bool Sex { get; set; }
-
+        public virtual string Sex { get; set; }
         /// <summary>
-        /// 根据出生日期自动计算,年龄
+        /// 民族
         /// </summary>
-        public virtual int Age { get; set; }
+        public virtual string Nation{get;set;}
+        public virtual string Education{get;set;}
+        public virtual string Institution{get;set;}
 
         /// <summary>
         /// 根据身份证信息自动计算,生日
         /// </summary>
         public virtual DateTime Birthday { get; set; }
-
-        /// <summary>
-        /// 身份证图片
-        /// </summary>
-        public virtual File IdCardPic { get; set; }
-
-        /// <summary>
-        /// 寸头像
-        /// </summary>
-        public virtual File Pic { get; set; }
-
-        /// <summary>
-        /// 入职时间
-        /// </summary>
-        public virtual DateTime Entry { get; set; }
-
-        /// <summary>
-        /// 手机号码
-        /// </summary>
-        public virtual string PhoneNum { get; set; }
-
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public virtual string Remark { get; set; }
+        public virtual DateTime ComeDate{get;set;}
+        public virtual DateTime StaffDate{get;set;}
+        public virtual DateTime LeaveDate{get;set;}
+        public virtual string Tel{get;set;}
+        public virtual string Mobile{get;set;}
+        public virtual string Tel1{get;set;}
+        public virtual string Tel2{get;set;}
+        public virtual string OtherAddress{get;set;}
+        public virtual string Resume{get;set;}
+        public virtual string EMail{get;set;}
+        public virtual string QQ{get;set;}
+        public virtual string IfPrincipal{get;set;}
+        public virtual string IfSysUser{get;set;}
+        public virtual string IfWork{get;set;}
+        public virtual string OneCardCode{get;set;}
+        public virtual DateTime OnDuty{get;set;}
+        public virtual DateTime OffDuty{get;set;}
     }
 }

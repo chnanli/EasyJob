@@ -25,7 +25,7 @@ namespace EasyJob.Pojo.Pojo
         /// <summary>
         /// 类型
         /// </summary>
-        public virtual MaterialType Type { get; set; }
+        public virtual GoodsType Type { get; set; }
 
         /// <summary>
         /// 单位

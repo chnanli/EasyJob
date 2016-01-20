@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--assembly:程序集，namespace:命名空间-->
 <hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2" assembly="EasyJob.Pojo"  namespace="EasyJob.Pojo.Pojo">
-   <class name="EasyJob.Pojo.Pojo.Unit,EasyJob.Pojo" table="psUnit">
+   <class name="EasyJob.Pojo.Pojo.SellPriceInfo,EasyJob.Pojo" table="psSellPriceInfo">
      <cache usage="read-write" />
      <!--主键-->
      <id name="Id">
@@ -13,7 +13,9 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <property name="UnitName" length="20" not-null="false" unique="true" />
-     <property name="UnitDesc" length="50" not-null="false" />
+     <many-to-one name="Storehouse" column="StorehouseID" />
+     <many-to-one name="Goods" column="GoodsID" />
+     <property name="SellPrice"/>
+     <property name="SetupPrice"/>
    </class>
 </hibernate-mapping>

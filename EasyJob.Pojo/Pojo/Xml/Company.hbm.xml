@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--assembly:程序集，namespace:命名空间-->
 <hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2" assembly="EasyJob.Pojo"  namespace="EasyJob.Pojo.Pojo">
-   <class name="EasyJob.Pojo.Pojo.Department,EasyJob.Pojo" table="hrDepartment">
+   <class name="EasyJob.Pojo.Pojo.Company,EasyJob.Pojo" table="hrCompany">
      <cache usage="read-write" />
      <!--主键-->
      <id name="Id">
@@ -13,22 +13,22 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <property name="PId" />
-     <property name="Code" length="20" not-null="false" unique="true" />
-     <property name="Name" length="50" not-null="false" />
-
      <property name="Addr" length="100" not-null="false" />
      <property name="Location" length="100" not-null="false" />
      <property name="AddrCode" length="12" not-null="false" />
      <property name="Lng" />
      <property name="Lat" />
-     
-     <property name="Phone1" length="50" />
-     <property name="Phone2" length="50" />
-     <property name="Phone3" length="50" />
-     <property name="ContactName" length="20" />
-     <property name="ContactPhone" length="15" />
-     <property name="DeptType" length="1" />
-     <property name="OrderID" />
+
+     <property name="CnName" length="50" />
+     <property name="EnName" length="50" />
+     <property name="CompCode" length="20" />
+     <property name="CompShortTitle" length="20" />
+     <property name="TopPosCode" length="20" />
+     <property name="TopPosName" length="20" />
+     <property name="Zipcode" length="8" />
+     <property name="Tel" length="50" />
+     <property name="Fax" length="50" />
+     <property name="Mail" length="50" />
+     <property name="Web" length="50" />
    </class>
 </hibernate-mapping>

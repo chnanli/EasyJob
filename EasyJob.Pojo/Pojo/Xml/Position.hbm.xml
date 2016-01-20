@@ -16,5 +16,7 @@
      <property name="PId" />
      <property name="Code" length="20" not-null="false" unique="true" />
      <property name="Name" length="50" not-null="false" />
+     <many-to-one name="Dept" column="DeptID"></many-to-one>
+     <property name="OrderId" />
    </class>
 </hibernate-mapping>

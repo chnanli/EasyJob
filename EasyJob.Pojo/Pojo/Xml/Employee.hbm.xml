@@ -14,35 +14,49 @@
      <property name="ExHost" length="500"/>
 
      
-     <many-to-one name="Dept" />
-     <many-to-one name="Pos" />
+     <many-to-one name="Dept" column="DeptID" />
+     <many-to-one name="Pos" column="PosID" />
      <!--
      <many-to-one name="Shop" />
      -->
      <property name="Code" length="20" not-null="false" unique="true" />
-     <property name="Name" length="50" not-null="false" />
-     <property name="Pwd" length="50" not-null="false" />
+     <property name="EmpName" length="50" not-null="false" />
+     <property name="NickName" length="50" not-null="false" />
+     <property name="PwdWeb" length="50" not-null="false" />
+     <property name="State" length="1" not-null="false" />
 
-     <property name="IdCard" length="18" not-null="false" />
-     <property name="Sex" />
-     <property name="Age" />
+     <property name="IDCode" length="18" not-null="false" />
+     <property name="Native" length="10"/>
+     <property name="Sex" length="1"/>
      <property name="Birthday" />
 
-     <many-to-one name="IdCardPic" />
-     <many-to-one name="Pic" />
-     
-     <property name="Entry" />
+     <property name="ComeDate" />
+     <property name="StaffDate" />
+     <property name="LeaveDate" />
 
-     <property name="PhoneNum" length="15" not-null="false" />
+     <property name="Tel" length="20" />
+     <property name="Mobile" length="20" />
+     <property name="Tel1" length="20" />
+     <property name="Tel2" length="20" />
+
      <property name="Addr" length="100" not-null="false" />
      <property name="Location" length="100" not-null="false" />
      <property name="AddrCode" length="12" not-null="false" />
      <property name="Lng" />
      <property name="Lat" />
-
-     <property name="Remark" type="String">
-       <column name="Remark" sql-type="Text" length="16" />
+     
+     <property name="OtherAddress" length="100" />
+     <property name="Resume" type="String">
+       <column name="Resume" sql-type="Text" length="16" />
      </property>
+     <property name="EMail" length="50" />
+     <property name="QQ" length="20" />
+     <property name="IfPrincipal" length="1" />
+     <property name="IfSysUser" length="1" />
+     <property name="IfWork" length="1" />
+     <property name="OneCardCode" length="20" />
+     <property name="OnDuty" />
+     <property name="OffDuty" />
      
    </class>
 </hibernate-mapping>

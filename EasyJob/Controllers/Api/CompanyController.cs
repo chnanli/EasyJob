@@ -97,7 +97,7 @@ namespace EasyJob.Controllers.Api
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]
-        public ActionResult GetPageCount(int pageSize,string name, string addr)
+        public ActionResult GetPageCount()
         {
             return Json(companyOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)

@@ -33,20 +33,14 @@ namespace EasyJob.Controllers.Api
         public ActionResult Login(Employee employee)
         {
             bool retVal = false;
-            IList<Employee> emps = employeeOper.Get(
-                delegate(object sender, ICriteria criteria)
-                {
-                    ICriterion criterion = Restrictions.Eq("Code", employee.Code);
-                    criteria.Add(criterion);
-                    criterion = Restrictions.Eq("PwdWeb", employee.PwdWeb);
-                    criteria.Add(criterion);
-                }
-                );
-            if (emps != null && emps.Count > 0)
+            //由工号与密码查找员工
+            Employee emp = GetEmpForCodeAndPwd(employee.Code, employee.PwdWeb);
+
+            if (emp != null)
             {
                 retVal = true;
-                Session[SessionConst.Employee] = emps[0];
-                emps.Clear();
+                //保存到SESSION
+                MySelf = emp;
             }
             else
             {
@@ -56,11 +50,57 @@ namespace EasyJob.Controllers.Api
             return Json(retVal);
         }
 
+        //由工号与密码获取用户
+        private Employee GetEmpForCodeAndPwd(string code,string pwd)
+        {
+            Employee retVal = null; ;
+            IList<Employee> emps = employeeOper.Get(
+                delegate(object sender, ICriteria criteria)
+                {
+                    ICriterion criterion = Restrictions.Eq("Code", code);
+                    criteria.Add(criterion);
+                    criterion = Restrictions.Eq("PwdWeb", pwd);
+                    criteria.Add(criterion);
+                }
+                );
+            if (emps != null && emps.Count > 0)
+            {
+                retVal = emps[0];
+                emps.Clear();
+            }
+            return retVal;
+        }
+
+        [LoginActionFilterAttribute]
+        public ActionResult UpdatePwd(string oldPwd,string newPwd)
+        {
+            bool retVal = false;
+
+            //由工号与密码查找员工
+            Employee emp = GetEmpForCodeAndPwd(MySelf.Code, oldPwd);
+
+            if (emp != null)
+            {
+                //修改密码
+                emp.PwdWeb = newPwd;
+                retVal=employeeOper.Update(emp);
+                //保存到SESSION
+                MySelf = emp;
+            }
+            else
+            {
+                throw new Exceptions.PwdErrorException();//密码错误
+            }
+
+            return Json(retVal);
+        }
+
         public ActionResult Logout()
         {
             bool retVal = false;
 
-            Session[SessionConst.Employee] = null;
+            //保存到SESSION
+            MySelf = null;
             retVal = true;
 
             return Json(retVal);
@@ -115,6 +155,26 @@ namespace EasyJob.Controllers.Api
                 employee.Lng = loc.lng;
             }
             return Json(employeeOper.Update(employee));
+        }
+
+        /// <summary>
+        /// 修改我自己
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        public ActionResult UpdateMySelf(Employee employee)
+        {
+            employee.Id = MySelf.Id;
+            employee.Code = MySelf.Code;//自己不修改自己的工号，如果要修改必须要经过Update接口
+            employee.IfPrincipal = MySelf.IfPrincipal;
+            employee.IfSysUser = MySelf.IfSysUser;
+            employee.IfWork = MySelf.IfWork;
+            employee.State = MySelf.State;
+            employee.PwdWeb = MySelf.PwdWeb;
+            employee.Dept = MySelf.Dept;
+            employee.Pos = MySelf.Pos;
+
+            return Update(employee);
         }
 
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Del)]

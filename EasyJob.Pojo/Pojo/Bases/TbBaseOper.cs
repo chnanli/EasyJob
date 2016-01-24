@@ -18,6 +18,7 @@ namespace EasyJob.Pojo.Pojo.Bases
             UnDel
         }
         public delegate void OnCriteria(object sender, ICriteria criteria);
+        public delegate void OnSession(object sender, ISession session);
 
         private IHibernateOper hibernateOper = null;
         private Type type = null;
@@ -37,6 +38,11 @@ namespace EasyJob.Pojo.Pojo.Bases
 
         public string Add(T t)
         {
+            return Add(t,null);
+        }
+
+        public string Add(T t,OnSession onSession)
+        {
             string retVal = "";
             ISession s = null;
             ITransaction trans = null;
@@ -44,6 +50,11 @@ namespace EasyJob.Pojo.Pojo.Bases
             {
                 s = hibernateOper.GetCurrentSession();
                 trans = s.BeginTransaction();
+
+                if (onSession != null)
+                {
+                    onSession(this,s);
+                }
 
                 s.Save(t);
 
@@ -61,13 +72,18 @@ namespace EasyJob.Pojo.Pojo.Bases
             }
             finally
             {
-//                hibernateOper.Close(s);
+                //                hibernateOper.Close(s);
             }
 
             return retVal;
         }
 
         public bool Update(T t)
+        {
+            return Update(t, null);
+        }
+
+        public bool Update(T t, OnSession onSession)
         {
             bool retVal = false;
             ISession s = null;
@@ -76,6 +92,11 @@ namespace EasyJob.Pojo.Pojo.Bases
             {
                 s = hibernateOper.GetCurrentSession();
                 trans = s.BeginTransaction();
+
+                if (onSession != null)
+                {
+                    onSession(this, s);
+                }
 
                 T temp = Get(s,t);
                 t.ModDate = DateTime.Now;

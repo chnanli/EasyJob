@@ -54,6 +54,7 @@
     <Compile Include="Pojo\Department.cs" />
     <Compile Include="Pojo\Company.cs" />
     <Compile Include="Pojo\Employee.cs" />
+    <Compile Include="Pojo\Photo.cs" />
     <Compile Include="Pojo\EmpMod.cs" />
     <Compile Include="Pojo\EmpModFunc.cs" />
     <Compile Include="Pojo\GoodsInfo.cs" />
@@ -311,6 +312,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pojo\Xml\EmpData.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\Photo.hbm.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

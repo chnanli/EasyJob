@@ -25,7 +25,10 @@ namespace EasyJob.Filters
             {
                 if (p.ParameterType.IsValueType)
                 {
-                    filterContext.ActionParameters[p.Name] = Activator.CreateInstance(p.ParameterType);
+                    if (filterContext.ActionParameters[p.Name] == null)
+                    {
+                        filterContext.ActionParameters[p.Name] = Activator.CreateInstance(p.ParameterType);
+                    }
                 }
             }
         }

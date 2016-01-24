@@ -25,6 +25,35 @@ namespace EasyJob.Controllers.Api
             sellPriceInfoOper = new TbBaseOper<SellPriceInfo>(HibernateOper, typeof(SellPriceInfo));
         }
 
+        private void IsExists(ISession session, SellPriceInfo spi)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(SellPriceInfo));
+
+            ICriterion criterion = null;
+            if (spi.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(spi.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Storehouse", spi.Storehouse);
+            criteria.Add(criterion);
+
+            criterion = Restrictions.Eq("Goods", spi.Goods);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.SellPriceInfoIsExistsException();//销售价格管理（商品资料子表）已经存在
+            }
+        }
+
         /// <summary>
         /// 添加销售价格管理（商品资料子表）
         /// </summary>
@@ -33,7 +62,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(SellPriceInfo sellPriceInfo)
         {
-            return Json(sellPriceInfoOper.Add(sellPriceInfo));
+            return Json(sellPriceInfoOper.Add(sellPriceInfo,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在销售价格管理（商品资料子表）
+                    IsExists(session, sellPriceInfo);
+                }
+                ));
         }
 
 
@@ -45,7 +80,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(SellPriceInfo sellPriceInfo)
         {
-            return Json(sellPriceInfoOper.Update(sellPriceInfo));
+            return Json(sellPriceInfoOper.Update(sellPriceInfo,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在销售价格管理（商品资料子表）
+                    IsExists(session, sellPriceInfo);
+                }
+                ));
         }
 
         /// <summary>

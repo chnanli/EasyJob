@@ -13,10 +13,10 @@
       <publishTime>01/09/2016 21:02:07</publishTime>
     </File>
     <File Include="bin/EasyJob.dll">
-      <publishTime>01/24/2016 13:38:16</publishTime>
+      <publishTime>01/24/2016 17:41:20</publishTime>
     </File>
     <File Include="bin/EasyJob.Pojo.dll">
-      <publishTime>01/24/2016 13:38:15</publishTime>
+      <publishTime>01/24/2016 17:41:19</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>01/09/2016 21:02:07</publishTime>
@@ -60,6 +60,9 @@
     <File Include="bin/Pojo/Xml/DiscountCode.hbm.xml">
       <publishTime>01/15/2016 16:35:50</publishTime>
     </File>
+    <File Include="bin/Pojo/Xml/EmpData.hbm.xml">
+      <publishTime>01/24/2016 14:08:43</publishTime>
+    </File>
     <File Include="bin/Pojo/Xml/Employee.hbm.xml">
       <publishTime>01/20/2016 15:39:25</publishTime>
     </File>
@@ -96,14 +99,17 @@
     <File Include="bin/Pojo/Xml/ParaRef.hbm.xml">
       <publishTime>01/20/2016 13:48:41</publishTime>
     </File>
+    <File Include="bin/Pojo/Xml/Photo.hbm.xml">
+      <publishTime>01/24/2016 16:53:14</publishTime>
+    </File>
     <File Include="bin/Pojo/Xml/Position.hbm.xml">
       <publishTime>01/20/2016 15:17:35</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/RepairType.hbm.xml">
-      <publishTime>01/15/2016 16:35:50</publishTime>
+      <publishTime>01/24/2016 16:19:31</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/SellPriceInfo.hbm.xml">
-      <publishTime>01/20/2016 16:37:46</publishTime>
+      <publishTime>01/24/2016 16:20:06</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/SetPara.hbm.xml">
       <publishTime>01/20/2016 13:48:41</publishTime>
@@ -2239,7 +2245,7 @@
       <publishTime>01/16/2016 08:27:41</publishTime>
     </File>
     <File Include="Views/Admin/GardenManager.cshtml">
-      <publishTime>01/20/2016 14:46:47</publishTime>
+      <publishTime>01/24/2016 15:45:11</publishTime>
     </File>
     <File Include="Views/Admin/Index.cshtml">
       <publishTime>01/12/2016 19:13:38</publishTime>

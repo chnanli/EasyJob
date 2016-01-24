@@ -22,6 +22,32 @@ namespace EasyJob.Controllers.Api
             employeeOper = new TbBaseOper<Employee>(HibernateOper, typeof(Employee));
         }
 
+        private void IsExistsCode(ISession session, Employee emp)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(Employee));
+
+            ICriterion criterion = null;
+            if (emp.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(emp.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Code", emp.Code);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.EmpCodeIsExistsException();//部门Code已经存在
+            }
+        }
+
         //
         // GET: /Employee/
 
@@ -123,7 +149,13 @@ namespace EasyJob.Controllers.Api
                 employee.Lat = loc.lat;
                 employee.Lng = loc.lng;
             }
-            return Json(employeeOper.Add(employee));
+            return Json(employeeOper.Add(employee,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, employee);
+                }
+                ));
         }
 
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
@@ -137,7 +169,13 @@ namespace EasyJob.Controllers.Api
                 employee.Lat = loc.lat;
                 employee.Lng = loc.lng;
             }
-            return Json(employeeOper.Update(employee));
+            return Json(employeeOper.Update(employee,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, employee);
+                }
+                ));
         }
 
         /// <summary>

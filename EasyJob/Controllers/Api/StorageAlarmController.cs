@@ -25,6 +25,35 @@ namespace EasyJob.Controllers.Api
             storageAlarmOper = new TbBaseOper<StorageAlarm>(HibernateOper, typeof(StorageAlarm));
         }
 
+        private void IsExists(ISession session, StorageAlarm storageAlarm)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(StorageAlarm));
+
+            ICriterion criterion = null;
+            if (storageAlarm.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(storageAlarm.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Storehouse", storageAlarm.Storehouse);
+            criteria.Add(criterion);
+
+            criterion = Restrictions.Eq("Goods", storageAlarm.Goods);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.StorageAlarmIsExistsException();//库存报警表存在
+            }
+        }
+
         /// <summary>
         /// 添加库存警告设置表
         /// </summary>
@@ -33,7 +62,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(StorageAlarm storageAlarm)
         {
-            return Json(storageAlarmOper.Add(storageAlarm));
+            return Json(storageAlarmOper.Add(storageAlarm,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存数据
+                    IsExists(session, storageAlarm);
+                }
+                ));
         }
 
 
@@ -45,7 +80,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(StorageAlarm storageAlarm)
         {
-            return Json(storageAlarmOper.Update(storageAlarm));
+            return Json(storageAlarmOper.Update(storageAlarm,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存数据
+                    IsExists(session, storageAlarm);
+                }
+                ));
         }
 
         /// <summary>

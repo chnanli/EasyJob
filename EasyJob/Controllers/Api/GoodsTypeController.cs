@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             goodsTypeOper = new TbBaseOper<GoodsType>(HibernateOper, typeof(GoodsType));
         }
 
+        private void IsExistsCode(ISession session, GoodsType goodsType)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(GoodsType));
+
+            ICriterion criterion = null;
+            if (goodsType.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(goodsType.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("GoodsTypeCode", goodsType.GoodsTypeCode);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.GoodsTypeCodeIsExistsException();//商品资料Code已经存在
+            }
+        }
+
         /// <summary>
         /// 添加商品类别表
         /// </summary>
@@ -33,7 +59,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(GoodsType goodsType)
         {
-            return Json(goodsTypeOper.Add(goodsType));
+            return Json(goodsTypeOper.Add(goodsType,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在商品资料Code
+                    IsExistsCode(session, goodsType);
+                }
+                ));
         }
 
 
@@ -45,7 +77,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(GoodsType goodsType)
         {
-            return Json(goodsTypeOper.Update(goodsType));
+            return Json(goodsTypeOper.Update(goodsType,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在商品资料Code
+                    IsExistsCode(session, goodsType);
+                }
+                ));
         }
 
         /// <summary>

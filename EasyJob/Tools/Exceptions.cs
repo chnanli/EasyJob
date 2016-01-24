@@ -83,5 +83,117 @@ namespace EasyJob.Tools
             public CstmrIsNotExistsException() : base("CstmrIsNotExists") { }
         }
 
+        /// <summary>
+        /// 部门Code存在
+        /// </summary>
+        public class DeptCodeIsExistsException : Exception
+        {
+            public DeptCodeIsExistsException() : base("DeptCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 职位Code存在
+        /// </summary>
+        public class PosCodeIsExistsException : Exception
+        {
+            public PosCodeIsExistsException() : base("PosCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 员工Code存在
+        /// </summary>
+        public class EmpCodeIsExistsException : Exception
+        {
+            public EmpCodeIsExistsException() : base("EmpCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 单位名存在
+        /// </summary>
+        public class UnitNameIsExistsException : Exception
+        {
+            public UnitNameIsExistsException() : base("UnitNameIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 商品类型表Code存在
+        /// </summary>
+        public class GoodsTypeCodeIsExistsException : Exception
+        {
+            public GoodsTypeCodeIsExistsException() : base("GoodsTypeCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 商品资料表Code存在
+        /// </summary>
+        public class GoodsInfoCodeIsExistsException : Exception
+        {
+            public GoodsInfoCodeIsExistsException() : base("GoodsInfoCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 商品资料表BarCode存在
+        /// </summary>
+        public class GoodsInfoBarCodeIsExistsException : Exception
+        {
+            public GoodsInfoBarCodeIsExistsException() : base("GoodsInfoBarCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 供应商资料表Code存在
+        /// </summary>
+        public class VendorInfoCodeIsExistsException : Exception
+        {
+            public VendorInfoCodeIsExistsException() : base("VendorInfoCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 库存Code存在
+        /// </summary>
+        public class StorehouseCodeIsExistsException : Exception
+        {
+            public StorehouseCodeIsExistsException() : base("StorehouseCodeIsExistsException") { }
+        }
+
+        /// <summary>
+        /// 销售价格管理（商品资料子表）存在
+        /// </summary>
+        public class SellPriceInfoIsExistsException : Exception
+        {
+            public SellPriceInfoIsExistsException() : base("SellPriceInfoIsExistsException") { }
+        }
+
+        /// <summary>
+        ///库存表存在
+        /// </summary>
+        public class StockIsExistsException : Exception
+        {
+            public StockIsExistsException() : base("StockIsExistsException") { }
+        }
+
+        /// <summary>
+        ///库存表初始化存在
+        /// </summary>
+        public class StockInitIsExistsException : Exception
+        {
+            public StockInitIsExistsException() : base("StockInitIsExistsException") { }
+        }
+
+        /// <summary>
+        ///库存报警表存在
+        /// </summary>
+        public class StorageAlarmIsExistsException : Exception
+        {
+            public StorageAlarmIsExistsException() : base("StorageAlarmIsExistsException") { }
+        }
+
+        /// <summary>
+        ///模块功能存在
+        /// </summary>
+        public class ModFuncIsExistsException : Exception
+        {
+            public ModFuncIsExistsException() : base("ModFuncIsExistsException") { }
+        }
+
     }
 }

@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             modFuncOper = new TbBaseOper<ModFunc>(HibernateOper, typeof(ModFunc));
         }
 
+        private void IsExists(ISession session, ModFunc modFunc)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(ModFunc));
+
+            ICriterion criterion = null;
+            if (modFunc.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(modFunc.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Cls", modFunc.Cls);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.ModFuncIsExistsException();//模块功能已经存在
+            }
+        }
+
         /// <summary>
         /// 添加模块功能
         /// </summary>
@@ -33,7 +59,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(ModFunc modFunc)
         {
-            return Json(modFuncOper.Add(modFunc));
+            return Json(modFuncOper.Add(modFunc,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在模块功能
+                    IsExists(session, modFunc);
+                }
+                ));
         }
 
 
@@ -45,7 +77,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(ModFunc modFunc)
         {
-            return Json(modFuncOper.Update(modFunc));
+            return Json(modFuncOper.Update(modFunc,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在模块功能
+                    IsExists(session, modFunc);
+                }
+                ));
         }
 
         /// <summary>

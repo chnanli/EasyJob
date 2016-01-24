@@ -25,6 +25,35 @@ namespace EasyJob.Controllers.Api
             stockInitOper = new TbBaseOper<StockInit>(HibernateOper, typeof(StockInit));
         }
 
+        private void IsExists(ISession session, StockInit stockInit)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(StockInit));
+
+            ICriterion criterion = null;
+            if (stockInit.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(stockInit.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Storehouse", stockInit.Storehouse);
+            criteria.Add(criterion);
+
+            criterion = Restrictions.Eq("Goods", stockInit.Goods);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.StockInitIsExistsException();//库存表存在
+            }
+        }
+
         /// <summary>
         /// 添加仓库初始化
         /// </summary>
@@ -33,7 +62,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(StockInit stockInit)
         {
-            return Json(stockInitOper.Add(stockInit));
+            return Json(stockInitOper.Add(stockInit,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存数据
+                    IsExists(session, stockInit);
+                }
+                ));
         }
 
 
@@ -45,7 +80,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(StockInit stockInit)
         {
-            return Json(stockInitOper.Update(stockInit));
+            return Json(stockInitOper.Update(stockInit,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存数据
+                    IsExists(session, stockInit);
+                }
+                ));
         }
 
         /// <summary>

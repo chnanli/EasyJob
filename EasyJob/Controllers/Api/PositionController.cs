@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             positionOper = new TbBaseOper<Position>(HibernateOper, typeof(Position));
         }
 
+        private void IsExistsCode(ISession session, Position pos)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(Position));
+
+            ICriterion criterion = null;
+            if (pos.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(pos.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Code", pos.Code);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.PosCodeIsExistsException();//职位Code已经存在
+            }
+        }
+
         /// <summary>
         /// 添加职位
         /// </summary>
@@ -33,7 +59,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(Position position)
         {
-            return Json(positionOper.Add(position));
+            return Json(positionOper.Add(position,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, position);
+                }
+                ));
         }
 
 
@@ -45,7 +77,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(Position position)
         {
-            return Json(positionOper.Update(position));
+            return Json(positionOper.Update(position,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, position);
+                }
+                ));
         }
 
         /// <summary>

@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             unitOper = new TbBaseOper<Unit>(HibernateOper, typeof(Unit));
         }
 
+        private void IsExistsName(ISession session, Unit unit)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(Unit));
+
+            ICriterion criterion = null;
+            if (unit.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(unit.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("UnitName", unit.UnitName);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.UnitNameIsExistsException();//单位名已经存在
+            }
+        }
+
         /// <summary>
         /// 添加单位
         /// </summary>
@@ -33,7 +59,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(Unit unit)
         {
-            return Json(unitOper.Add(unit));
+            return Json(unitOper.Add(unit,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsName(session, unit);
+                }
+                ));
         }
 
 
@@ -45,7 +77,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(Unit unit)
         {
-            return Json(unitOper.Update(unit));
+            return Json(unitOper.Update(unit,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsName(session, unit);
+                }
+                ));
         }
 
         /// <summary>

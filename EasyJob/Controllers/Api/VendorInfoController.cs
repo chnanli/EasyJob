@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             vendorInfoOper = new TbBaseOper<VendorInfo>(HibernateOper, typeof(VendorInfo));
         }
 
+        private void IsExistsCode(ISession session, VendorInfo vi)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(VendorInfo));
+
+            ICriterion criterion = null;
+            if (vi.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(vi.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("VendorCode", vi.VendorCode);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.VendorInfoCodeIsExistsException();//供应商Code已经存在
+            }
+        }
+
         /// <summary>
         /// 添加供应商资料
         /// </summary>
@@ -41,7 +67,13 @@ namespace EasyJob.Controllers.Api
                 vendorInfo.Lat = loc.lat;
                 vendorInfo.Lng = loc.lng;
             }
-            return Json(vendorInfoOper.Add(vendorInfo));
+            return Json(vendorInfoOper.Add(vendorInfo,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, vendorInfo);
+                }
+                ));
         }
 
 
@@ -61,7 +93,13 @@ namespace EasyJob.Controllers.Api
                 vendorInfo.Lat = loc.lat;
                 vendorInfo.Lng = loc.lng;
             }
-            return Json(vendorInfoOper.Update(vendorInfo));
+            return Json(vendorInfoOper.Update(vendorInfo,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, vendorInfo);
+                }
+                ));
         }
 
         /// <summary>

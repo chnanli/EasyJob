@@ -140,6 +140,8 @@
     <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\DepartmentController.cs" />
+    <Compile Include="Controllers\Api\PhotoController.cs" />
+    <Compile Include="Controllers\Api\EmpDataController.cs" />
     <Compile Include="Controllers\Api\EmpModFuncController.cs" />
     <Compile Include="Controllers\Api\SellPriceInfoController.cs" />
     <Compile Include="Controllers\Api\ModFuncController.cs" />
@@ -183,6 +185,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Tools\Exceptions.cs" />
+    <Compile Include="Tools\ImageUtil.cs" />
     <Compile Include="Tools\LocationUtil.cs" />
     <Compile Include="Tools\PojoUtil.cs" />
     <Compile Include="Tools\TbLocation.cs" />

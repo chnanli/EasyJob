@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             departmentOper = new TbBaseOper<Department>(HibernateOper, typeof(Department));
         }
 
+        private void IsExistsCode(ISession session, Department dept)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(Department));
+
+            ICriterion criterion = null;
+            if (dept.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(dept.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Code", dept.Code);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.DeptCodeIsExistsException();//部门Code已经存在
+            }
+        }
+
         /// <summary>
         /// 添加部门、分店
         /// </summary>
@@ -41,7 +67,13 @@ namespace EasyJob.Controllers.Api
                 department.Lat = loc.lat;
                 department.Lng = loc.lng;
             }
-            return Json(departmentOper.Add(department));
+            return Json(departmentOper.Add(department,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, department);
+                }
+                ));
         }
 
 
@@ -61,7 +93,13 @@ namespace EasyJob.Controllers.Api
                 department.Lat = loc.lat;
                 department.Lng = loc.lng;
             }
-            return Json(departmentOper.Update(department));
+            return Json(departmentOper.Update(department,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在部门Code
+                    IsExistsCode(session, department);
+                }
+                ));
         }
 
         /// <summary>

@@ -25,6 +25,58 @@ namespace EasyJob.Controllers.Api
             goodsInfoOper = new TbBaseOper<GoodsInfo>(HibernateOper, typeof(GoodsInfo));
         }
 
+        private void IsExistsCode(ISession session, GoodsInfo goods)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(GoodsInfo));
+
+            ICriterion criterion = null;
+            if (goods.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(goods.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("GoodsCode", goods.GoodsCode);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.GoodsInfoCodeIsExistsException();//商品资料Code已经存在
+            }
+        }
+
+        private void IsExistsBarCode(ISession session, GoodsInfo goods)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(GoodsInfo));
+
+            ICriterion criterion = null;
+            if (goods.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(goods.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("BarCode", goods.BarCode);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.GoodsInfoBarCodeIsExistsException();//商品资料Code已经存在
+            }
+        }
+
         /// <summary>
         /// 添加商品资料表
         /// </summary>
@@ -33,7 +85,15 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(GoodsInfo goodsInfo)
         {
-            return Json(goodsInfoOper.Add(goodsInfo));
+            return Json(goodsInfoOper.Add(goodsInfo,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在商品资料Code
+                    IsExistsCode(session, goodsInfo);
+                    //判断是否存在商品资料BarCode
+                    IsExistsBarCode(session, goodsInfo);
+                }
+                ));
         }
 
 
@@ -45,7 +105,15 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(GoodsInfo goodsInfo)
         {
-            return Json(goodsInfoOper.Update(goodsInfo));
+            return Json(goodsInfoOper.Update(goodsInfo,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在商品资料Code
+                    IsExistsCode(session, goodsInfo);
+                    //判断是否存在商品资料BarCode
+                    IsExistsBarCode(session, goodsInfo);
+                }
+                ));
         }
 
         /// <summary>

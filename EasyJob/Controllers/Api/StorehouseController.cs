@@ -25,6 +25,32 @@ namespace EasyJob.Controllers.Api
             storehouseOper = new TbBaseOper<Storehouse>(HibernateOper, typeof(Storehouse));
         }
 
+        private void IsExistsCode(ISession session, Storehouse sh)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(Storehouse));
+
+            ICriterion criterion = null;
+            if (sh.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(sh.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("StoreCode", sh.StoreCode);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.StorehouseCodeIsExistsException();//库存Code已经存在
+            }
+        }
+
         /// <summary>
         /// 添加仓库登记
         /// </summary>
@@ -41,7 +67,13 @@ namespace EasyJob.Controllers.Api
                 storehouse.Lat = loc.lat;
                 storehouse.Lng = loc.lng;
             }
-            return Json(storehouseOper.Add(storehouse));
+            return Json(storehouseOper.Add(storehouse,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存Code
+                    IsExistsCode(session, storehouse);
+                }
+                ));
         }
 
 
@@ -61,7 +93,13 @@ namespace EasyJob.Controllers.Api
                 storehouse.Lat = loc.lat;
                 storehouse.Lng = loc.lng;
             }
-            return Json(storehouseOper.Update(storehouse));
+            return Json(storehouseOper.Update(storehouse,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存Code
+                    IsExistsCode(session, storehouse);
+                }
+                ));
         }
 
         /// <summary>

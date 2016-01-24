@@ -8,6 +8,37 @@
     var app = angular.module('gardenApp', []);
 
     app.controller('gardenCtrl', function ($scope, $http) {
+
+        //####################################################################
+        var data = {};
+        data.Code = "0001";
+        data.AddrCode = 440923;
+
+        HttpPost($http, "/Department/Add",data,
+            function (data, header, config, status) {
+                alert(data);
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.Error);
+            }
+            );
+
+
+        var udata = {};
+        udata.Code = "0001";
+        udata.AddrCode = 440924;
+        udata.Id = "7B9848DD-8CB5-4C3B-ABB0-63470F2A7CB2";
+
+        HttpPost($http, "/Department/Update", udata,
+            function (data, header, config, status) {
+                alert(data);
+            },
+            function (data, header, config, status, errorStr) {
+                alert(data.Error);
+            }
+            );
+        //####################################################################
+
         //所有数据
         $scope.Datas = new Array();
 

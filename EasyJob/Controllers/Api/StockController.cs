@@ -25,6 +25,35 @@ namespace EasyJob.Controllers.Api
             stockOper = new TbBaseOper<Stock>(HibernateOper, typeof(Stock));
         }
 
+        private void IsExists(ISession session, Stock stock)
+        {
+            ICriteria criteria = session.CreateCriteria(typeof(Stock));
+
+            ICriterion criterion = null;
+            if (stock.Id != Guid.Empty)
+            {
+                criterion = Restrictions.Not(Restrictions.IdEq(stock.Id));
+                criteria.Add(criterion);
+            }
+
+            criterion = Restrictions.Eq("Storehouse", stock.Storehouse);
+            criteria.Add(criterion);
+
+            criterion = Restrictions.Eq("Goods", stock.Goods);
+            criteria.Add(criterion);
+            //统计
+            criteria.SetProjection(
+                Projections.ProjectionList()
+                .Add(Projections.Count("Id"))
+                );
+
+            int count = (int)criteria.UniqueResult();
+            if (count > 0)
+            {
+                throw new EasyJob.Tools.Exceptions.StockIsExistsException();//库存表存在
+            }
+        }
+
         /// <summary>
         /// 添加库存表
         /// </summary>
@@ -33,7 +62,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(Stock stock)
         {
-            return Json(stockOper.Add(stock));
+            return Json(stockOper.Add(stock,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存数据
+                    IsExists(session, stock);
+                }
+                ));
         }
 
 
@@ -45,7 +80,13 @@ namespace EasyJob.Controllers.Api
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Update)]
         public ActionResult Update(Stock stock)
         {
-            return Json(stockOper.Update(stock));
+            return Json(stockOper.Update(stock,
+                delegate(object sender, ISession session)
+                {
+                    //判断是否存在库存数据
+                    IsExists(session, stock);
+                }
+                ));
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using EasyJob.Pojo.Pojo;
 using EasyJob.Pojo.Pojo.Bases;
+using EasyJob.Tools;
 using NHibernate;
 using NHibernate.Criterion;
 using System;
@@ -142,6 +143,34 @@ namespace EasyJob.Controllers.Api
             //返回文件
             return File(file.RealPath, file.ContentType,file.Name);
         }
+
+        /// <summary>
+        /// 下载缩略图
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult DownLoadThumbnail(string id, int width, int height)
+        {
+            File file = fileOper.Get(new Guid(id));
+
+            string path = Server.MapPath("/") + @"Files\Thumbnail\";
+            string name=System.IO.Path.GetFileName(file.RealPath);
+            string fullPath=path+name+"_"+width+"_"+height;
+
+            //如果缩略图不存在
+            if (!System.IO.File.Exists(fullPath))
+            {
+                ImageUtil.MakeThumbnail(file.RealPath, fullPath, width, height, "W");
+            }
+
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(file.Name)
+                + "_" + width + "_" + height
+                +System.IO.Path.GetExtension(file.Name);
+
+            //返回文件
+            return File(fullPath, file.ContentType, fileName);
+        }
+
         //public void DownLoad(string id)
         //{
         //    File file=fileOper.Get(new Guid(id));

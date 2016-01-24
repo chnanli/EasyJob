@@ -141,8 +141,11 @@
     <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\DepartmentController.cs" />
     <Compile Include="Controllers\Api\SellPriceInfoController.cs" />
+    <Compile Include="Controllers\Api\StorageAlarmController.cs" />
+    <Compile Include="Controllers\Api\StockInitController.cs" />
     <Compile Include="Controllers\Api\StorehouseController.cs" />
     <Compile Include="Controllers\Api\GoodsInfoController.cs" />
+    <Compile Include="Controllers\Api\StockController.cs" />
     <Compile Include="Controllers\Api\VendorInfoController.cs" />
     <Compile Include="Controllers\Api\GoodsTypeController.cs" />
     <Compile Include="Controllers\Api\UnitController.cs" />
@@ -856,7 +859,9 @@
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

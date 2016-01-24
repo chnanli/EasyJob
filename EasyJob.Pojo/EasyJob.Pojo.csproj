@@ -57,6 +57,9 @@
     <Compile Include="Pojo\EmpMod.cs" />
     <Compile Include="Pojo\EmpModFunc.cs" />
     <Compile Include="Pojo\GoodsInfo.cs" />
+    <Compile Include="Pojo\StorageAlarm.cs" />
+    <Compile Include="Pojo\StockInit.cs" />
+    <Compile Include="Pojo\Stock.cs" />
     <Compile Include="Pojo\Storehouse.cs" />
     <Compile Include="Pojo\GoodsType.cs" />
     <Compile Include="Pojo\ParaRef.cs" />
@@ -287,6 +290,21 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pojo\Xml\SellPriceInfo.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\Stock.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\StockInit.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\StorageAlarm.hbm.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

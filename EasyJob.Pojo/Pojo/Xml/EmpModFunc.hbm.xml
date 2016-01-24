@@ -13,8 +13,9 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="Emp" />
-     <many-to-one name="ModFunc" />
+     <property name="RoleFlag" length="1" />
+     <property name="RoleId" />
+     <many-to-one name="ModFunc" column="ModFuncId" />
      <property name="FuncNames" length="60" not-null="false" />
    </class>
 </hibernate-mapping>

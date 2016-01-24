@@ -11,10 +11,26 @@ namespace EasyJob.Pojo.Pojo
     /// </summary>
     public class EmpModFunc : TbBase
     {
+        public enum RoleFlagVal
+        {
+            Emp,
+            Dept,
+            Pos
+        };
+
+        public static string RoleFlagValStr(RoleFlagVal val)
+        {
+            return ((int)val).ToString();
+        }
+
         /// <summary>
-        /// 绑定员工
+        /// 角色标记,=0 RoleID为Employee.Id，=1 RoleID为Department.Id，=2 RoleID为Position.Id
         /// </summary>
-        public virtual Employee Emp { get; set; }
+        public virtual string RoleFlag { get; set; }
+        /// <summary>
+        /// 角色ID
+        /// </summary>
+        public virtual Guid RoleId { get; set; }
 
         /// <summary>
         /// 绑定模块功能

@@ -52,6 +52,14 @@ namespace EasyJob.Tools
         }
 
         /// <summary>
+        /// 密码错误
+        /// </summary>
+        public class PwdErrorException : Exception
+        {
+            public PwdErrorException() : base("PwdErrorException") { }
+        }
+
+        /// <summary>
         /// 是否没有登录
         /// </summary>
         public class IsNoLoginException : Exception

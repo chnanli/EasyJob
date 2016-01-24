@@ -36,6 +36,30 @@ namespace EasyJob.Tools
             }
         }
 
+        /// <summary>
+        /// 初始化实例并赋值ID
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static T InitPojo<T>(string id) where T : TbId, new()
+        {
+            return InitPojo<T>(new Guid(id));
+        }
+
+        /// <summary>
+        /// 初始化实例并赋值ID
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static T InitPojo<T>(Guid id) where T : TbId, new()
+        {
+            T retVal = new T();
+            retVal.Id = id;
+            return retVal;
+        }
+
 
         /// <summary>
         /// 由OpenId得到客户

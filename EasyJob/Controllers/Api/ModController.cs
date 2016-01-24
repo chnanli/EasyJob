@@ -111,7 +111,8 @@ namespace EasyJob.Controllers.Api
                 foreach (ModFunc mf in funcs)
                 {
                     EmpModFunc emf = new EmpModFunc();
-                    emf.Emp = e;
+                    emf.RoleFlag = "0";
+                    emf.RoleId = e.Id;
                     emf.ModFunc = mf;
                     emf.FuncNames = "|Add|Update|Del|Get|";
                     emfOper.Add(emf);
@@ -123,7 +124,8 @@ namespace EasyJob.Controllers.Api
                 foreach (Mod m in mods)
                 {
                     EmpMod em = new EmpMod();
-                    em.Emp = e;
+                    em.RoleFlag = "0";
+                    em.RoleId = e.Id;
                     em.Mod = m;
                     emOper.Add(em);
                 }
@@ -245,7 +247,9 @@ namespace EasyJob.Controllers.Api
                 ICriteria criteria = s.CreateCriteria(typeof(EmpMod));
                 criterion = Restrictions.Eq("Del", false);
                 criteria.Add(criterion);
-                criterion = Restrictions.Eq("Emp", MySelf);
+                criterion = Restrictions.Eq("RoleFlag",EmpModFunc.RoleFlagValStr(EmpModFunc.RoleFlagVal.Emp));
+                criteria.Add(criterion);
+                criterion = Restrictions.Eq("RoleId", MySelf.Id);
                 criteria.Add(criterion);
 
                 ICriteria modCriteria = criteria.CreateCriteria("Mod", "m");

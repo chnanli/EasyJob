@@ -60,11 +60,30 @@ namespace EasyJob.Filters
 
         public IList<EmpModFunc> GetEmpModFuncs(Employee emp)
         {
+            return GetEmpModFuncs(EmpModFunc.RoleFlagVal.Emp,emp.Id);
+        }
+
+        public IList<EmpModFunc> GetEmpModFuncs(Department dept)
+        {
+            return GetEmpModFuncs(EmpModFunc.RoleFlagVal.Emp, dept.Id);
+        }
+
+        public IList<EmpModFunc> GetEmpModFuncs(Position pos)
+        {
+            return GetEmpModFuncs(EmpModFunc.RoleFlagVal.Emp, pos.Id);
+        }
+
+        public IList<EmpModFunc> GetEmpModFuncs(EmpModFunc.RoleFlagVal roleFlag,Guid id)
+        {
             IList<EmpModFunc> retVal = empModFuncOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
                     ICriterion criterion = null;
-                    criterion = Restrictions.Eq("Emp", emp);
+
+                    string strRoleFlag = EmpModFunc.RoleFlagValStr(roleFlag);
+                    criterion = Restrictions.Eq("RoleFlag", strRoleFlag);
+                    criteria.Add(criterion);
+                    criterion = Restrictions.Eq("RoleId", id);
                     criteria.Add(criterion);
                 }
                 );

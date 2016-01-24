@@ -13,10 +13,10 @@
       <publishTime>01/09/2016 21:02:07</publishTime>
     </File>
     <File Include="bin/EasyJob.dll">
-      <publishTime>01/20/2016 17:46:28</publishTime>
+      <publishTime>01/24/2016 13:38:16</publishTime>
     </File>
     <File Include="bin/EasyJob.Pojo.dll">
-      <publishTime>01/20/2016 17:44:01</publishTime>
+      <publishTime>01/24/2016 13:38:15</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>01/09/2016 21:02:07</publishTime>
@@ -37,7 +37,7 @@
       <publishTime>01/09/2016 21:02:06</publishTime>
     </File>
     <File Include="bin/ORM.dll">
-      <publishTime>01/20/2016 17:44:01</publishTime>
+      <publishTime>01/24/2016 13:38:14</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/AddrCode.hbm.xml">
       <publishTime>01/15/2016 16:35:50</publishTime>
@@ -67,10 +67,10 @@
       <publishTime>01/15/2016 16:35:50</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/EmpMod.hbm.xml">
-      <publishTime>01/15/2016 16:35:50</publishTime>
+      <publishTime>01/24/2016 12:50:14</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/EmpModFunc.hbm.xml">
-      <publishTime>01/15/2016 16:35:50</publishTime>
+      <publishTime>01/24/2016 12:51:19</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/File.hbm.xml">
       <publishTime>01/15/2016 16:35:50</publishTime>
@@ -110,6 +110,15 @@
     </File>
     <File Include="bin/Pojo/Xml/SettlementDetail.hbm.xml">
       <publishTime>01/15/2016 16:35:50</publishTime>
+    </File>
+    <File Include="bin/Pojo/Xml/Stock.hbm.xml">
+      <publishTime>01/24/2016 08:05:36</publishTime>
+    </File>
+    <File Include="bin/Pojo/Xml/StockInit.hbm.xml">
+      <publishTime>01/24/2016 08:08:27</publishTime>
+    </File>
+    <File Include="bin/Pojo/Xml/StorageAlarm.hbm.xml">
+      <publishTime>01/24/2016 08:13:20</publishTime>
     </File>
     <File Include="bin/Pojo/Xml/Storehouse.hbm.xml">
       <publishTime>01/20/2016 16:14:12</publishTime>
@@ -193,13 +202,13 @@
       <publishTime>01/09/2016 21:02:07</publishTime>
     </File>
     <File Include="bin/Tools.dll">
-      <publishTime>01/20/2016 17:44:01</publishTime>
+      <publishTime>01/24/2016 13:38:15</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/09/2016 21:02:07</publishTime>
     </File>
     <File Include="bin/WeiXin.dll">
-      <publishTime>01/20/2016 17:44:01</publishTime>
+      <publishTime>01/24/2016 13:38:15</publishTime>
     </File>
     <File Include="Content/Site.css">
       <publishTime>01/09/2016 21:02:06</publishTime>
@@ -2236,7 +2245,7 @@
       <publishTime>01/12/2016 19:13:38</publishTime>
     </File>
     <File Include="Views/Admin/Login.cshtml">
-      <publishTime>01/12/2016 19:13:38</publishTime>
+      <publishTime>01/24/2016 13:09:39</publishTime>
     </File>
     <File Include="Views/Admin/ModManager.cshtml">
       <publishTime>01/12/2016 19:13:38</publishTime>
@@ -2299,7 +2308,7 @@
       <publishTime>01/09/2016 21:02:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/20/2016 17:44:03</publishTime>
+      <publishTime>01/24/2016 09:06:05</publishTime>
     </File>
   </ItemGroup>
 </Project>

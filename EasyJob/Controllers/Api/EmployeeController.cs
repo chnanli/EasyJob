@@ -112,23 +112,6 @@ namespace EasyJob.Controllers.Api
             return Json(MySelf);
         }
 
-        [LoginActionFilterAttribute]
-        public ActionResult GetMyModFunc()
-        {
-            IList<EmpModFunc> retVal = new List<EmpModFunc>();
-
-            foreach (EmpModFunc empModFunc in MyModFunc)
-            {
-                EmpModFunc emf = new EmpModFunc();
-                emf.ModFunc = new ModFunc();
-                emf.ModFunc.Cls = empModFunc.ModFunc.Cls;
-                emf.FuncNames = empModFunc.FuncNames;
-                retVal.Add(emf);
-            }
-
-            return Json(retVal);
-        }
-
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Add)]
         public ActionResult Add(Employee employee)
         {

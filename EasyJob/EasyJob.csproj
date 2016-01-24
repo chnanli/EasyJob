@@ -140,7 +140,10 @@
     <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\DepartmentController.cs" />
+    <Compile Include="Controllers\Api\EmpModFuncController.cs" />
     <Compile Include="Controllers\Api\SellPriceInfoController.cs" />
+    <Compile Include="Controllers\Api\ModFuncController.cs" />
+    <Compile Include="Controllers\Api\EmpModController.cs" />
     <Compile Include="Controllers\Api\StorageAlarmController.cs" />
     <Compile Include="Controllers\Api\StockInitController.cs" />
     <Compile Include="Controllers\Api\StorehouseController.cs" />

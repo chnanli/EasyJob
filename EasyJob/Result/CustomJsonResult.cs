@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,10 +9,40 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Tools;
 
-namespace EasyJob.Result
+namespace EasyJob.ContractResolver
 {
     public class CustomJsonResult : JsonResult
     {
+        private string dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+        private JsonSerializerSettings jsetting = null;//JSON序列化设置
+
+        private LimitPropsContractResolver contractResolver = null;
+        public LimitPropsContractResolver ContractResolver {
+            get { return contractResolver; }
+            set { 
+                contractResolver = value;
+                jsetting.ContractResolver = contractResolver;
+            }
+        }
+
+        public CustomJsonResult()
+        {
+            //JSON序列化设置
+            jsetting = new JsonSerializerSettings();
+            jsetting.NullValueHandling = NullValueHandling.Ignore;
+
+            //设置日期时间的格式，与DataTime类型的ToString格式相同
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();
+            iso.DateTimeFormat = dateTimeFormat;
+
+            jsetting.Converters.Add(iso);
+        }
+
+
+        public string DateTimeFormat{
+            get { return dateTimeFormat; }
+            set { dateTimeFormat = value; }
+        }
         /// <summary>
         /// 格式化字符串
         /// </summary>
@@ -49,14 +81,14 @@ namespace EasyJob.Result
 
             if (this.Data != null)
             {
-                var jsonString = JsonUtil.stringify(this.Data);
+                var jsonString = JsonConvert.SerializeObject(this.Data, Formatting.Indented, jsetting);
                 //JavaScriptSerializer jss = new JavaScriptSerializer();
                 //string jsonString = jss.Serialize(Data);
                 //string p = @"\\/Date\((\d+)\)\\/";
-                string p = @"\\/Date\((\d+)\+\d+\)\\/";
-                MatchEvaluator matchEvaluator = new MatchEvaluator(this.ConvertJsonDateToDateString);
-                Regex reg = new Regex(p);
-                jsonString = reg.Replace(jsonString, matchEvaluator);
+                //string p = @"\\/Date\((\d+)\+\d+\)\\/";
+                //MatchEvaluator matchEvaluator = new MatchEvaluator(this.ConvertJsonDateToDateString);
+                //Regex reg = new Regex(p);
+                //jsonString = reg.Replace(jsonString, matchEvaluator);
 
                 response.Write(jsonString);
             }
@@ -77,6 +109,7 @@ namespace EasyJob.Result
             return result;
         }
     }
+
     //public class CustomJsonResult : JsonResult
     //{
     //    /// <summary>
@@ -117,9 +150,11 @@ namespace EasyJob.Result
 
     //        if (this.Data != null)
     //        {
-    //            JavaScriptSerializer jss = new JavaScriptSerializer();
-    //            string jsonString = jss.Serialize(Data);
-    //            string p = @"\\/Date\((\d+)\)\\/";
+    //            var jsonString = JsonUtil.stringify(this.Data);
+    //            //JavaScriptSerializer jss = new JavaScriptSerializer();
+    //            //string jsonString = jss.Serialize(Data);
+    //            //string p = @"\\/Date\((\d+)\)\\/";
+    //            string p = @"\\/Date\((\d+)\+\d+\)\\/";
     //            MatchEvaluator matchEvaluator = new MatchEvaluator(this.ConvertJsonDateToDateString);
     //            Regex reg = new Regex(p);
     //            jsonString = reg.Replace(jsonString, matchEvaluator);

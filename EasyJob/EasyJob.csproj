@@ -185,6 +185,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Result\CustomJsonResult.cs" />
+    <Compile Include="ContractResolver\LimitPropsContractResolver.cs" />
     <Compile Include="Tools\Exceptions.cs" />
     <Compile Include="Tools\PojoUtil.cs" />
     <Compile Include="WeiXinCtl\WeiXinPublic.cs" />

@@ -11,6 +11,7 @@ using NHibernate;
 using NHibernate.Criterion;
 using EasyJob.Tools;
 using Tools;
+using EasyJob.ContractResolver;
 
 namespace EasyJob.Controllers.Api
 {
@@ -228,7 +229,9 @@ namespace EasyJob.Controllers.Api
                     }
                     criteria.AddOrder(Order.Asc("Code"));
                 }
-                , pageSize, pageNum));
+                , pageSize, pageNum)
+                //,new LimitPropsContractResolver(new string[] { "Code", "Id" })
+                );
         }
 
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]

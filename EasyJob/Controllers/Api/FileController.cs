@@ -16,7 +16,6 @@ namespace EasyJob.Controllers.Api
     {
         private static string UploadFile = "UploadFile";
         private TbBaseOper<File> fileOper = null;
-        public string Url;
         
         public FileController()
             : base()
@@ -34,7 +33,7 @@ namespace EasyJob.Controllers.Api
         {
             IList<File> retVal = new List<File>();
 
-            Url = Server.MapPath("/") + @"Files\";
+            string url = Server.MapPath("/") + @"Files\";
 
             System.IO.Stream uploadStream = null;
             System.IO.FileStream fs = null;
@@ -53,7 +52,7 @@ namespace EasyJob.Controllers.Api
 
                     file.Name = System.IO.Path.GetFileName(postFileBase.FileName);
                     file.ContentType = postFileBase.ContentType;
-                    file.RealPath = Url + Guid.NewGuid().ToString();
+                    file.RealPath = url + Guid.NewGuid().ToString();
                     fs = new System.IO.FileStream(file.RealPath, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
 
                     while ((contentLen = uploadStream.Read(buffer, 0, bufferLen)) != 0)

@@ -184,6 +184,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Result\CustomJsonResult.cs" />
     <Compile Include="Tools\Exceptions.cs" />
     <Compile Include="Tools\ImageUtil.cs" />
     <Compile Include="Tools\LocationUtil.cs" />

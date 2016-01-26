@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Xml;
+using Tools;
 using WeiXin.WeiXin.Cert;
 using WeiXin.WeiXin.Receive;
 using WeiXin.WeiXin.Send;

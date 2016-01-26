@@ -10,6 +10,7 @@ using EasyJob.Pojo.Pojo.Bases;
 using NHibernate;
 using NHibernate.Criterion;
 using EasyJob.Tools;
+using Tools;
 
 namespace EasyJob.Controllers.Api
 {

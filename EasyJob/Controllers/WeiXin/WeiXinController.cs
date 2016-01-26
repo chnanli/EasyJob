@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Tools;
 using WeiXin.Tools;
 using WeiXin.WeiXin.Receive;
 using WeiXin.WeiXin.Send;

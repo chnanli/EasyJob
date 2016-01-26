@@ -186,10 +186,7 @@
     </Compile>
     <Compile Include="Result\CustomJsonResult.cs" />
     <Compile Include="Tools\Exceptions.cs" />
-    <Compile Include="Tools\ImageUtil.cs" />
-    <Compile Include="Tools\LocationUtil.cs" />
     <Compile Include="Tools\PojoUtil.cs" />
-    <Compile Include="Tools\TbLocation.cs" />
     <Compile Include="WeiXinCtl\WeiXinPublic.cs" />
   </ItemGroup>
   <ItemGroup>

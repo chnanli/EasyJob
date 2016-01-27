@@ -112,14 +112,14 @@ namespace EasyJob.Controllers.Api
             return Json(stockInitOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (storehouseId != null)
+                    if (!string.IsNullOrEmpty(storehouseId))
                     {
                         ICriterion criterion = Restrictions.Eq("Storehouse", PojoUtil.InitPojo<Storehouse>(storehouseId));
                         criteria.Add(criterion);
                     }
-                    if (goodsId != null)
+                    if (!string.IsNullOrEmpty(goodsId))
                     {
-                        ICriterion criterion = Restrictions.Eq("Storehouse", PojoUtil.InitPojo<GoodsInfo>(goodsId));
+                        ICriterion criterion = Restrictions.Eq("Goods", PojoUtil.InitPojo<GoodsInfo>(goodsId));
                         criteria.Add(criterion);
                     }
 
@@ -141,14 +141,14 @@ namespace EasyJob.Controllers.Api
             return Json(stockInitOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (storehouseId != null)
+                    if (!string.IsNullOrEmpty(storehouseId))
                     {
                         ICriterion criterion = Restrictions.Eq("Storehouse", PojoUtil.InitPojo<Storehouse>(storehouseId));
                         criteria.Add(criterion);
                     }
-                    if (goodsId != null)
+                    if (!string.IsNullOrEmpty(goodsId))
                     {
-                        ICriterion criterion = Restrictions.Eq("Storehouse", PojoUtil.InitPojo<GoodsInfo>(goodsId));
+                        ICriterion criterion = Restrictions.Eq("Goods", PojoUtil.InitPojo<GoodsInfo>(goodsId));
                         criteria.Add(criterion);
                     }
                 }

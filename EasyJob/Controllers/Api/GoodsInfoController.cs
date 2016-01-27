@@ -139,29 +139,27 @@ namespace EasyJob.Controllers.Api
             return Json(goodsInfoOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (goodsCode != null)
+                    if (!string.IsNullOrEmpty(goodsCode))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsCode", goodsCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsName != null)
+                    if (!string.IsNullOrEmpty(goodsName))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsName", goodsName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (barCode != null)
+                    if (!string.IsNullOrEmpty(barCode))
                     {
                         ICriterion criterion = Restrictions.Like("BarCode", barCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsTypeID != null)
+                    if (!string.IsNullOrEmpty(goodsTypeID))
                     {
-                        GoodsType gt = new GoodsType();
-                        gt.Id = new Guid(goodsTypeID);
-                        ICriterion criterion = Restrictions.Eq("GoodsType", gt);
+                        ICriterion criterion = Restrictions.Eq("GoodsType", PojoUtil.InitPojo<GoodsType>(goodsTypeID));
                         criteria.Add(criterion);
                     }
-                    if (modelNum != null)
+                    if (!string.IsNullOrEmpty(modelNum))
                     {
                         ICriterion criterion = Restrictions.Like("ModelNum", modelNum, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -182,29 +180,27 @@ namespace EasyJob.Controllers.Api
             return Json(goodsInfoOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (goodsCode != null)
+                    if (!string.IsNullOrEmpty(goodsCode))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsCode", goodsCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsName != null)
+                    if (!string.IsNullOrEmpty(goodsName))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsName", goodsName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (barCode != null)
+                    if (!string.IsNullOrEmpty(barCode))
                     {
                         ICriterion criterion = Restrictions.Like("BarCode", barCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsTypeID != null)
+                    if (!string.IsNullOrEmpty(goodsTypeID))
                     {
-                        GoodsType gt = new GoodsType();
-                        gt.Id = new Guid(goodsTypeID);
-                        ICriterion criterion = Restrictions.Eq("GoodsType", gt);
+                        ICriterion criterion = Restrictions.Eq("GoodsType", PojoUtil.InitPojo<GoodsType>(goodsTypeID));
                         criteria.Add(criterion);
                     }
-                    if (modelNum != null)
+                    if (!string.IsNullOrEmpty(modelNum))
                     {
                         ICriterion criterion = Restrictions.Like("ModelNum", modelNum, MatchMode.Anywhere);
                         criteria.Add(criterion);

@@ -212,17 +212,17 @@ namespace EasyJob.Controllers.Api
             return Json(employeeOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (code != null)
+                    if (!string.IsNullOrEmpty(code))
                     {
                         ICriterion criterion = Restrictions.Eq("Code", code);
                         criteria.Add(criterion);
                     }
-                    if (empName != null)
+                    if (!string.IsNullOrEmpty(empName))
                     {
                         ICriterion criterion = Restrictions.Like("EmpName", empName,MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (nickName != null)
+                    if (!string.IsNullOrEmpty(nickName))
                     {
                         ICriterion criterion = Restrictions.Like("NickName", nickName, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -240,17 +240,17 @@ namespace EasyJob.Controllers.Api
             return Json(employeeOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (code != null)
+                    if (!string.IsNullOrEmpty(code))
                     {
                         ICriterion criterion = Restrictions.Eq("Code", code);
                         criteria.Add(criterion);
                     }
-                    if (empName != null)
+                    if (!string.IsNullOrEmpty(empName))
                     {
                         ICriterion criterion = Restrictions.Like("EmpName", empName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (nickName != null)
+                    if (!string.IsNullOrEmpty(nickName))
                     {
                         ICriterion criterion = Restrictions.Like("NickName", nickName, MatchMode.Anywhere);
                         criteria.Add(criterion);

@@ -1,6 +1,7 @@
 ﻿using EasyJob.Filters;
 using EasyJob.Pojo.Pojo;
 using EasyJob.Pojo.Pojo.Bases;
+using EasyJob.Tools;
 using NHibernate;
 using NHibernate.Criterion;
 using System;
@@ -237,11 +238,11 @@ namespace EasyJob.Controllers.Api
         /// </summary>
         /// <param name="workCodeType1"></param>
         /// <returns></returns>
-        public ActionResult GetWorkCodeType2ForWeiXin(WorkCodeType1 workCodeType1)
+        public ActionResult GetWorkCodeType2ForWeiXin(string workCodeType1Id)
         {
             IList<WorkCodeType> wcts = workCodeTypeOper.Get(delegate(object sender, ICriteria criteria)
             {
-                ICriterion criterion = Restrictions.Eq("Type1", workCodeType1);
+                ICriterion criterion = Restrictions.Eq("Type1", PojoUtil.InitPojo<WorkCodeType1>(workCodeType1Id));
                 criteria.Add(criterion);
 
                 ICriteria criteria2=criteria.CreateCriteria("Type2","t2");

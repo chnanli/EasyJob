@@ -188,17 +188,17 @@ namespace EasyJob.Controllers.Api
             return Json(workOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (cstmrName != null)
+                    if (!string.IsNullOrEmpty(cstmrName))
                     {
                         ICriterion criterion = Restrictions.Like("Cstmr.Name", cstmrName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (contact != null)
+                    if (!string.IsNullOrEmpty(contact))
                     {
                         ICriterion criterion = Restrictions.Like("Contact", contact, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (phoneNum != null)
+                    if (!string.IsNullOrEmpty(phoneNum))
                     {
                         ICriterion criterion = Restrictions.Like("PhoneNum", phoneNum, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -223,17 +223,17 @@ namespace EasyJob.Controllers.Api
             return Json(workOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (cstmrName != null)
+                    if (!string.IsNullOrEmpty(cstmrName))
                     {
                         ICriterion criterion = Restrictions.Like("Cstmr.Name", cstmrName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (contact != null)
+                    if (!string.IsNullOrEmpty(contact))
                     {
                         ICriterion criterion = Restrictions.Like("Contact", contact, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (phoneNum != null)
+                    if (!string.IsNullOrEmpty(phoneNum))
                     {
                         ICriterion criterion = Restrictions.Like("PhoneNum", phoneNum, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -251,12 +251,12 @@ namespace EasyJob.Controllers.Api
         /// <param name="work"></param>
         /// <returns></returns>
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]
-        public ActionResult GetWorkSub(int pageSize, int pageNum, Work work)
+        public ActionResult GetWorkSub(int pageSize, int pageNum, string workId)
         {
             return Json(workSubOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    ICriterion criterion = Restrictions.Eq("Work",work);
+                    ICriterion criterion = Restrictions.Eq("Work", PojoUtil.InitPojo<Work>(workId));
                     criteria.Add(criterion);
 
                     criteria.AddOrder(Order.Desc("ModDate"));
@@ -272,12 +272,12 @@ namespace EasyJob.Controllers.Api
         /// <param name="workSub"></param>
         /// <returns></returns>
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]
-        public ActionResult GetWorkDetail(int pageSize, int pageNum, WorkSub workSub)
+        public ActionResult GetWorkDetail(int pageSize, int pageNum, string workSubId)
         {
             return Json(workDetailOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    ICriterion criterion = Restrictions.Eq("WorkSub", workSub);
+                    ICriterion criterion = Restrictions.Eq("WorkSub", PojoUtil.InitPojo<WorkSub>(workSubId));
                     criteria.Add(criterion);
 
                     criteria.AddOrder(Order.Desc("ModDate"));
@@ -293,12 +293,12 @@ namespace EasyJob.Controllers.Api
         /// <param name="work"></param>
         /// <returns></returns>
         [PowerActionFilterAttribute(FuncName = PowerActionFilterAttribute.FuncEnum.Get)]
-        public ActionResult GetCustomerScore(int pageSize, int pageNum, Work work)
+        public ActionResult GetCustomerScore(int pageSize, int pageNum, string workId)
         {
             return Json(customerScoreOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    ICriterion criterion = Restrictions.Eq("Work", work);
+                    ICriterion criterion = Restrictions.Eq("Work", PojoUtil.InitPojo<Work>(workId));
                     criteria.Add(criterion);
 
                     criteria.AddOrder(Order.Desc("ModDate"));

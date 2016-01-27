@@ -112,18 +112,14 @@ namespace EasyJob.Controllers.Api
             return Json(sellPriceInfoOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (storehouseID != null)
+                    if (!string.IsNullOrEmpty(storehouseID))
                     {
-                        Storehouse s = new Storehouse();
-                        s.Id = new Guid(storehouseID);
-                        ICriterion criterion = Restrictions.Eq("Storehouse", s);
+                        ICriterion criterion = Restrictions.Eq("Storehouse", PojoUtil.InitPojo<Storehouse>(storehouseID));
                         criteria.Add(criterion);
                     }
-                    if (goodsID != null)
+                    if (!string.IsNullOrEmpty(goodsID))
                     {
-                        GoodsInfo gi = new GoodsInfo();
-                        gi.Id = new Guid(goodsID);
-                        ICriterion criterion = Restrictions.Eq("Goods", gi);
+                        ICriterion criterion = Restrictions.Eq("Goods", PojoUtil.InitPojo<GoodsInfo>(goodsID));
                         criteria.Add(criterion);
                     }
                 }
@@ -141,18 +137,14 @@ namespace EasyJob.Controllers.Api
             return Json(sellPriceInfoOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (storehouseID != null)
+                    if (!string.IsNullOrEmpty(storehouseID))
                     {
-                        Storehouse s = new Storehouse();
-                        s.Id = new Guid(storehouseID);
-                        ICriterion criterion = Restrictions.Eq("Storehouse", s);
+                        ICriterion criterion = Restrictions.Eq("Storehouse", PojoUtil.InitPojo<Storehouse>(storehouseID));
                         criteria.Add(criterion);
                     }
-                    if (goodsID != null)
+                    if (!string.IsNullOrEmpty(goodsID))
                     {
-                        GoodsInfo gi = new GoodsInfo();
-                        gi.Id = new Guid(goodsID);
-                        ICriterion criterion = Restrictions.Eq("Goods", gi);
+                        ICriterion criterion = Restrictions.Eq("Goods", PojoUtil.InitPojo<GoodsInfo>(goodsID));
                         criteria.Add(criterion);
                     }
                 }

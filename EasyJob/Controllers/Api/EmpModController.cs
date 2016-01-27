@@ -71,17 +71,17 @@ namespace EasyJob.Controllers.Api
             return Json(empModOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (roleFlag != null)
+                    if (!string.IsNullOrEmpty(roleFlag))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleFlag", roleFlag);
                         criteria.Add(criterion);
                     }
-                    if (roleId != null)
+                    if (!string.IsNullOrEmpty(roleId))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleId", new Guid(roleId));
                         criteria.Add(criterion);
                     }
-                    if (modId != null)
+                    if (!string.IsNullOrEmpty(modId))
                     {
                         ICriterion criterion = Restrictions.Eq("Mod", PojoUtil.InitPojo<Mod>(modId));
                         criteria.Add(criterion);
@@ -105,17 +105,17 @@ namespace EasyJob.Controllers.Api
             return Json(empModOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (roleFlag != null)
+                    if (!string.IsNullOrEmpty(roleFlag))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleFlag", roleFlag);
                         criteria.Add(criterion);
                     }
-                    if (roleId != null)
+                    if (!string.IsNullOrEmpty(roleId))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleId", new Guid(roleId));
                         criteria.Add(criterion);
                     }
-                    if (modId != null)
+                    if (!string.IsNullOrEmpty(modId))
                     {
                         ICriterion criterion = Restrictions.Eq("Mod", PojoUtil.InitPojo<Mod>(modId));
                         criteria.Add(criterion);

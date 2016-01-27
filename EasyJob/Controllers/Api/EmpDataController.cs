@@ -71,17 +71,17 @@ namespace EasyJob.Controllers.Api
             return Json(empDataOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (roleFlag != null)
+                    if (!string.IsNullOrEmpty(roleFlag))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleFlag", roleFlag);
                         criteria.Add(criterion);
                     }
-                    if (roleId != null)
+                    if (!string.IsNullOrEmpty(roleId))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleId", new Guid(roleId));
                         criteria.Add(criterion);
                     }
-                    if (deptId != null)
+                    if (!string.IsNullOrEmpty(deptId))
                     {
                         ICriterion criterion = Restrictions.Eq("Dept", PojoUtil.InitPojo<Department>(deptId));
                         criteria.Add(criterion);
@@ -105,17 +105,17 @@ namespace EasyJob.Controllers.Api
             return Json(empDataOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (roleFlag != null)
+                    if (!string.IsNullOrEmpty(roleFlag))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleFlag", roleFlag);
                         criteria.Add(criterion);
                     }
-                    if (roleId != null)
+                    if (!string.IsNullOrEmpty(roleId))
                     {
                         ICriterion criterion = Restrictions.Eq("RoleId", new Guid(roleId));
                         criteria.Add(criterion);
                     }
-                    if (deptId != null)
+                    if (!string.IsNullOrEmpty(deptId))
                     {
                         ICriterion criterion = Restrictions.Eq("Dept", PojoUtil.InitPojo<Department>(deptId));
                         criteria.Add(criterion);

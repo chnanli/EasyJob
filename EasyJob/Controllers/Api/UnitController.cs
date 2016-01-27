@@ -109,7 +109,7 @@ namespace EasyJob.Controllers.Api
             return Json(unitOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (unitName != null)
+                    if (!string.IsNullOrEmpty(unitName))
                     {
                         ICriterion criterion = Restrictions.Like("UnitName", unitName, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -130,7 +130,7 @@ namespace EasyJob.Controllers.Api
             return Json(unitOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (unitName != null)
+                    if (!string.IsNullOrEmpty(unitName))
                     {
                         ICriterion criterion = Restrictions.Like("UnitName", unitName, MatchMode.Anywhere);
                         criteria.Add(criterion);

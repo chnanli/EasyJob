@@ -126,12 +126,12 @@ namespace EasyJob.Controllers.Api
             return Json(vendorInfoOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (vendorCode != null)
+                    if (!string.IsNullOrEmpty(vendorCode))
                     {
                         ICriterion criterion = Restrictions.Like("VendorCode", vendorCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (vendorName != null)
+                    if (!string.IsNullOrEmpty(vendorName))
                     {
                         ICriterion criterion = Restrictions.Like("VendorName", vendorName, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -152,12 +152,12 @@ namespace EasyJob.Controllers.Api
             return Json(vendorInfoOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (vendorCode != null)
+                    if (!string.IsNullOrEmpty(vendorCode))
                     {
                         ICriterion criterion = Restrictions.Like("VendorCode", vendorCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (vendorName != null)
+                    if (!string.IsNullOrEmpty(vendorName))
                     {
                         ICriterion criterion = Restrictions.Like("VendorName", vendorName, MatchMode.Anywhere);
                         criteria.Add(criterion);

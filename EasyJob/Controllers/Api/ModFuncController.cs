@@ -109,7 +109,7 @@ namespace EasyJob.Controllers.Api
             return Json(modFuncOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (cls != null)
+                    if (!string.IsNullOrEmpty(cls))
                     {
                         ICriterion criterion = Restrictions.Eq("Cls", cls);
                         criteria.Add(criterion);
@@ -131,7 +131,7 @@ namespace EasyJob.Controllers.Api
             return Json(modFuncOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (cls != null)
+                    if (!string.IsNullOrEmpty(cls))
                     {
                         ICriterion criterion = Restrictions.Eq("Cls", cls);
                         criteria.Add(criterion);

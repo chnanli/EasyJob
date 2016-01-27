@@ -126,21 +126,19 @@ namespace EasyJob.Controllers.Api
             return Json(storehouseOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (storeCode != null)
+                    if (!string.IsNullOrEmpty(storeCode))
                     {
                         ICriterion criterion = Restrictions.Like("StoreCode", storeCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (storeName != null)
+                    if (!string.IsNullOrEmpty(storeName))
                     {
                         ICriterion criterion = Restrictions.Like("StoreName", storeName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (deptID != null)
+                    if (!string.IsNullOrEmpty(deptID))
                     {
-                        Department dept = new Department();
-                        dept.Id = new Guid(deptID);
-                        ICriterion criterion = Restrictions.Eq("Dept", dept);
+                        ICriterion criterion = Restrictions.Eq("Dept", PojoUtil.InitPojo<Department>(deptID));
                         criteria.Add(criterion);
                     }
                     criteria.AddOrder(Order.Asc("StoreName"));
@@ -159,21 +157,19 @@ namespace EasyJob.Controllers.Api
             return Json(storehouseOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (storeCode != null)
+                    if (!string.IsNullOrEmpty(storeCode))
                     {
                         ICriterion criterion = Restrictions.Like("StoreCode", storeCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (storeName != null)
+                    if (!string.IsNullOrEmpty(storeName))
                     {
                         ICriterion criterion = Restrictions.Like("StoreName", storeName, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (deptID != null)
+                    if (!string.IsNullOrEmpty(deptID))
                     {
-                        Department dept = new Department();
-                        dept.Id = new Guid(deptID);
-                        ICriterion criterion = Restrictions.Eq("Dept", dept);
+                        ICriterion criterion = Restrictions.Eq("Dept", PojoUtil.InitPojo<Department>(deptID));
                         criteria.Add(criterion);
                     }
                 }

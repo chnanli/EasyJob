@@ -109,7 +109,7 @@ namespace EasyJob.Controllers.Api
             return Json(goodsTypeOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (pId != null)
+                    if (!string.IsNullOrEmpty(pId))
                     {
                         ICriterion criterion = Restrictions.Eq("PId", new Guid(pId));
                         criteria.Add(criterion);
@@ -119,17 +119,17 @@ namespace EasyJob.Controllers.Api
                         ICriterion criterion = Restrictions.Eq("PId", Guid.Empty);
                         criteria.Add(criterion);
                     }
-                    if (unitDesc != null)
+                    if (!string.IsNullOrEmpty(unitDesc))
                     {
                         ICriterion criterion = Restrictions.Like("UnitDesc", unitDesc, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsTypeCode != null)
+                    if (!string.IsNullOrEmpty(goodsTypeCode))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsTypeCode", goodsTypeCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsTypeName != null)
+                    if (!string.IsNullOrEmpty(goodsTypeName))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsTypeName", goodsTypeName, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -150,7 +150,7 @@ namespace EasyJob.Controllers.Api
             return Json(goodsTypeOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (pId != null)
+                    if (!string.IsNullOrEmpty(pId))
                     {
                         ICriterion criterion = Restrictions.Eq("PId", new Guid(pId));
                         criteria.Add(criterion);
@@ -160,17 +160,17 @@ namespace EasyJob.Controllers.Api
                         ICriterion criterion = Restrictions.Eq("PId", Guid.Empty);
                         criteria.Add(criterion);
                     }
-                    if (unitDesc != null)
+                    if (!string.IsNullOrEmpty(unitDesc))
                     {
                         ICriterion criterion = Restrictions.Like("UnitDesc", unitDesc, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsTypeCode != null)
+                    if (!string.IsNullOrEmpty(goodsTypeCode))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsTypeCode", goodsTypeCode, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (goodsTypeName != null)
+                    if (!string.IsNullOrEmpty(goodsTypeName))
                     {
                         ICriterion criterion = Restrictions.Like("GoodsTypeName", goodsTypeName, MatchMode.Anywhere);
                         criteria.Add(criterion);

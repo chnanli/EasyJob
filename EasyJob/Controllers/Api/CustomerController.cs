@@ -71,37 +71,37 @@ namespace EasyJob.Controllers.Api
             return Json(customerOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         ICriterion criterion = Restrictions.Like("Name", name,MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (nickname != null)
+                    if (!string.IsNullOrEmpty(nickname))
                     {
                         ICriterion criterion = Restrictions.Like("Nickname", nickname, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (phoneNum != null)
+                    if (!string.IsNullOrEmpty(phoneNum))
                     {
                         ICriterion criterion = Restrictions.Like("PhoneNum", phoneNum, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (tel != null)
+                    if (!string.IsNullOrEmpty(tel))
                     {
                         ICriterion criterion = Restrictions.Like("Tel", tel, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (qq != null)
+                    if (!string.IsNullOrEmpty(qq))
                     {
                         ICriterion criterion = Restrictions.Like("QQ", qq, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (weiXin != null)
+                    if (!string.IsNullOrEmpty(weiXin))
                     {
                         ICriterion criterion = Restrictions.Like("WeiXin", weiXin, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (email != null)
+                    if (!string.IsNullOrEmpty(email))
                     {
                         ICriterion criterion = Restrictions.Like("Email", email, MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -122,37 +122,37 @@ namespace EasyJob.Controllers.Api
             return Json(customerOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         ICriterion criterion = Restrictions.Like("Name", name, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (nickname != null)
+                    if (!string.IsNullOrEmpty(nickname))
                     {
                         ICriterion criterion = Restrictions.Like("Nickname", nickname, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (phoneNum != null)
+                    if (!string.IsNullOrEmpty(phoneNum))
                     {
                         ICriterion criterion = Restrictions.Like("PhoneNum", phoneNum, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (tel != null)
+                    if (!string.IsNullOrEmpty(tel))
                     {
                         ICriterion criterion = Restrictions.Like("Tel", tel, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (qq != null)
+                    if (!string.IsNullOrEmpty(qq))
                     {
                         ICriterion criterion = Restrictions.Like("QQ", qq, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (weiXin != null)
+                    if (!string.IsNullOrEmpty(weiXin))
                     {
                         ICriterion criterion = Restrictions.Like("WeiXin", weiXin, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (email != null)
+                    if (!string.IsNullOrEmpty(email))
                     {
                         ICriterion criterion = Restrictions.Like("Email", email, MatchMode.Anywhere);
                         criteria.Add(criterion);

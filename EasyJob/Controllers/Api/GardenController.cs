@@ -88,12 +88,12 @@ namespace EasyJob.Controllers.Api
             return Json(gardenOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         ICriterion criterion = Restrictions.Like("Name", name,MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (addr != null)
+                    if (!string.IsNullOrEmpty(addr))
                     {
                         ICriterion criterion = Restrictions.Like("Addr", addr,MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -117,12 +117,12 @@ namespace EasyJob.Controllers.Api
             return Json(gardenOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         ICriterion criterion = Restrictions.Like("Name", name, MatchMode.Anywhere);
                         criteria.Add(criterion);
                     }
-                    if (addr != null)
+                    if (!string.IsNullOrEmpty(addr))
                     {
                         ICriterion criterion = Restrictions.Like("Addr", addr, MatchMode.Anywhere);
                         criteria.Add(criterion);

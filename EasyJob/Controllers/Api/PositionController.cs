@@ -109,7 +109,7 @@ namespace EasyJob.Controllers.Api
             return Json(positionOper.Get(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (pId != null)
+                    if (!string.IsNullOrEmpty(pId))
                     {
                         ICriterion criterion = Restrictions.Eq("PId", new Guid(pId));
                         criteria.Add(criterion);
@@ -119,12 +119,12 @@ namespace EasyJob.Controllers.Api
                         ICriterion criterion = Restrictions.Eq("PId", Guid.Empty);
                         criteria.Add(criterion);
                     }
-                    if (code != null)
+                    if (!string.IsNullOrEmpty(code))
                     {
                         ICriterion criterion = Restrictions.Eq("Code", code);
                         criteria.Add(criterion);
                     }
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         ICriterion criterion = Restrictions.Like("Name", name,MatchMode.Anywhere);
                         criteria.Add(criterion);
@@ -145,7 +145,7 @@ namespace EasyJob.Controllers.Api
             return Json(positionOper.GetPageCount(
                 delegate(object sender, ICriteria criteria)
                 {
-                    if (pId != null)
+                    if (!string.IsNullOrEmpty(pId))
                     {
                         ICriterion criterion = Restrictions.Eq("PId", new Guid(pId));
                         criteria.Add(criterion);
@@ -155,12 +155,12 @@ namespace EasyJob.Controllers.Api
                         ICriterion criterion = Restrictions.Eq("PId", Guid.Empty);
                         criteria.Add(criterion);
                     }
-                    if (code != null)
+                    if (!string.IsNullOrEmpty(code))
                     {
                         ICriterion criterion = Restrictions.Eq("Code", code);
                         criteria.Add(criterion);
                     }
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         ICriterion criterion = Restrictions.Like("Name", name, MatchMode.Anywhere);
                         criteria.Add(criterion);

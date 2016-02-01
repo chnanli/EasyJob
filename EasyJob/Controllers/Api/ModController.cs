@@ -26,115 +26,115 @@ namespace EasyJob.Controllers.Api
             modFuncOper = new TbBaseOper<ModFunc>(HibernateOper, typeof(ModFunc));
         }
 
-        public void Init()
-        {
-            try
-            {
-                Guid pId;
+        //public void Init()
+        //{
+        //    try
+        //    {
+        //        Guid pId;
 
-                Mod mod = new Mod();
+        //        Mod mod = new Mod();
 
-                mod = new Mod();
-                mod.Name = "SystemManager";
-                mod.Text = "系统管理";
-                mod.Icon = "glyphicon glyphicon-cog";
-                mod.Type = 1; //有子菜单
-                mod.Href = "";
-                mod.Index = 1;
-                modOper.Add(mod);
+        //        mod = new Mod();
+        //        mod.Name = "SystemManager";
+        //        mod.Text = "系统管理";
+        //        mod.Icon = "glyphicon glyphicon-cog";
+        //        mod.Type = 1; //有子菜单
+        //        mod.Href = "";
+        //        mod.Index = 1;
+        //        modOper.Add(mod);
 
-                pId = mod.Id;
+        //        pId = mod.Id;
 
-                Type type = typeof(ModController);
-                //添加菜单的操作函数
-                ModFunc modFunc = new ModFunc();
-                modFunc.Cls = type.FullName;
-                modFuncOper.Add(modFunc);
+        //        Type type = typeof(ModController);
+        //        //添加菜单的操作函数
+        //        ModFunc modFunc = new ModFunc();
+        //        modFunc.Cls = type.FullName;
+        //        modFuncOper.Add(modFunc);
 
-                Mod subMod = new Mod();
-                subMod.Name = "ModManager";
-                subMod.Text = "菜单管理";
-                subMod.Icon = "glyphicon glyphicon-user";
-                subMod.Type = 0; //没有子菜单
-                subMod.Href = "/Admin/ModManager";
-                subMod.PId = pId;
-                subMod.Index = 0;
-                subMod.ModFunc = modFunc;
-                modOper.Add(subMod);
+        //        Mod subMod = new Mod();
+        //        subMod.Name = "ModManager";
+        //        subMod.Text = "菜单管理";
+        //        subMod.Icon = "glyphicon glyphicon-user";
+        //        subMod.Type = 0; //没有子菜单
+        //        subMod.Href = "/Admin/ModManager";
+        //        subMod.PId = pId;
+        //        subMod.Index = 0;
+        //        subMod.ModFunc = modFunc;
+        //        modOper.Add(subMod);
 
-                type = typeof(EmployeeController);
-                //添加菜单的操作函数
-                modFunc = new ModFunc();
-                modFunc.Cls = type.FullName;
-                modFuncOper.Add(modFunc);
+        //        type = typeof(EmployeeController);
+        //        //添加菜单的操作函数
+        //        modFunc = new ModFunc();
+        //        modFunc.Cls = type.FullName;
+        //        modFuncOper.Add(modFunc);
 
-                subMod = new Mod();
-                subMod.Name = "PowerManager";
-                subMod.Text = "权限管理";
-                subMod.Icon = "glyphicon glyphicon-user";
-                subMod.Type = 0; //没有子菜单
-                subMod.Href = "/Admin/PowerManager";
-                subMod.PId = pId;
-                subMod.Index = 0;
-                subMod.ModFunc = modFunc;
-                modOper.Add(subMod);
+        //        subMod = new Mod();
+        //        subMod.Name = "PowerManager";
+        //        subMod.Text = "权限管理";
+        //        subMod.Icon = "glyphicon glyphicon-user";
+        //        subMod.Type = 0; //没有子菜单
+        //        subMod.Href = "/Admin/PowerManager";
+        //        subMod.PId = pId;
+        //        subMod.Index = 0;
+        //        subMod.ModFunc = modFunc;
+        //        modOper.Add(subMod);
 
-            }
-            catch (Exception e)
-            {
-                System.Console.WriteLine(e.Message);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        System.Console.WriteLine(e.Message);
+        //    }
+        //}
 
-        public void Init2()
-        {
-            try
-            {
-                //给员工初始化
-                Employee e = new Employee();
-                e.Code = "999";
-                e.EmpName = "System";
-                e.PwdWeb = "123456";
-                e.Birthday = DateTime.Now;
-                e.ComeDate = DateTime.Now;
-                e.StaffDate = DateTime.Now;
-                e.LeaveDate = DateTime.Now;
-                e.OnDuty = DateTime.Now;
-                e.OffDuty = DateTime.Now;
+        //public void Init2()
+        //{
+        //    try
+        //    {
+        //        //给员工初始化
+        //        Employee e = new Employee();
+        //        e.Code = "999";
+        //        e.EmpName = "System";
+        //        e.PwdWeb = "123456";
+        //        e.Birthday = DateTime.Now;
+        //        e.ComeDate = DateTime.Now;
+        //        e.StaffDate = DateTime.Now;
+        //        e.LeaveDate = DateTime.Now;
+        //        e.OnDuty = DateTime.Now;
+        //        e.OffDuty = DateTime.Now;
 
-                TbBaseOper<Employee> employeeOper = new TbBaseOper<Employee>(HibernateFactory.GetInstance(), typeof(Employee));
-                employeeOper.Add(e);
+        //        TbBaseOper<Employee> employeeOper = new TbBaseOper<Employee>(HibernateFactory.GetInstance(), typeof(Employee));
+        //        employeeOper.Add(e);
 
-                TbBaseOper<EmpModFunc> emfOper = new TbBaseOper<EmpModFunc>(HibernateFactory.GetInstance(), typeof(EmpModFunc));
-                IList<ModFunc> funcs = modFuncOper.Get();
+        //        TbBaseOper<EmpModFunc> emfOper = new TbBaseOper<EmpModFunc>(HibernateFactory.GetInstance(), typeof(EmpModFunc));
+        //        IList<ModFunc> funcs = modFuncOper.Get();
 
-                foreach (ModFunc mf in funcs)
-                {
-                    EmpModFunc emf = new EmpModFunc();
-                    emf.RoleFlag = "0";
-                    emf.RoleId = e.Id;
-                    emf.ModFunc = mf;
-                    emf.FuncNames = "|Add|Update|Del|Get|";
-                    emfOper.Add(emf);
-                }
+        //        foreach (ModFunc mf in funcs)
+        //        {
+        //            EmpModFunc emf = new EmpModFunc();
+        //            emf.RoleFlag = "0";
+        //            emf.RoleId = e.Id;
+        //            emf.ModFunc = mf;
+        //            emf.FuncNames = "|Add|Update|Del|Get|";
+        //            emfOper.Add(emf);
+        //        }
 
-                TbBaseOper<EmpMod> emOper = new TbBaseOper<EmpMod>(HibernateFactory.GetInstance(), typeof(EmpMod));
-                IList<Mod> mods = modOper.Get();
+        //        TbBaseOper<EmpMod> emOper = new TbBaseOper<EmpMod>(HibernateFactory.GetInstance(), typeof(EmpMod));
+        //        IList<Mod> mods = modOper.Get();
 
-                foreach (Mod m in mods)
-                {
-                    EmpMod em = new EmpMod();
-                    em.RoleFlag = "0";
-                    em.RoleId = e.Id;
-                    em.Mod = m;
-                    emOper.Add(em);
-                }
-            }
-            catch (Exception e)
-            {
-                System.Console.WriteLine(e.Message);
-            }
-        }
+        //        foreach (Mod m in mods)
+        //        {
+        //            EmpMod em = new EmpMod();
+        //            em.RoleFlag = "0";
+        //            em.RoleId = e.Id;
+        //            em.Mod = m;
+        //            emOper.Add(em);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        System.Console.WriteLine(e.Message);
+        //    }
+        //}
 
         //
         // GET: /Mod/

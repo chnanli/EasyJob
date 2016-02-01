@@ -79,36 +79,20 @@ namespace EasyJob
 		    switch(ver){
                 case 0:
                     //初始化维修类型
-                    InitWorkType(session);
-                    break;
-                case 1:
-                    Department dept = new Department();
-                    dept.Code = "00001";
-                    dept.Name = "广州棠下店";
-                    dept.AddrCode="440106011";
-                    dept.Addr=PojoUtil.GetAddrForCode(session,dept.AddrCode);
-                    dept.Location = "棠下小区";
-                    LocationUtil.Location loc = LocationUtil.GetLocation(dept.Addr + dept.Location);
-                    if (loc != null)
-                    {
-                        dept.Lat = loc.lat;
-                        dept.Lng = loc.lng;
-                    }
-                    session.Save(dept);
+                    //InitWorkType(session);
+                    //给员工初始化
+                    Employee e = new Employee();
+                    e.Code = "999";
+                    e.EmpName = "System";
+                    e.PwdWeb = "123456";
+                    e.Birthday = DateTime.Now;
+                    e.ComeDate = DateTime.Now;
+                    e.StaffDate = DateTime.Now;
+                    e.LeaveDate = DateTime.Now;
+                    e.OnDuty = DateTime.Now;
+                    e.OffDuty = DateTime.Now;
+                    session.Save(e);
 
-                    dept = new Department();
-                    dept.Code = "00002";
-                    dept.Name = "广州太和店";
-                    dept.AddrCode = "440111107";
-                    dept.Addr=PojoUtil.GetAddrForCode(session,dept.AddrCode);
-                    dept.Location = "太和镇";
-                    loc = LocationUtil.GetLocation(dept.Addr + dept.Location);
-                    if (loc != null)
-                    {
-                        dept.Lat = loc.lat;
-                        dept.Lng = loc.lng;
-                    }
-                    session.Save(dept);
                     break;
 		        default:
 			        retVal=false;

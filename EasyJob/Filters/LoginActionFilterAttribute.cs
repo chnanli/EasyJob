@@ -17,7 +17,7 @@ namespace EasyJob.Filters
 {
     public class LoginActionFilterAttribute : ActionFilterAttribute
     {
-        private bool IsFilter = false;//是否过滤
+        private bool IsFilter = true;//是否过滤
 
         private TbBaseOper<EmpModFunc> empModFuncOper = null;
 

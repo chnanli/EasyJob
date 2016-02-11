@@ -890,6 +890,10 @@
       <Project>{CDFCD885-4D6A-4E52-9969-58CE7710B536}</Project>
       <Name>EasyJob.Pojo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OfficeUtil\OfficeUtil.csproj">
+      <Project>{68c28253-6b18-4d7c-af4a-846a3fe011e2}</Project>
+      <Name>OfficeUtil</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ORM\ORM.csproj">
       <Project>{7EFB155D-578C-406D-8B2A-D4261A76CD3D}</Project>
       <Name>ORM</Name>

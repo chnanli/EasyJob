@@ -3,6 +3,7 @@ using EasyJob.Pojo.Pojo.Bases;
 using EasyJob.Tools;
 using NHibernate;
 using NHibernate.Criterion;
+using OfficeUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -168,6 +169,58 @@ namespace EasyJob.Controllers.Api
 
             //返回文件
             return File(fullPath, file.ContentType, fileName);
+        }
+
+        public ActionResult DownLoadDept()
+        {
+            string fileName = Server.MapPath("/") + @"Files\Temp\"+"1.xlsx";
+
+            IList<ExcelField> fields=new List<ExcelField>();
+
+            ExcelField ef=null;
+
+            ef=new ExcelField("Code","代码");
+            fields.Add(ef);
+            ef = new ExcelField("Name", "名字");
+            fields.Add(ef);
+            ef = new ExcelField("TestExcel", "测试Excel");
+            fields.Add(ef);
+
+            TbBaseOper<Department> departmentOper = new TbBaseOper<Department>(HibernateOper, typeof(Department));
+            IList<Department> list=departmentOper.Get();
+
+            ExportExcel ee = new ExportExcel(fileName, "abc", fields);
+            ee.Save(list);
+
+            //返回文件
+            return File(fileName, "xlsx", "1.xlsx");
+        }
+
+        public ActionResult ImportTest()
+        {
+            IList<ExcelField> fields=new List<ExcelField>();
+
+            ExcelField ef=null;
+
+            ef=new ExcelField("Code","代码");
+            fields.Add(ef);
+            ef = new ExcelField("Name", "名字");
+            fields.Add(ef);
+            ef = new ExcelField("TestExcel", "测试Excel");
+            fields.Add(ef);
+
+            string url=Server.MapPath("/") + @"Files\Temp\"+"1.xlsx";
+            ImportExcel ie = new ImportExcel(url,"abc",fields);
+
+            IList<IDictionary<String, object>> vals=ie.List();
+
+            foreach (IDictionary<String, object> dic in vals)
+            {
+                string code = dic["Code"].ToString();
+                string name = dic["Name"].ToString();
+                string testExcel = dic["TestExcel"].ToString();
+            }
+            return null;
         }
 
         //public void DownLoad(string id)

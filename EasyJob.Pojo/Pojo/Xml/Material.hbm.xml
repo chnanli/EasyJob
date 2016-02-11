@@ -16,8 +16,8 @@
      <property name="Barcode" length="50" not-null="false" unique="true" />
      <property name="Depict" length="100" not-null="false" />
      <property name="Model"  length="50" />
-     <many-to-one name="Type" />
-     <many-to-one name="Unit" />
+     <many-to-one name="Type" lazy="false" />
+     <many-to-one name="Unit" lazy="false" />
      <property name="Price" />
      <property name="Remark" type="String">
        <column name="Remark" sql-type="Text" length="16" />

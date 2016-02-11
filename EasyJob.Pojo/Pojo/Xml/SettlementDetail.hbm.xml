@@ -13,9 +13,9 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="WorkDetail" />
-     <many-to-one name="Emp" />
-     <many-to-one name="SettlementEmp" />
+     <many-to-one name="WorkDetail" lazy="false" />
+     <many-to-one name="Emp" lazy="false" />
+     <many-to-one name="SettlementEmp" lazy="false" />
      <property name="SettlementDateTime"  />
      <property name="Amount" />
    </class>

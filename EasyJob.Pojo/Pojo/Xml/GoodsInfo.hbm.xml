@@ -17,7 +17,7 @@
      <property name="GoodsName" length="50" not-null="false" />
      
      <property name="BarCode" length="50" />
-     <many-to-one name="GoodsType" column="GoodsTypeID" />
+     <many-to-one name="GoodsType" column="GoodsTypeID" lazy="false" />
      <property name="ModelNum" length="50" />
      <property name="UnitName" length="50" />
      <property name="Spec" length="50" />
@@ -26,7 +26,7 @@
      <property name="SetupPrice" />
      <property name="Photo" />
      <property name="Discount" length="50" />
-     <many-to-one name="Vendor" column="VendorID" />
+     <many-to-one name="Vendor" column="VendorID" lazy="false" />
 
    </class>
 </hibernate-mapping>

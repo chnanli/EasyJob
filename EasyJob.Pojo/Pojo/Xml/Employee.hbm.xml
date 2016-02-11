@@ -14,8 +14,8 @@
      <property name="ExHost" length="500"/>
 
      
-     <many-to-one name="Dept" column="DeptID" />
-     <many-to-one name="Pos" column="PosID" />
+     <many-to-one name="Dept" column="DeptID" lazy="false" />
+     <many-to-one name="Pos" column="PosID" lazy="false" />
      <!--
      <many-to-one name="Shop" />
      -->

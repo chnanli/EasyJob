@@ -13,7 +13,7 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="WorkDetail" />
+     <many-to-one name="WorkDetail" lazy="false" />
      <property name="Depict" length="300" />
      <property name="Amount" />
      <property name="Status" />

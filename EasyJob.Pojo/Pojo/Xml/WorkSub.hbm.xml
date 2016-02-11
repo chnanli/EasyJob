@@ -13,15 +13,15 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="Work" />
+     <many-to-one name="Work" lazy="false" />
 
      <property name="OrderType" length="15" />
-     <many-to-one name="OrderEmp" />
+     <many-to-one name="OrderEmp" lazy="false" />
      <property name="Depict" length="300" not-null="false" />
-     <many-to-one name="Dept" />
-     <many-to-one name="Emp" />
+     <many-to-one name="Dept" lazy="false" />
+     <many-to-one name="Emp" lazy="false" />
      <property name="DistMode" />
-     <many-to-one name="DistEmp" />
+     <many-to-one name="DistEmp" lazy="false" />
      <property name="Status" />
      <property name="Remark" type="String">
        <column name="Remark" sql-type="Text" length="16" />

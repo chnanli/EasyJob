@@ -13,9 +13,9 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="WorkSub" />
-     <many-to-one name="SrcDept" />
-     <many-to-one name="DestDept" />
+     <many-to-one name="WorkSub" lazy="false" />
+     <many-to-one name="SrcDept" lazy="false" />
+     <many-to-one name="DestDept" lazy="false" />
      <property name="Depict" length="300" />
      <property name="Status" />
      <property name="Remark" type="String">

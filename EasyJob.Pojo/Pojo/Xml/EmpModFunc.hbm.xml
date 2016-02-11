@@ -15,7 +15,7 @@
 
      <property name="RoleFlag" length="1" />
      <property name="RoleId" />
-     <many-to-one name="ModFunc" column="ModFuncId" />
+     <many-to-one name="ModFunc" column="ModFuncId" lazy="false" />
      <property name="FuncNames" length="60" not-null="false" />
    </class>
 </hibernate-mapping>

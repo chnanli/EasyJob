@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using EasyJob.Pojo.Pojo.Bases;
+using Newtonsoft.Json;
 
 namespace EasyJob.Pojo.Pojo
 {
     /// <summary>
     /// 部门
     /// </summary>
+    [JsonObject(MemberSerialization.OptOut)]
     public class Department : TbLocation
     {
         /// <summary>
@@ -32,5 +34,14 @@ namespace EasyJob.Pojo.Pojo
         public virtual string ContactPhone{get;set;}
         public virtual string DeptType{get;set;}
         public virtual int OrderID { get; set; }
+
+        [JsonIgnore]
+        public virtual string TestExcel
+        {
+            get {
+                return "abc";
+            }
+            set { }
+        }
     }
 }

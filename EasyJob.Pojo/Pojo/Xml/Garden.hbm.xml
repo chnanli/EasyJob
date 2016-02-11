@@ -14,10 +14,10 @@
      <property name="ExHost" length="500"/>
 
      <property name="Name" length="30" not-null="false" />
-     <many-to-one name="Emp" />
+     <many-to-one name="Emp" lazy="false" />
      <property name="Level" />
      <property name="Commission" />
-     <many-to-one name="Dept" />
+     <many-to-one name="Dept" lazy="false" />
      <property name="Addr" length="100" not-null="false" />
      <property name="Location" length="100" not-null="false" />
      <property name="AddrCode" length="12" not-null="false" />

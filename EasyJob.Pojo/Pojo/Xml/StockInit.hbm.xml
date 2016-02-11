@@ -13,8 +13,8 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="Storehouse" column="StorehouseId" not-null="false" />
-     <many-to-one name="Goods" column="GoodsId" not-null="false" />
+     <many-to-one name="Storehouse" column="StorehouseId" not-null="false" lazy="false" />
+     <many-to-one name="Goods" column="GoodsId" not-null="false" lazy="false" />
      
      <property name="Quantity" />
 

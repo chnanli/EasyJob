@@ -20,6 +20,6 @@
      <property name="Icon" length="50" not-null="false" />
      <property name="PId" />
      <property name="Index" column="_Index" />
-     <many-to-one name="ModFunc"/>
+     <many-to-one name="ModFunc" lazy="false"/>
    </class>
 </hibernate-mapping>

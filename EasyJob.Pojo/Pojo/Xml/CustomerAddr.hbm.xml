@@ -13,7 +13,7 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="Cstmr" />
+     <many-to-one name="Cstmr" lazy="false" />
      <property name="Addr" length="100" not-null="false" />
      <property name="Location" length="100" not-null="false" />
      <property name="AddrCode" length="12" not-null="false" />

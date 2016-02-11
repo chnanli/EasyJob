@@ -13,7 +13,7 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="WorkSub" />
-     <many-to-one name="Pic" />
+     <many-to-one name="WorkSub" lazy="false" />
+     <many-to-one name="Pic" lazy="false" />
    </class>
 </hibernate-mapping>

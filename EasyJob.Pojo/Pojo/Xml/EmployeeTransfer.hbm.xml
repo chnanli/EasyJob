@@ -13,11 +13,11 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="Emp" />
-     <many-to-one name="SrcDept" />
-     <many-to-one name="DestDept" />
-     <many-to-one name="SrcPos" />
-     <many-to-one name="DestPos" />
+     <many-to-one name="Emp" lazy="false" />
+     <many-to-one name="SrcDept" lazy="false" />
+     <many-to-one name="DestDept" lazy="false" />
+     <many-to-one name="SrcPos" lazy="false" />
+     <many-to-one name="DestPos" lazy="false" />
      <property name="Remark" type="String">
        <column name="Remark" sql-type="Text" length="16" />
      </property>

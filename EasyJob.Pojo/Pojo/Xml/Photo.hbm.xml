@@ -15,7 +15,7 @@
 
      <property name="RoleFlag" length="2" />
      <property name="RoleId" />
-     <many-to-one name="File" column="FileId" />
+     <many-to-one name="File" column="FileId" lazy="false" />
 
    </class>
 </hibernate-mapping>

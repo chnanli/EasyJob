@@ -15,7 +15,7 @@
 
      <property name="RoleFlag" length="1" />
      <property name="RoleId" />
-     <many-to-one name="Dept" column="DeptId" />
+     <many-to-one name="Dept" column="DeptId" lazy="false" />
      <property name="IfSelf" length="1" />
    </class>
 </hibernate-mapping>

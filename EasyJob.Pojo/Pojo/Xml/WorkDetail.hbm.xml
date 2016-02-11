@@ -13,10 +13,10 @@
      <property name="TrashFlag"/>
      <property name="ExHost" length="500"/>
 
-     <many-to-one name="WorkSub" />
-     <many-to-one name="RepairType" />
-     <many-to-one name="Material" />
-     <many-to-one name="Emp" />
+     <many-to-one name="WorkSub" lazy="false" />
+     <many-to-one name="RepairType" lazy="false" />
+     <many-to-one name="Material" lazy="false" />
+     <many-to-one name="Emp" lazy="false" />
      <property name="CompleteDateTime"  />
      <property name="SettlementDateTime"  />
      

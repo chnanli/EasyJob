@@ -10,6 +10,6 @@
 
      <property name="ParaName" length="50" not-null="false" unique="true" />
      <property name="ParaValue" length="200" />
-     <many-to-one name="Oper" column="OperID" />
+     <many-to-one name="Oper" column="OperID" lazy="false" />
    </class>
 </hibernate-mapping>

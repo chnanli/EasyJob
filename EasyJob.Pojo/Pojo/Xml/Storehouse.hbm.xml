@@ -22,7 +22,7 @@
      <property name="StoreCode" length="50" not-null="false" unique="true" />
      <property name="StoreName" length="50" not-null="false" />
      <property name="Manager" length="50" not-null="false" />
-     <many-to-one name="Dept" column="DeptID" />
+     <many-to-one name="Dept" column="DeptID" lazy="false" />
      <property name="IsNegative" length="50" not-null="false" />
    </class>
 </hibernate-mapping>

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeiXin", "WeiXin\WeiXin.csproj", "{AD57020C-68B0-4495-81CE-EF2A5C2F3E91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeUtil", "OfficeUtil\OfficeUtil.csproj", "{68C28253-6B18-4D7C-AF4A-846A3FE011E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AD57020C-68B0-4495-81CE-EF2A5C2F3E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD57020C-68B0-4495-81CE-EF2A5C2F3E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD57020C-68B0-4495-81CE-EF2A5C2F3E91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C28253-6B18-4D7C-AF4A-846A3FE011E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C28253-6B18-4D7C-AF4A-846A3FE011E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C28253-6B18-4D7C-AF4A-846A3FE011E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C28253-6B18-4D7C-AF4A-846A3FE011E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

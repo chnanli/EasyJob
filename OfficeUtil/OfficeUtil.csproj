@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attrib\ExcelColumnAttribute.cs" />
+    <Compile Include="Attrib\ExcelTableAttribute.cs" />
     <Compile Include="ExcelField.cs" />
     <Compile Include="ExportExcel.cs" />
     <Compile Include="ImportExcel.cs" />

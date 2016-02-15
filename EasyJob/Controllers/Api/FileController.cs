@@ -29,57 +29,70 @@ namespace EasyJob.Controllers.Api
             return View();
         }
 
+        /// <summary>
+        /// 保存上传的文件
+        /// </summary>
+        /// <param name="postFileBase"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private File SaveHttpPostFile(HttpPostedFileBase postFileBase,string path)
+        {
+            System.IO.Stream uploadStream = null;
+            System.IO.FileStream fs = null;
+
+            File file = new File();
+            try
+            {
+                uploadStream = postFileBase.InputStream;
+                int bufferLen = 1024;
+                byte[] buffer = new byte[bufferLen];
+                int contentLen = 0;
+
+                file.Name = System.IO.Path.GetFileName(postFileBase.FileName);
+                file.ContentType = postFileBase.ContentType;
+                file.RealPath = path + Guid.NewGuid().ToString();
+                fs = new System.IO.FileStream(file.RealPath, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
+
+                while ((contentLen = uploadStream.Read(buffer, 0, bufferLen)) != 0)
+                {
+                    fs.Write(buffer, 0, bufferLen);
+                    fs.Flush();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (null != fs)
+                {
+                    fs.Close();
+                }
+                if (null != uploadStream)
+                {
+                    uploadStream.Close();
+                }
+            }
+            file.Size = GetFileSize(file.RealPath);
+            file.Md5 = Md5Util.GetMD5HashFromFile(file.RealPath);
+
+            return file;
+        }
+
         [HttpPost]
         public ActionResult Upload()
         {
             IList<File> retVal = new List<File>();
 
-            string url = Server.MapPath("/") + @"Files\";
+            string path = Server.MapPath("/") + @"Files\";
 
-            System.IO.Stream uploadStream = null;
-            System.IO.FileStream fs = null;
             //文件上传，一次上传1M的数据，防止出现大文件无法上传
             HttpFileCollectionBase files = Request.Files;
             for (int i = 0; i < files.Count;i++ )
             {
-                File file = new File();
-                try
-                {
-                    HttpPostedFileBase postFileBase = files[i];
-                    uploadStream = postFileBase.InputStream;
-                    int bufferLen = 1024;
-                    byte[] buffer = new byte[bufferLen];
-                    int contentLen = 0;
-
-                    file.Name = System.IO.Path.GetFileName(postFileBase.FileName);
-                    file.ContentType = postFileBase.ContentType;
-                    file.RealPath = url + Guid.NewGuid().ToString();
-                    fs = new System.IO.FileStream(file.RealPath, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite);
-
-                    while ((contentLen = uploadStream.Read(buffer, 0, bufferLen)) != 0)
-                    {
-                        fs.Write(buffer, 0, bufferLen);
-                        fs.Flush();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    if (null != fs)
-                    {
-                        fs.Close();
-                    }
-                    if (null != uploadStream)
-                    {
-                        uploadStream.Close();
-                    }
-                }
-
-                file.Size = GetFileSize(file.RealPath);
-                file.Md5 = Md5Util.GetMD5HashFromFile(file.RealPath);
+                //保存上传的文件
+                File file = SaveHttpPostFile(files[i], path);
 
                 //查找是否存在过相同MD5值的文件，如果是则不保存到数据库
                 IList<File> searchFiles=fileOper.Get(
@@ -102,6 +115,71 @@ namespace EasyJob.Controllers.Api
                 }
 
                 retVal.Add(file);
+            }
+
+            return Json(retVal);
+        }
+
+        /// <summary>
+        /// 导入数据
+        /// </summary>
+        /// <param name="table">需要导入的表</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ImportData(string cls)
+        {
+            //string table = "Department";
+            bool retVal = false;
+
+            string path = Server.MapPath("/") + @"Files\Temp\";
+
+            //文件上传，一次上传1M的数据，防止出现大文件无法上传
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count;i++ )
+            {
+                //保存上传的文件
+                File file = SaveHttpPostFile(files[i], path);
+
+                Type type = Type.GetType("EasyJob.Pojo.Pojo." + cls + ",EasyJob.Pojo");
+
+                ImportExcel ie = new ImportExcel(file.RealPath, type);
+
+                IList<object> vals = ie.List(type);
+
+                //数据存储
+                ISession s = null;
+                ITransaction trans = null;
+                try
+                {
+                    s = HibernateOper.GetCurrentSession();
+                    trans = s.BeginTransaction();
+
+                    foreach (object val in vals)
+                    {
+                        if (val is TbBase)
+                        {
+                            TbBase tbVal = (TbBase)val;
+                            if (tbVal.ImportType.Equals("添加"))
+                            {
+                                s.Save(tbVal);
+                            }
+                            else if (tbVal.ImportType.Equals("修改"))
+                            {
+                                s.Update(tbVal);
+                            }
+                        }
+                    }
+
+                    trans.Commit();
+                }
+                catch (Exception e)
+                {
+                    if (trans != null)
+                    {
+                        trans.Rollback();
+                    }
+                    throw e;
+                }
             }
 
             return Json(retVal);
@@ -214,14 +292,14 @@ namespace EasyJob.Controllers.Api
             //ImportExcel ie = new ImportExcel(url,"abc",fields);
             ImportExcel ie = new ImportExcel(url,typeof(Department));
 
-            IList<Department> vals = ie.List<Department>();
+            //IList<Department> vals = ie.List<Department>();
 
-            foreach (Department dic in vals)
-            {
-                string code = dic.Code;
-                string name = dic.Name;
-                string testExcel = dic.TestExcel;
-            }
+            //foreach (Department dic in vals)
+            //{
+            //    string code = dic.Code;
+            //    string name = dic.Name;
+            //    string testExcel = dic.TestExcel;
+            //}
             return null;
         }
 

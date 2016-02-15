@@ -189,7 +189,8 @@ namespace EasyJob.Controllers.Api
             TbBaseOper<Department> departmentOper = new TbBaseOper<Department>(HibernateOper, typeof(Department));
             IList<Department> list=departmentOper.Get();
 
-            ExportExcel ee = new ExportExcel(fileName, "abc", fields);
+            //ExportExcel ee = new ExportExcel(fileName, "abc", fields);
+            ExportExcel ee = new ExportExcel(fileName,typeof(Department));
             ee.Save(list);
 
             //返回文件
@@ -210,7 +211,8 @@ namespace EasyJob.Controllers.Api
             fields.Add(ef);
 
             string url=Server.MapPath("/") + @"Files\Temp\"+"1.xlsx";
-            ImportExcel ie = new ImportExcel(url,"abc",fields);
+            //ImportExcel ie = new ImportExcel(url,"abc",fields);
+            ImportExcel ie = new ImportExcel(url,typeof(Department));
 
             IList<IDictionary<String, object>> vals=ie.List();
 
@@ -218,7 +220,7 @@ namespace EasyJob.Controllers.Api
             {
                 string code = dic["Code"].ToString();
                 string name = dic["Name"].ToString();
-                string testExcel = dic["TestExcel"].ToString();
+                //string testExcel = dic["TestExcel"].ToString();
             }
             return null;
         }

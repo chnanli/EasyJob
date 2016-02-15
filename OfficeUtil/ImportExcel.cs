@@ -74,9 +74,9 @@ namespace OfficeUtil
 		    this.startLine=startLine;
 	    }
 
-        public IList<IDictionary<String, object>> List()
+        public IList<T> List<T>() where T : new()
         {
-            IList<IDictionary<String, object>> retVal = new List<IDictionary<String, object>>();
+            IList<T> retVal = new List<T>();
 		
 		    try {
                 Stream input = new FileStream(filePath, FileMode.Open);	//建立输入流
@@ -110,43 +110,18 @@ namespace OfficeUtil
 						    }
 						    //数据行
 						    else if(i>startLine){
-                                IDictionary<String, object> map = new Dictionary<String, object>();
+                                T newT = new T();
                                 for (int j = 0; j < row.LastCellNum; j++)
                                 {
                                     ICell cell = row.GetCell(j);
-								
-								    String val="";
-                                    if (cell!=null)
-                                    {
-                                        switch (cell.CellType)
-                                        {	//根据cell中的类型来输出数据
-                                            case CellType.Numeric:
-                                                val = df.Format(cell.NumericCellValue);
-                                                break;
-                                            case CellType.String:
-                                                val = cell.StringCellValue;
-                                                break;
-                                            case CellType.Boolean:
-                                                bool valBool = cell.BooleanCellValue;
-                                                if (valBool != null)
-                                                {
-                                                    val = valBool.ToString();
-                                                }
-                                                else
-                                                {
-                                                    val = "False";
-                                                }
-                                                break;
-                                            case CellType.Formula:
-                                                val = cell.CellFormula;
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                    map.Add(fieldsName[j].FieldNameCls, val);
+
+                                    SetValue(newT, fieldsName[j].FieldNameCls, cell);
+
+                                    //给属性赋值
+                                    
+                                    //newT.Add(fieldsName[j].FieldNameCls, val);
 							    }
-							    retVal.Add(map);
+                                retVal.Add(newT);
 						    }
 					    }
 				    }
@@ -160,6 +135,141 @@ namespace OfficeUtil
 		
 		    return retVal;
 	    }
+
+        private void SetValue(object obj, string propertyName, ICell cell)
+        {
+            PropertyInfo pi = obj.GetType().GetProperty(propertyName);
+            if (pi != null && cell!=null)
+            {
+                object valObj=null;
+                switch (cell.CellType)
+                {	//根据cell中的类型来输出数据
+                    case CellType.Numeric:
+                        if (pi.PropertyType == typeof(string))
+                        {
+                            valObj = cell.StringCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(int))
+                        {
+                            valObj = (int)cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(Int16))
+                        {
+                            valObj = (Int16)cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(Int32))
+                        {
+                            valObj = (Int32)cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(Int64))
+                        {
+                            valObj = (Int64)cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(long))
+                        {
+                            valObj = (long)cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(short))
+                        {
+                            valObj = (short)cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(byte))
+                        {
+                            valObj = (byte)cell.NumericCellValue;
+                        }
+                        else if (
+                            pi.PropertyType == typeof(float)
+                            || pi.PropertyType == typeof(double)
+                            )
+                        {
+                            valObj = cell.NumericCellValue;
+                        }
+                        else if (pi.PropertyType == typeof(DateTime))
+                        {
+                            valObj = cell.DateCellValue;
+                        }else{
+                            valObj=null;
+                        }
+                        break;
+                    case CellType.String:
+                        if (pi.PropertyType == typeof(string))
+                        {
+                            valObj = cell.StringCellValue.ToString();
+                        }
+                        else if (pi.PropertyType == typeof(int))
+                        {
+                            valObj = int.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(Int16))
+                        {
+                            valObj = Int16.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(Int32))
+                        {
+                            valObj = Int32.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(Int64))
+                        {
+                            valObj = Int64.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(long))
+                        {
+                            valObj = long.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(short))
+                        {
+                            valObj = short.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(byte))
+                        {
+                            valObj = byte.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(float))
+                        {
+                            valObj = float.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(double))
+                        {
+                            valObj = double.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(DateTime))
+                        {
+                            valObj = DateTime.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(bool))
+                        {
+                            valObj = bool.Parse(cell.StringCellValue.ToString());
+                        }
+                        else if (pi.PropertyType == typeof(Guid))
+                        {
+                            valObj = Guid.Parse(cell.StringCellValue.ToString());
+                        }
+                        else
+                        {
+                            valObj = null;
+                        }
+                        break;
+                    case CellType.Boolean:
+                        if (pi.PropertyType == typeof(string))
+                        {
+                            valObj = cell.BooleanCellValue.ToString();
+                        }
+                        else if (pi.PropertyType == typeof(bool))
+                        {
+                            valObj = cell.BooleanCellValue;
+                        }else{
+                            valObj=null;
+                        }
+                        break;
+                    case CellType.Formula:
+                        valObj=null;
+                        break;
+                    default:
+                        break;
+                }
+                pi.SetValue(obj, valObj, null);
+            }
+        }
 
         private ExcelField GetField(String fielNameExcel)
         {

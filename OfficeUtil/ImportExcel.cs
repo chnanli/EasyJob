@@ -22,6 +22,7 @@ namespace OfficeUtil
 	    private ExcelField[] fieldsName=null;
 	    private String table="";
 	    private bool isE2007=false;
+        private Type type = null;
 
         /// <summary>
         /// 初始化类型的Excel字段
@@ -57,6 +58,7 @@ namespace OfficeUtil
 
         public ImportExcel(String filePath, Type type)
             : this(filePath, "",null, true, 0) {
+                this.type = type;
                 InitTypeExcelField(type);//初始化类型的Excel字段
         }
 
@@ -74,9 +76,14 @@ namespace OfficeUtil
 		    this.startLine=startLine;
 	    }
 
-        public IList<T> List<T>() where T : new()
+        //public IList<object> List()
+        //{
+        //    return List(type);
+        //}
+
+        public IList<object> List(Type type)
         {
-            IList<T> retVal = new List<T>();
+            IList<object> retVal = new List<object>();
 		
 		    try {
                 Stream input = new FileStream(filePath, FileMode.Open);	//建立输入流
@@ -110,7 +117,7 @@ namespace OfficeUtil
 						    }
 						    //数据行
 						    else if(i>startLine){
-                                T newT = new T();
+                                object newT = type.Assembly.CreateInstance(type.FullName);
                                 for (int j = 0; j < row.LastCellNum; j++)
                                 {
                                     ICell cell = row.GetCell(j);
@@ -135,6 +142,80 @@ namespace OfficeUtil
 		
 		    return retVal;
 	    }
+
+        public IList<T> List<T>() where T:new()
+        {
+            IList<T> retVal = new List<T>();
+
+            try
+            {
+                Stream input = new FileStream(filePath, FileMode.Open);	//建立输入流
+                IWorkbook wb = null;
+                //根据文件格式(2003或者2007)来初始化
+                if (isE2007)
+                    wb = new XSSFWorkbook(input);
+                else
+                    wb = new HSSFWorkbook(input);
+
+                ISheet sheet = wb.GetSheet(table);//查找表名
+
+                if (sheet != null)
+                {
+                    for (int i = 0; i <= sheet.LastRowNum; i++)
+                    {
+                        IRow row = sheet.GetRow(i);	//获得行数据
+
+                        //如果当前行小于开始行则跳过
+                        if (i < startLine)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            //字段行
+                            if (i == startLine)
+                            {
+                                fieldsName = new ExcelField[row.PhysicalNumberOfCells];
+                                for (int j = 0; j < row.LastCellNum; j++)
+                                {
+                                    ICell cell = row.GetCell(j);
+
+                                    ExcelField f = GetField(cell.StringCellValue);
+                                    fieldsName[j] = f;
+                                }
+                            }
+                            //数据行
+                            else if (i > startLine)
+                            {
+                                T newT = new T();
+                                for (int j = 0; j < row.LastCellNum; j++)
+                                {
+                                    ICell cell = row.GetCell(j);
+
+                                    SetValue(newT, fieldsName[j].FieldNameCls, cell);
+
+                                    //给属性赋值
+
+                                    //newT.Add(fieldsName[j].FieldNameCls, val);
+                                }
+                                retVal.Add(newT);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("Table is not exists");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return retVal;
+        }
 
         private void SetValue(object obj, string propertyName, ICell cell)
         {

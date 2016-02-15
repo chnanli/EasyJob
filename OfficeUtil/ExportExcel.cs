@@ -19,6 +19,7 @@ namespace OfficeUtil
         private int startLine = 0;//开始行
         private String table = "";
         private bool isE2007 = false;
+        private Type type = null;
 
         /// <summary>
         /// 初始化类型的Excel字段
@@ -54,6 +55,7 @@ namespace OfficeUtil
 
         public ExportExcel(String filePath, Type type)
             : this(filePath, "", null, true, 0) {
+                this.type = type;
                 InitTypeExcelField(type);//初始化类型的Excel字段
         }
 

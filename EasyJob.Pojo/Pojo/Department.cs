@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using EasyJob.Pojo.Pojo.Bases;
 using Newtonsoft.Json;
+using OfficeUtil.Attrib;
 
 namespace EasyJob.Pojo.Pojo
 {
@@ -11,6 +12,7 @@ namespace EasyJob.Pojo.Pojo
     /// 部门
     /// </summary>
     [JsonObject(MemberSerialization.OptOut)]
+    [ExcelTableAttribute(Name="部门")]
     public class Department : TbLocation
     {
         /// <summary>
@@ -21,11 +23,13 @@ namespace EasyJob.Pojo.Pojo
         /// <summary>
         /// 代码
         /// </summary>
+        [ExcelColumnAttribute(Name="代码")]
         public virtual string Code { get; set; }
 
         /// <summary>
         /// 名称
         /// </summary>
+        [ExcelColumnAttribute(Name = "名字")]
         public virtual string Name { get; set; }
         public virtual string Phone1{get;set;}
         public virtual string Phone2{get;set;}
@@ -36,6 +40,7 @@ namespace EasyJob.Pojo.Pojo
         public virtual int OrderID { get; set; }
 
         [JsonIgnore]
+        //[ExcelColumnAttribute(Name = "测试Excel")]
         public virtual string TestExcel
         {
             get {

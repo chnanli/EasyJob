@@ -18,6 +18,7 @@ namespace EasyJob.Pojo.Pojo
         /// <summary>
         /// 上一级部门ID
         /// </summary>
+        [ExcelColumnAttribute(Name = "上级代码")]
         public virtual Guid PId { get; set; }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace EasyJob.Pojo.Pojo
         public virtual int OrderID { get; set; }
 
         [JsonIgnore]
-        //[ExcelColumnAttribute(Name = "测试Excel")]
+        [ExcelColumnAttribute(Name = "测试Excel")]
         public virtual string TestExcel
         {
             get {
@@ -48,5 +49,17 @@ namespace EasyJob.Pojo.Pojo
             }
             set { }
         }
+
+        [JsonIgnore]
+        [ExcelColumnAttribute(Name = "TestBoolean")]
+        public virtual bool TestBoolean {get;set; }
+
+        [JsonIgnore]
+        [ExcelColumnAttribute(Name = "TestInt")]
+        public virtual int TestInt { get; set; }
+
+        [JsonIgnore]
+        [ExcelColumnAttribute(Name = "TestDateTime")]
+        public virtual DateTime TestDateTime { get; set; }
     }
 }

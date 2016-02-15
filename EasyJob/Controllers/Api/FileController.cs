@@ -214,13 +214,13 @@ namespace EasyJob.Controllers.Api
             //ImportExcel ie = new ImportExcel(url,"abc",fields);
             ImportExcel ie = new ImportExcel(url,typeof(Department));
 
-            IList<IDictionary<String, object>> vals=ie.List();
+            IList<Department> vals = ie.List<Department>();
 
-            foreach (IDictionary<String, object> dic in vals)
+            foreach (Department dic in vals)
             {
-                string code = dic["Code"].ToString();
-                string name = dic["Name"].ToString();
-                //string testExcel = dic["TestExcel"].ToString();
+                string code = dic.Code;
+                string name = dic.Name;
+                string testExcel = dic.TestExcel;
             }
             return null;
         }

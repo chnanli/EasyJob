@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OfficeUtil.Attrib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +37,19 @@ namespace EasyJob.Pojo.Pojo.Bases
 
         [JsonIgnore]
         public virtual string ExHost { get; set; }
+
+        [JsonIgnore]
+        [ExcelColumnAttribute(Name = "导入类型")]
+        public virtual string ImportType {
+            get
+            {
+                return _ImportType;
+            }
+            set
+            {
+                _ImportType = value;
+            }
+        }
+        private string _ImportType="添加";
     }
 }

@@ -11,3 +11,4 @@ WeiXin：微信接口操作工厂
 EasyJob\Controllers\API:开放的接口
 EasyJob\Controllers\Admin:针对接口的测试的页面
 EasyJob\Controllers\WeiXin:针对微信的页面测试
+

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--assembly:程序集，namespace:命名空间-->
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2" assembly="EasyJob.Pojo"  namespace="EasyJob.Pojo.Pojo">
+   <class name="EasyJob.Pojo.Pojo.RentOrderDetail,EasyJob.Pojo" table="psRentOrderDetail">
+     <cache usage="read-write" />
+     <!--主键-->
+     <id name="Id">
+      <generator class="guid" />
+     </id>
+     <property name="ModDate"/>
+     <property name="UploadDate"/>
+     <property name="Del" column="DeleteFlag"/>
+     <property name="TrashFlag"/>
+     <property name="ExHost" length="500"/>
+
+     <many-to-one name="RentOrder" column="RentOrderID" lazy="false" />
+     <many-to-one name="Goods" column="GoodsID" lazy="false" />
+     <property name="Qty" />
+   </class>
+</hibernate-mapping>

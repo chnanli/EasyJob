@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--assembly:程序集，namespace:命名空间-->
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2" assembly="EasyJob.Pojo"  namespace="EasyJob.Pojo.Pojo">
+   <class name="EasyJob.Pojo.Pojo.ReqOrder,EasyJob.Pojo" table="psReqOrder">
+     <cache usage="read-write" />
+     <!--主键-->
+     <id name="Id">
+      <generator class="guid" />
+     </id>
+     <property name="ModDate"/>
+     <property name="UploadDate"/>
+     <property name="Del" column="DeleteFlag"/>
+     <property name="TrashFlag"/>
+     <property name="ExHost" length="500"/>
+
+     <property name="ReqOrderCode" length="50" />
+     <many-to-one name="SrcStorehouse" column="SrcStorehouseID" lazy="false" />
+     <many-to-one name="DestStorehouse" column="DestStorehouseID" lazy="false" />
+     <property name="Carrier" length="50" />
+     <many-to-one name="Oper" column="OperID" lazy="false" />
+     <property name="OperTime"/>
+     <many-to-one name="Approval" column="ApprovalID" lazy="false" />
+     <property name="ApprovalTime"/>
+     <property name="Status" />
+     <property name="Remark" type="String">
+       <column name="Remark" sql-type="Text" length="16" />
+     </property>
+   </class>
+</hibernate-mapping>

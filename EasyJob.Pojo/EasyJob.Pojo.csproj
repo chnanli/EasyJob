@@ -64,6 +64,20 @@
     <Compile Include="Pojo\EmpModFunc.cs" />
     <Compile Include="Pojo\GoodsInfo.cs" />
     <Compile Include="Pojo\EmpData.cs" />
+    <Compile Include="Pojo\CheckStock.cs" />
+    <Compile Include="Pojo\CheckStockDetail.cs" />
+    <Compile Include="Pojo\SellOrderDetail.cs" />
+    <Compile Include="Pojo\SellOrder.cs" />
+    <Compile Include="Pojo\RetRentOrderDetail.cs" />
+    <Compile Include="Pojo\RetRentOrder.cs" />
+    <Compile Include="Pojo\RentOrder.cs" />
+    <Compile Include="Pojo\ReqOrder.cs" />
+    <Compile Include="Pojo\RentOrderDetail.cs" />
+    <Compile Include="Pojo\ReqOrderDetail.cs" />
+    <Compile Include="Pojo\RetOrderDetail.cs" />
+    <Compile Include="Pojo\RetOrder.cs" />
+    <Compile Include="Pojo\PurOrderDetail.cs" />
+    <Compile Include="Pojo\PurOrder.cs" />
     <Compile Include="Pojo\StorageAlarm.cs" />
     <Compile Include="Pojo\StockInit.cs" />
     <Compile Include="Pojo\Stock.cs" />
@@ -326,6 +340,76 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pojo\Xml\Photo.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\PurOrder.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\PurOrderDetail.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\RetOrder.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\RetOrderDetail.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\ReqOrder.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\ReqOrderDetail.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\CheckStock.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\CheckStockDetail.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\RentOrder.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\RentOrderDetail.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\RetRentOrder.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\RetRentOrderDetail.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\SellOrder.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pojo\Xml\SellOrderDetail.hbm.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using EasyJob.Pojo.Pojo;
+﻿using EasyJob.Controllers.ResultType;
+using EasyJob.Pojo.Pojo;
 using EasyJob.Pojo.Pojo.Bases;
 using EasyJob.Tools;
 using NHibernate;
@@ -129,17 +130,19 @@ namespace EasyJob.Controllers.Api
         public ActionResult ImportData(string cls)
         {
             //string table = "Department";
-            bool retVal = false;
+            IList<ImportResult> retVal = new List<ImportResult>();
 
             string path = Server.MapPath("/") + @"Files\Temp\";
 
-            //文件上传，一次上传1M的数据，防止出现大文件无法上传
+            ////文件上传，一次上传1M的数据，防止出现大文件无法上传
             HttpFileCollectionBase files = Request.Files;
-            for (int i = 0; i < files.Count;i++ )
-            {
+            
+            for (int i = 0; i < files.Count; i++) {
                 //保存上传的文件
                 File file = SaveHttpPostFile(files[i], path);
-
+                if (file.Size == 0) {
+                    continue;
+                }
                 Type type = Type.GetType("EasyJob.Pojo.Pojo." + cls + ",EasyJob.Pojo");
 
                 ImportExcel ie = new ImportExcel(file.RealPath, type);
@@ -149,33 +152,43 @@ namespace EasyJob.Controllers.Api
                 //数据存储
                 ISession s = null;
                 ITransaction trans = null;
-                try
-                {
+                try {
                     s = HibernateOper.GetCurrentSession();
                     trans = s.BeginTransaction();
 
-                    foreach (object val in vals)
-                    {
-                        if (val is TbBase)
-                        {
+                    foreach (object val in vals) {
+                        if (val is TbBase && val is IExists) {
+                            ImportResult ir = new ImportResult();
                             TbBase tbVal = (TbBase)val;
-                            if (tbVal.ImportType.Equals("添加"))
-                            {
-                                s.Save(tbVal);
-                            }
-                            else if (tbVal.ImportType.Equals("修改"))
-                            {
-                                s.Update(tbVal);
+                            try {
+                                bool isExists = false;//是否存在
+                                IExists valExists = (IExists)tbVal;
+                                isExists = valExists.IsExists(s);
+
+                                if (tbVal.ImportType.Equals("添加")) {
+                                    if (isExists) {
+                                        throw new Exception("Val is exists");
+                                    }
+                                    s.Save(tbVal);
+                                } else if (tbVal.ImportType.Equals("修改")) {
+                                    if (!isExists) {
+                                        throw new Exception("Val is not exists");
+                                    }
+                                    //s.Update(tbVal);
+                                    s.Merge(tbVal);
+                                }
+                                ir.Success = true;
+                            } catch (Exception e) {
+                                ir.Success = false;
+                                ir.Msg = e.Message;
+                            } finally {
+                                retVal.Add(ir);
                             }
                         }
                     }
-
                     trans.Commit();
-                }
-                catch (Exception e)
-                {
-                    if (trans != null)
-                    {
+                } catch (Exception e) {
+                    if (trans != null) {
                         trans.Rollback();
                     }
                     throw e;

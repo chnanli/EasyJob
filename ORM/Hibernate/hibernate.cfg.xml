@@ -18,7 +18,7 @@ for your own use before compile tests in VisualStudio.
     </property>
     -->
     <property name="connection.connection_string">
-      Server=127.0.0.1;initial catalog=nhibernate;Integrated Security=false;database=EasyJob;uid=sa;pwd=123456
+      Server=127.0.0.1;initial catalog=nhibernate;Integrated Security=false;database=EasyJob;uid=sa;pwd=sa
     </property>
     <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
     <mapping  assembly="EasyJob.Pojo"/>

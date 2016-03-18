@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pojo\Bases\IExists.cs" />
     <Compile Include="Pojo\Bases\TbId.cs" />
     <Compile Include="Pojo\Bases\TbBase.cs" />
     <Compile Include="Pojo\Bases\TbBaseOper.cs" />

@@ -22,6 +22,11 @@ namespace EasyJob.Pojo.Pojo
         public virtual Storehouse Storehouse { get; set; }
 
         /// <summary>
+        /// 退货仓库
+        /// </summary>
+        public virtual Storehouse RetOrderStorehouse { get; set; }
+
+        /// <summary>
         /// 操作员
         /// </summary>
         public virtual Employee Oper { get; set; }

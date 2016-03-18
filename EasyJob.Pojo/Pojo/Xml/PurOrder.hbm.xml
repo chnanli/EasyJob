@@ -14,7 +14,7 @@
      <property name="ExHost" length="500"/>
 
      <property name="PurOrderCode" length="50" />
-     <many-to-one name="Vendor" column="VendorID" lazy="false" />
+     <many-to-one name="Vendor" column="VendorID" lazy="false"/>
      <many-to-one name="Storehouse" column="StorehouseID" lazy="false" />
      <property name="Buyer" length="50" />
      <many-to-one name="Oper" column="OperID" lazy="false" />

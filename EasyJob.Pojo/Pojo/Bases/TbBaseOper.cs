@@ -205,7 +205,7 @@ namespace EasyJob.Pojo.Pojo.Bases
 
         public IList<T> Get(OnCriteria onCriteria, int pageSize, int pageNum)
         {
-            return Get(onCriteria, QueryDel.UnDel,pageSize,pageNum);
+            return Get(onCriteria, QueryDel.UnDel, pageSize, pageNum);
         }
 
         public IList<T> Get(OnCriteria onCriteria, QueryDel qd,int pageSize,int pageNum)
@@ -354,5 +354,6 @@ namespace EasyJob.Pojo.Pojo.Bases
 
             return retVal;
         }
+
     }
 }

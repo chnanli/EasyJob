@@ -15,6 +15,7 @@
 
      <property name="CheckStockCode" length="50" />
      <many-to-one name="Storehouse" column="StorehouseID" lazy="false" />
+     <many-to-one name="RetOrderStorehouse" column="RetOrderStorehouseID" lazy="false" />
      <many-to-one name="Oper" column="OperID" lazy="false" />
      <property name="OperTime"/>
      <many-to-one name="Approval" column="ApprovalID" lazy="false" />

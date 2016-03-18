@@ -40,26 +40,26 @@ namespace EasyJob.Pojo.Pojo
         public virtual string DeptType{get;set;}
         public virtual int OrderID { get; set; }
 
-        [JsonIgnore]
-        [ExcelColumnAttribute(Name = "测试Excel")]
-        public virtual string TestExcel
-        {
-            get {
-                return "abc";
-            }
-            set { }
-        }
+        //[JsonIgnore]
+        //[ExcelColumnAttribute(Name = "测试Excel")]
+        //public virtual string TestExcel
+        //{
+        //    get {
+        //        return "abc";
+        //    }
+        //    set { }
+        //}
 
-        [JsonIgnore]
-        [ExcelColumnAttribute(Name = "TestBoolean")]
-        public virtual bool TestBoolean {get;set; }
+        //[JsonIgnore]
+        //[ExcelColumnAttribute(Name = "TestBoolean")]
+        //public virtual bool TestBoolean {get;set; }
 
-        [JsonIgnore]
-        [ExcelColumnAttribute(Name = "TestInt")]
-        public virtual int TestInt { get; set; }
+        //[JsonIgnore]
+        //[ExcelColumnAttribute(Name = "TestInt")]
+        //public virtual int TestInt { get; set; }
 
-        [JsonIgnore]
-        [ExcelColumnAttribute(Name = "TestDateTime")]
-        public virtual DateTime TestDateTime { get; set; }
+        //[JsonIgnore]
+        //[ExcelColumnAttribute(Name = "TestDateTime")]
+        //public virtual DateTime TestDateTime { get; set; }
     }
 }

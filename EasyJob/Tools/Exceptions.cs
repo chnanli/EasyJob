@@ -195,5 +195,60 @@ namespace EasyJob.Tools
             public ModFuncIsExistsException() : base("ModFuncIsExistsException") { }
         }
 
+        /// <summary>
+        ///采购单号存在
+        /// </summary>
+        public class PurOrderIsExistsException : Exception
+        {
+            public PurOrderIsExistsException() : base("PurOrderIsExistsException") { }
+        }
+
+        /// <summary>
+        ///退货单号存在
+        /// </summary>
+        public class RetOrderIsExistsException : Exception
+        {
+            public RetOrderIsExistsException() : base("RetOrderIsExistsException") { }
+        }
+
+        /// <summary>
+        ///调拨单号存在
+        /// </summary>
+        public class ReqOrderIsExistsException : Exception
+        {
+            public ReqOrderIsExistsException() : base("ReqOrderIsExistsException") { }
+        }
+
+        /// <summary>
+        ///盘点单号存在
+        /// </summary>
+        public class CheckStockIsExistsException : Exception
+        {
+            public CheckStockIsExistsException() : base("CheckStockIsExistsException") { }
+        }
+
+        /// <summary>
+        ///领用单号存在
+        /// </summary>
+        public class RentOrderIsExistsException : Exception
+        {
+            public RentOrderIsExistsException() : base("RentOrderIsExistsException") { }
+        }
+
+        /// <summary>
+        ///归还单号存在
+        /// </summary>
+        public class RetRentOrderIsExistsException : Exception
+        {
+            public RetRentOrderIsExistsException() : base("RetRentOrderIsExistsException") { }
+        }
+
+        /// <summary>
+        ///销售单号存在
+        /// </summary>
+        public class SellOrderIsExistsException : Exception
+        {
+            public SellOrderIsExistsException() : base("SellOrderIsExistsException") { }
+        }
     }
 }

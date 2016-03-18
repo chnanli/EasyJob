@@ -75,8 +75,7 @@ namespace EasyJob
 	    public bool checkVersion(ISession session,int ver){
             bool retVal = true;
 
-		    String strSql="";
-		    switch(ver){
+            switch (ver) {
                 case 0:
                     //初始化维修类型
                     //InitWorkType(session);
@@ -85,19 +84,19 @@ namespace EasyJob
                     e.Code = "999";
                     e.EmpName = "System";
                     e.PwdWeb = "123456";
-                    e.Birthday = DateTime.Now;
-                    e.ComeDate = DateTime.Now;
-                    e.StaffDate = DateTime.Now;
-                    e.LeaveDate = DateTime.Now;
-                    e.OnDuty = DateTime.Now;
-                    e.OffDuty = DateTime.Now;
+                    //e.Birthday = DateTime.Now;
+                    //e.ComeDate = DateTime.Now;
+                    //e.StaffDate = DateTime.Now;
+                    //e.LeaveDate = DateTime.Now;
+                    //e.OnDuty = DateTime.Now;
+                    //e.OffDuty = DateTime.Now;
                     session.Save(e);
 
                     break;
-		        default:
-			        retVal=false;
+                default:
+                    retVal = false;
                     break;
-		    }
+            }
 		    return retVal;
 	    }
 

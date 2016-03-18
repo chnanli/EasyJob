@@ -4,7 +4,7 @@
 @Styles.Render("~/bui/css", "~/bootstrap/css")
 @Scripts.Render("~/bui/js", "~/jquery/js", "~/bootstrap/js", "~/errorCode/js")
 
-<style type="text/css">
+@*<style type="text/css">
     body {
         padding-top: 40px;
         padding-bottom: 40px;
@@ -110,4 +110,107 @@
         <span> <span class="text-warning" id="errorInfo"></span></span>
     </div>
 
-</div>
+</div>*@
+
+@*<script>
+    function Login() {
+        var employee = {};
+        employee.PurOrderCode = $("#employee_Pur").val();
+        employee.Vendor = $("#employee_Vendor").val();
+        employee.StoreHouseID = $("#employee_StoreHouse").val();
+        employee.Buyer = $("#employee_Buyer").val();
+        employee.OperID = $("#employee_Oper").val();
+        employee.OPerTime = $("#employee_OPerTime").val();
+        employee.ApprovalTime = $("#employee_Approval").val();
+        employee.State = $("#employee_State").val();
+        employee.TotalMoney = $("#employee_TotalMoney").val();
+        var data = $.toJSON(employee);
+
+        //ShowErrorInfo("");//清空出错显示内容
+        $("#employee_Login").val("登录中...");
+
+        $.ajax({
+            type: "POST",
+            url: "/PurOrder/Add",
+            contentType: "application/json",
+            dataType: "json",
+            data: data,
+            success: function (ret) {
+                if (ret == true) {
+                    //LoginError("添加成功!");
+                    console.log("添加成功!");
+                } else {
+                    //LoginError("添加失败!");
+                    console.log("添加失败!");
+                }
+            },
+            error: function (xhr) {
+                var errMsg = xhr.responseJSON;
+                LoginError(GetErrorMsg(errMsg.Error));
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#employee_Code').keydown(function (e) {
+        //    if (e.keyCode == 13) {
+        //        $("#employee_Pwd").focus();
+        //    }
+        //});
+
+        //$('#employee_Pwd').keydown(function (e) {
+        //    if (e.keyCode == 13) {
+        //        Login();
+        //    }
+        //});
+
+        $('#employee_Login').click(function () {
+            Login();
+        });
+    });
+</script>
+
+<div class="container">
+
+    <div class="form-signin">
+        <h2 class="form-signin-heading">采购单</h2>
+        <input type="text" name="Code" id="employee_Pur" class="input-block-level" placeholder="单号">
+        <input type="text" name="Pwd" id="employee_Vendor" class="input-block-level" placeholder="供应商">
+        <input type="text" name="Code" id="employee_StoreHouse" class="input-block-level" placeholder="仓库">
+        <input type="text" name="Pwd" id="employee_Buyer" class="input-block-level" placeholder="采购员">
+        <input type="text" name="Code" id="employee_Oper" class="input-block-level" placeholder="操作员">
+        <input type="text" name="Pwd" id="employee_OPerTime" class="input-block-level" placeholder="操作时间">
+        <input type="text" name="Pwd" id="employee_Approval" class="input-block-level" placeholder="审核时间">
+        <input type="text" name="Code" id="employee_State" class="input-block-level" placeholder="单据状态">
+        <input type="text" name="Pwd" id="employee_TotalMoney" class="input-block-level" placeholder="总金额">
+        <p><button class="btn btn-large btn-primary" id="employee_Login" type="submit">登录</button></p>
+        <span> <span class="text-warning" id="errorInfo"></span></span>
+    </div>
+
+</div>*@
+
+<script>
+    var employee = {};
+    employee.pageSize = 1;
+    //employee.pageNum = 0
+    var data = $.toJSON(employee);
+    $.ajax({
+        type: "POST",
+        url: "/Storehouse/GetPageCount",
+        contentType: "application/json",
+        dataType: "json",
+        data: data,
+        success: function (ret) {
+            if (ret == true) {
+                //LoginError("添加成功!");
+                console.log(ret);
+            } else {
+                //LoginError("添加失败!");
+                console.log("添加失败!");
+            }
+        },
+        error: function (xhr) {
+            var errMsg = xhr.responseJSON;
+            LoginError(GetErrorMsg(errMsg.Error));
+        }
+    });
+</script>

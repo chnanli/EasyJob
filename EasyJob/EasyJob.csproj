@@ -137,12 +137,26 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Consts\SessionConst.cs" />
+    <Compile Include="Controllers\Api\CheckStockController.cs" />
+    <Compile Include="Controllers\Api\CheckStockDetailController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\DepartmentController.cs" />
     <Compile Include="Controllers\Api\PhotoController.cs" />
     <Compile Include="Controllers\Api\EmpDataController.cs" />
     <Compile Include="Controllers\Api\EmpModFuncController.cs" />
+    <Compile Include="Controllers\Api\PurOrderController.cs" />
+    <Compile Include="Controllers\Api\PurOrderDetailController.cs" />
+    <Compile Include="Controllers\Api\RentOrderController.cs" />
+    <Compile Include="Controllers\Api\RentOrderDetailController.cs" />
+    <Compile Include="Controllers\Api\ReqOrderController.cs" />
+    <Compile Include="Controllers\Api\ReqOrderDetailController.cs" />
+    <Compile Include="Controllers\Api\RetOrderController.cs" />
+    <Compile Include="Controllers\Api\RetOrderDetailController.cs" />
+    <Compile Include="Controllers\Api\RetRentOrderController.cs" />
+    <Compile Include="Controllers\Api\RetRentOrderDetailController.cs" />
+    <Compile Include="Controllers\Api\SellOrderController.cs" />
+    <Compile Include="Controllers\Api\SellOrderDetailController.cs" />
     <Compile Include="Controllers\Api\SellPriceInfoController.cs" />
     <Compile Include="Controllers\Api\ModFuncController.cs" />
     <Compile Include="Controllers\Api\EmpModController.cs" />
@@ -168,6 +182,7 @@
     <Compile Include="Controllers\Api\HomeController.cs" />
     <Compile Include="Controllers\Api\ModController.cs" />
     <Compile Include="Controllers\Admin\AdminController.cs" />
+    <Compile Include="Controllers\ResultType\ImportResult.cs" />
     <Compile Include="Controllers\WeiXin\EasyJobController.cs" />
     <Compile Include="Controllers\WeiXin\WeiXinController.cs" />
     <Compile Include="Filters\DefaultValFilterAttribute.cs" />
@@ -960,6 +975,7 @@
     <Content Include="Views\Admin\CustomerManager.cshtml" />
     <Content Include="Views\Admin\WorkManager.cshtml" />
     <Content Include="Views\Admin\WorkCodeTypeManager.cshtml" />
+    <Content Include="Views\Admin\PurOrder.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
